@@ -9,6 +9,7 @@ using KGySoft.Drawing.Imaging;
 using KGySoft.Reflection;
 
 using ScreenToGif.Util;
+using ScreenToGif.Util.Extensions;
 using ScreenToGif.ViewModel.ExportPresets.AnimatedImage.Gif;
 
 #endregion

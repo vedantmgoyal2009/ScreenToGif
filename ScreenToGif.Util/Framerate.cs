@@ -6,26 +6,32 @@ namespace ScreenToGif.Util;
 /// <summary>
 /// Frame rate monitor. 
 /// </summary>
-public static class FrameRate
+public class CaptureStopwatch
 {
-    #region Private Variables
+    #region Variables
 
-    private static Stopwatch _stopwatch = new();
-    private static int _interval = 15;
-    private static bool _started = true;
-    private static bool _fixedRate = false;
+    private Stopwatch _stopwatch;
+
+    private int _interval = 15;
+    private long _intervalInTicks = 150000;
+    private bool _started = true;
+    private bool _fixedRate;
 
     #endregion
+
+    public bool IsRunning => _stopwatch?.IsRunning ?? false;
 
     /// <summary>
     /// Prepares the FrameRate monitor.
     /// </summary>
     /// <param name="interval">The selected interval of each snapshot.</param>
-    public static void Start(int interval)
+    public void Initialize(int interval)
     {
         _stopwatch = new Stopwatch();
 
         _interval = interval;
+        _intervalInTicks = TimeSpan.FromMilliseconds(interval).Ticks;
+
         _fixedRate = UserSettings.All.FixedFrameRate;
     }
 
@@ -34,7 +40,7 @@ public static class FrameRate
     /// </summary>
     /// <param name="useFixed">If true, uses the fixed internal provided.</param>
     /// <param name="interval">The fixed interval to be used.</param>
-    public static void Start(bool useFixed, int interval)
+    public void Initialize(bool useFixed, int interval)
     {
         _stopwatch = new Stopwatch();
 
@@ -46,7 +52,8 @@ public static class FrameRate
     /// Gets the diff between the last call.
     /// </summary>
     /// <returns>The amount of seconds.</returns>
-    public static int GetMilliseconds()
+    [Obsolete]
+    public int GetMilliseconds()
     {
         if (_fixedRate)
             return _interval;
@@ -65,11 +72,28 @@ public static class FrameRate
     }
 
     /// <summary>
-    /// Determine that a stop/pause of the recording.
+    /// Gets the elapsed ticks since the start of the stopwatch.
+    /// Returns a fixed value for non automatic capture.
     /// </summary>
-    public static void Stop()
+    public long GetElapsedTicks()
+    {
+        if (_fixedRate)
+            return _intervalInTicks;
+
+        if (_stopwatch.IsRunning)
+            return _stopwatch?.ElapsedTicks ?? -1L;
+
+        //The first frame captured needs to start the stopwatch.
+        _stopwatch.Start();
+
+        return 0;
+    }
+
+    /// <summary>
+    /// Stops/pauses the stopwatch.
+    /// </summary>
+    public void Stop()
     {
         _stopwatch.Stop();
-        _started = true;
     }
 }

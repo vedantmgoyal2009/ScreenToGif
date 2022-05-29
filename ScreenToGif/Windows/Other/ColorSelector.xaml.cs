@@ -4,12 +4,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ScreenToGif.Controls;
+using ScreenToGif.Domain.Structs;
 using ScreenToGif.Native.External;
 using ScreenToGif.Native.Structs;
-using ScreenToGif.Util;
 using ScreenToGif.Util.Codification;
+using ScreenToGif.Util.Extensions;
 
-//Nicke Manarin - ScreenToGif - 26/02/2014, Updated 16/10/2016, Updated 31/05/2018, Again in 26/09/2019, 28/06/2020.
+//Nicke Manarin - ScreenToGif - 26/02/2014, Updated 16/10/2016, Updated 31/05/2018, Again in 26/09/2019, 28/06/2020, 03/07/2022.
 
 namespace ScreenToGif.Windows.Other;
 
@@ -181,7 +182,7 @@ public partial class ColorSelector : Window
         var str = new PointW();
         User32.GetCursorPos(ref str);
 
-        var image = Native.Helpers.Capture.CaptureScreenAsBitmapSource((int)_captureSize.Width, (int)_captureSize.Height, str.X - (int)(_captureSize.Width / 2d), str.Y - (int)(_captureSize.Height / 2d));
+        var image = Util.Native.Capture.CaptureScreenAsBitmapSource((int)_captureSize.Width, (int)_captureSize.Height, str.X - (int)(_captureSize.Width / 2d), str.Y - (int)(_captureSize.Height / 2d));
 
         if (image.Format != PixelFormats.Bgra32)
             image = new FormatConvertedBitmap(image, PixelFormats.Bgra32, null, 0);
@@ -244,7 +245,7 @@ public partial class ColorSelector : Window
     {
         _colorPosition = null;
 
-        var hsv = ColorExtensions.ConvertRgbToHsv(theColor.R, theColor.G, theColor.B);
+        var hsv = ColorExtensions.RgbToHsv(theColor.R, theColor.G, theColor.B);
 
         CurrentColor.Background = new SolidColorBrush(theColor);
         ColorSlider.Value = hsv.H;
@@ -264,13 +265,9 @@ public partial class ColorSelector : Window
 
     private void DetermineColor(Point p)
     {
-        var hsv = new HsvColor(360 - ColorSlider.Value, 1, 1)
-        {
-            S = p.X,
-            V = 1 - p.Y
-        };
+        var hsv = new HsvColor(360 - ColorSlider.Value, p.X, 1 - p.Y);
 
-        SelectedColor = ColorExtensions.ConvertHsvToRgb(hsv.H, hsv.S, hsv.V, AlphaSlider.Value);
+        SelectedColor = ColorExtensions.HsvToRgb(hsv.H, hsv.S, hsv.V, AlphaSlider.Value);
 
         CurrentColor.Background = new SolidColorBrush(SelectedColor);
         AlphaSlider.SpectrumColor = SelectedColor;

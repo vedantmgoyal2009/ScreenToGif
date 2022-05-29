@@ -1,3 +1,20 @@
+using Microsoft.Win32;
+using ScreenToGif.Controls;
+using ScreenToGif.Domain.Enums;
+using ScreenToGif.Domain.Events;
+using ScreenToGif.Domain.Exceptions;
+using ScreenToGif.Domain.Models;
+using ScreenToGif.Domain.Models.Project.Recording;
+using ScreenToGif.Native.External;
+using ScreenToGif.Native.Structs;
+using ScreenToGif.Util;
+using ScreenToGif.Util.Capture;
+using ScreenToGif.Util.Extensions;
+using ScreenToGif.Util.Native;
+using ScreenToGif.Util.Project;
+using ScreenToGif.Util.Settings;
+using ScreenToGif.ViewModel;
+using ScreenToGif.Windows.Other;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,26 +26,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Microsoft.Win32;
-using ScreenToGif.Capture;
-using ScreenToGif.Controls;
-using ScreenToGif.Domain.Enums;
-using ScreenToGif.Domain.Events;
-using ScreenToGif.Domain.Exceptions;
-using ScreenToGif.Domain.Models;
-using ScreenToGif.Model;
-using ScreenToGif.Native.External;
-using ScreenToGif.Native.Helpers;
-using ScreenToGif.Native.Structs;
-using ScreenToGif.Util;
-using ScreenToGif.Util.Extensions;
-using ScreenToGif.Util.Settings;
-using ScreenToGif.ViewModel;
-using ScreenToGif.Windows.Other;
 using Cursors = System.Windows.Input.Cursors;
 using DpiChangedEventArgs = System.Windows.DpiChangedEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MouseButtons = ScreenToGif.Domain.Enums.MouseButtons;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ScreenToGif.Windows;
@@ -120,11 +120,11 @@ public partial class Recorder
 
     #region Timer
 
-    private readonly Timer _preStartTimer = new Timer();
+    private readonly Timer _preStartTimer = new();
 
-    private readonly Timer _followTimer = new Timer();
-    private readonly Timer _showBorderTimer = new Timer();
-    private readonly Timer _limitTimer = new Timer();
+    private readonly Timer _followTimer = new();
+    private readonly Timer _showBorderTimer = new();
+    private readonly Timer _limitTimer = new();
 
     #endregion
 
@@ -422,8 +422,8 @@ public partial class Recorder
         //Save the settings
         UserSettings.All.RecorderTop = Top;
         UserSettings.All.RecorderLeft = Left;
-        UserSettings.All.RecorderHeight = (int) Height;
-        UserSettings.All.RecorderWidth = (int) Width;
+        UserSettings.All.RecorderHeight = (int)Height;
+        UserSettings.All.RecorderWidth = (int)Width;
         UserSettings.Save();
 
         #region Remove Hooks
@@ -478,7 +478,7 @@ public partial class Recorder
 
         //Capture when an user interactions happens.
         if (Stage == RecorderStages.Recording && UserSettings.All.CaptureFrequency == CaptureFrequencies.Interaction && !IsKeyboardFocusWithin)
-            await Snap();
+            await Snap().ConfigureAwait(false);
 
         //Record/snap or pause.
         if (Keyboard.Modifiers.HasFlag(UserSettings.All.StartPauseModifiers) && e.Key == UserSettings.All.StartPauseShortcut)
@@ -509,7 +509,7 @@ public partial class Recorder
         else if (Keyboard.Modifiers.HasFlag(UserSettings.All.FollowModifiers) && e.Key == UserSettings.All.FollowShortcut)
             UserSettings.All.CursorFollowing = IsFollowing = !IsFollowing;
         else
-            KeyList.Add(new SimpleKeyGesture(e.Key, Keyboard.Modifiers, e.IsUppercase, e.IsInjected));
+            Capture?.RegisterKeyEvent(e.Key, Keyboard.Modifiers, e.IsUppercase, e.IsInjected);
     }
 
     /// <summary>
@@ -522,18 +522,10 @@ public partial class Recorder
             if (RegionSelectHelper.IsSelecting || Stage == RecorderStages.Discarding)
                 return;
 
-            //In the future, store each mouse event, with a timestamp, independently of the capture.
-            if (args.LeftButton == MouseButtonState.Pressed)
-                RecordClicked = MouseButtons.Left;
-            else if (args.RightButton == MouseButtonState.Pressed)
-                RecordClicked = MouseButtons.Right;
-            else if (args.MiddleButton == MouseButtonState.Pressed)
-                RecordClicked = MouseButtons.Middle;
-            else
-                RecordClicked = MouseButtons.None;
-
             _posX = args.PosX;
             _posY = args.PosY;
+
+            Capture?.RegisterCursorEvent(_posX, _posY, args.LeftButton, args.RightButton, args.MiddleButton, args.FirstExtraButton, args.SecondExtraButton, args.MouseDelta);
 
             if (Stage == RecorderStages.Recording && args.IsInteraction && UserSettings.All.CaptureFrequency == CaptureFrequencies.Interaction)
             {
@@ -559,13 +551,13 @@ public partial class Recorder
         if (_lastHandle != handle)
         {
             if (_lastHandle != IntPtr.Zero)
-                Native.Helpers.Other.DrawFrame(_lastHandle, scale);
+                Util.Native.Other.DrawFrame(_lastHandle, scale);
 
             _lastHandle = handle;
-            Native.Helpers.Other.DrawFrame(handle, scale);
+            Util.Native.Other.DrawFrame(handle, scale);
         }
 
-        var rect = Native.Helpers.Windows.TrueWindowRectangle(handle);
+        var rect = Util.Native.Windows.TrueWindowRectangle(handle);
 
         #endregion
 
@@ -589,7 +581,7 @@ public partial class Recorder
                 return;
 
             //Clear up the selected window frame.
-            Native.Helpers.Other.DrawFrame(handle, scale);
+            Util.Native.Other.DrawFrame(handle, scale);
             _lastHandle = IntPtr.Zero;
 
             #region Values
@@ -608,10 +600,13 @@ public partial class Recorder
                 top = SystemParameters.VirtualScreenTop - 1;
             if (left < SystemParameters.VirtualScreenLeft)
                 left = SystemParameters.VirtualScreenLeft - 1;
-            if (SystemInformation.VirtualScreen.Height < (height + top) * scale) //TODO: Check if works with 2 screens.
-                height = (SystemInformation.VirtualScreen.Height - top) / scale;
-            if (SystemInformation.VirtualScreen.Width < (width + left) * scale)
-                width = (SystemInformation.VirtualScreen.Width - left) / scale;
+
+            //TODO: Check if I can use SystemParameters instead of Native.Helpers.SystemInformation.VirtualScreen.Height
+            //TODO: Check if works with 2 screens.
+            if (SystemParameters.VirtualScreenHeight < (height + top) * scale)
+                height = (SystemParameters.VirtualScreenHeight - top) / scale;
+            if (SystemParameters.VirtualScreenWidth < (width + left) * scale)
+                width = (SystemParameters.VirtualScreenWidth - left) / scale;
 
             #endregion
 
@@ -768,7 +763,7 @@ public partial class Recorder
             new CommandBinding(_viewModel.PauseCommand, (_, _) => Pause(),
                 (_, args) => args.CanExecute = Stage == RecorderStages.Recording && UserSettings.All.CaptureFrequency != CaptureFrequencies.Manual),
 
-            new CommandBinding(_viewModel.SnapCommand, async (_, _) => await Snap(),
+            new CommandBinding(_viewModel.SnapCommand, async (_, _) => await Snap().ConfigureAwait(false),
                 (_, args) => args.CanExecute = Stage == RecorderStages.Recording && UserSettings.All.CaptureFrequency == CaptureFrequencies.Manual),
 
             new CommandBinding(_viewModel.StopLargeCommand, async (_, _) => await Stop(),
@@ -865,9 +860,7 @@ public partial class Recorder
 
                     #region To record
 
-                    Project = new ProjectInfo().CreateProjectFolder(ProjectByType.ScreenRecorder);
-
-                    KeyList.Clear();
+                    Project = RecordingProjectHelper.Create(ProjectSources.ScreenRecorder);
                     FrameCount = 0;
 
                     await Task.Factory.StartNew(UpdateScreenDpi);
@@ -931,7 +924,7 @@ public partial class Recorder
                     StartCapture();
                     break;
 
-                #endregion
+                    #endregion
             }
         }
         catch (GraphicsConfigurationException g)
@@ -971,7 +964,9 @@ public partial class Recorder
         {
             try
             {
-                Project = new ProjectInfo().CreateProjectFolder(ProjectByType.ScreenRecorder);
+                Project = RecordingProjectHelper.Create(ProjectSources.ScreenRecorder);
+
+                //Error: Pressing fast the snap button will cause issues.
 
                 await PrepareCapture();
 
@@ -992,7 +987,9 @@ public partial class Recorder
             var limit = 0;
             do
             {
-                FrameCount = await Capture.ManualCaptureAsync(new FrameInfo(RecordClicked, KeyList), UserSettings.All.ShowCursor);
+                Capture.IsAcceptingEvents = true;
+                FrameCount = await Capture.ManualCaptureAsync(new RecordingFrame(), UserSettings.All.ShowCursor);
+                Capture.IsAcceptingEvents = false;
 
                 if (limit > 5)
                     throw new Exception("Impossible to capture the manual screenshot.");
@@ -1000,8 +997,6 @@ public partial class Recorder
                 limit++;
             }
             while (FrameCount == 0);
-
-            KeyList.Clear();
 
             DisplayTimer.ManuallyCapturedCount++;
             CommandManager.InvalidateRequerySuggested();
@@ -1133,44 +1128,8 @@ public partial class Recorder
 
         await Task.Run(() =>
         {
-            try
-            {
-                #region Remove all the files
-
-                //Not sure if needed.
-                foreach (var frame in Project.Frames)
-                {
-                    try
-                    {
-                        if (File.Exists(frame.Path))
-                            File.Delete(frame.Path);
-                    }
-                    catch (Exception)
-                    { }
-                }
-
-                try
-                {
-                    Directory.Delete(Project.FullPath, true);
-                }
-                catch (Exception ex)
-                {
-                    LogWriter.Log(ex, "Delete temp path");
-                }
-
-                #endregion
-
-                Project.Frames.Clear();
-            }
-            catch (IOException io)
-            {
-                LogWriter.Log(io, "Error while trying to discard the recording");
-            }
-            catch (Exception ex)
-            {
-                Dispatcher.Invoke(() => Dialog.Ok("Discard Error", "Error while trying to discard the recording", ex.Message));
-                LogWriter.Log(ex, "Error while trying to discard the recording");
-            }
+            Project.Discard();
+            Project = null;
         });
 
         //Enables the controls that are disabled while recording;
@@ -1418,7 +1377,7 @@ public partial class Recorder
 
         //Detect closest screen to the point (previously selected top/left point or current mouse coordinate).
         var point = startup ? (double.IsNaN(UserSettings.All.RecorderTop) || double.IsNaN(UserSettings.All.RecorderLeft) ?
-            Native.Helpers.Other.GetMousePosition(_scale, Left, Top) : new Point((int)UserSettings.All.RecorderLeft, (int)UserSettings.All.RecorderTop)) : new Point((int) Left, (int) Top);
+            Util.Native.Other.GetMousePosition(_scale, Left, Top) : new Point((int)UserSettings.All.RecorderLeft, (int)UserSettings.All.RecorderTop)) : new Point((int)Left, (int)Top);
         var closest = _viewModel.Monitors.FirstOrDefault(x => x.Bounds.Contains(point)) ?? _viewModel.Monitors.FirstOrDefault(x => x.IsPrimary) ?? _viewModel.Monitors.FirstOrDefault();
 
         if (closest == null)
@@ -1465,7 +1424,7 @@ public partial class Recorder
         var windowInteropHelper = new System.Windows.Interop.WindowInteropHelper(this);
         var current = Screen.FromHandle(windowInteropHelper.Handle);
 
-        _viewModel.CurrentMonitor =  _viewModel.Monitors.FirstOrDefault(f => f.Name == current.DeviceName) ?? closest;
+        _viewModel.CurrentMonitor = _viewModel.Monitors.FirstOrDefault(f => f.Name == current.DeviceName) ?? closest;
 
         var regionLeft = (int)Math.Round((Math.Round(Left, MidpointRounding.AwayFromZero) + Constants.LeftOffset) * _viewModel.CurrentMonitor.Scale);
         var regionTop = (int)Math.Round((Math.Round(Top, MidpointRounding.AwayFromZero) + Constants.TopOffset) * _viewModel.CurrentMonitor.Scale);
@@ -1530,8 +1489,8 @@ public partial class Recorder
         else
         {
             //Capture with BitBlt.
-            Capture = UserSettings.All.UseMemoryCache ? new CachedCapture() : new ImageCapture();
-            _viewModel.IsDirectMode = true;
+            Capture = new GdiCapture();
+            _viewModel.IsDirectMode = false;
         }
 
         Capture.OnError += exception =>
@@ -1553,7 +1512,7 @@ public partial class Recorder
 
         var dpi = MonitorHelper.AllMonitors.FirstOrDefault(f => f.IsPrimary)?.Dpi ?? 96d;
 
-        Capture.Start(GetCaptureInterval(), _left, _top, _width, _height, dpi / 96d, Project);
+        Capture.Start(IsAutomaticCapture(), GetCaptureInterval(), _left, _top, _width, _height, dpi / 96d, Project);
     }
 
     private void DetectCaptureFrequency()
@@ -1607,7 +1566,7 @@ public partial class Recorder
     {
         Stage = RecorderStages.Recording;
         Title = "ScreenToGif";
-        FrameRate.Start(HasFixedDelay(), GetFixedDelay());
+        Capture?.StartStopwatch(HasFixedDelay(), GetFixedDelay());
 
         AutoFitButtons();
         DisplayGuidelines();
@@ -1617,7 +1576,7 @@ public partial class Recorder
     {
         Stage = Project?.Frames?.Count > 0 ? RecorderStages.Paused : RecorderStages.Stopped;
         Title = "ScreenToGif";
-        FrameRate.Start(HasFixedDelay(), GetFixedDelay());
+        Capture?.StartStopwatch(HasFixedDelay(), GetFixedDelay());
 
         AutoFitButtons();
         DisplayGuidelines();
@@ -1627,7 +1586,7 @@ public partial class Recorder
     {
         Stage = Project?.Frames?.Count > 0 ? RecorderStages.Paused : RecorderStages.Stopped;
         Title = "ScreenToGif";
-        FrameRate.Stop();
+        Capture?.StopStopwatch();
 
         AutoFitButtons();
         DisplayGuidelines();

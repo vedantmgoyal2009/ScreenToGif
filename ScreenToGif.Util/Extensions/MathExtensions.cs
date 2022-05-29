@@ -2,25 +2,50 @@ namespace ScreenToGif.Util.Extensions;
 
 public static class MathExtensions
 {
+    #region Comparisons
+
     public static int DivisibleByTwo(this int number) => number % 2 == 0 ? number : number + 1;
 
-    public static long PackLong(int left, int right) => (long)left << 32 | (uint)right;
-
-    public static void UnpackLong(long value, out int left, out int right)
+    public static bool GreaterThan(this double a, double b, double epsilon = 0.00000153D)
     {
-        left = (int)(value >> 32);
-        right = (int)(value & 0xffffffffL);
+        return a > b && !NearlyEquals(a, b, epsilon);
     }
 
-    public static double RoundUpValue(double value, int decimalpoint = 0)
+    public static bool SmallerThan(this double a, double b, double epsilon = 0.00000153D)
     {
-        var result = Math.Round(value, decimalpoint);
-
-        if (result < value)
-            result += Math.Pow(10, -decimalpoint);
-
-        return result;
+        return a < b && !NearlyEquals(a, b, epsilon);
     }
+
+    public static bool SmallerThanOrClose(this double a, double b, double epsilon = 0.00000153D)
+    {
+        return a < b || NearlyEquals(a, b, epsilon);
+    }
+
+    public static bool NearlyEquals(this double a, double b, double epsilon = 0.00000153D)
+    {
+        // ReSharper disable once CompareOfFloatsByEqualityOperator
+        if (a == b)
+            return true;
+
+        var delta = a - b;
+
+        return (delta < epsilon) && (delta > -epsilon);
+    }
+
+    public static bool NearlyEquals(this double a, int b, double epsilon = 0.00000153D)
+    {
+        // ReSharper disable once CompareOfFloatsByEqualityOperator
+        if (a == b)
+            return true;
+
+        var delta = a - b;
+
+        return (delta < epsilon) && (delta > -epsilon);
+    }
+
+    #endregion
+
+    #region Calculations
 
     /// <summary>
     /// Gets the third value based on the other 2 parameters.
@@ -44,7 +69,7 @@ public static class MathExtensions
             return (percentage.Value * 100d) / variable.Value;
 
         if (!percentage.HasValue && total.HasValue && variable.HasValue)
-            return total > 0 || total < 0 ? (variable.Value * 100d) / total.Value : 0;
+            return total is > 0 or < 0 ? (variable.Value * 100d) / total.Value : 0;
 
         if (!variable.HasValue && total.HasValue && percentage.HasValue)
             return (percentage.Value * total.Value) / 100d;
@@ -74,7 +99,7 @@ public static class MathExtensions
             return (percentage.Value * 100m) / variable.Value;
 
         if (!percentage.HasValue && total.HasValue && variable.HasValue)
-            return total > 0 || total < 0 ? (variable.Value * 100m) / total.Value : 0;
+            return total is > 0 or < 0 ? (variable.Value * 100m) / total.Value : 0;
 
         if (!variable.HasValue && total.HasValue && percentage.HasValue)
             return (percentage.Value * total.Value) / 100m;
@@ -98,82 +123,26 @@ public static class MathExtensions
         return b == 0 ? a : Gcd(b, a % b);
     }
 
-    public static bool NearlyEquals(this float a, float b, float epsilon = 0.0001F)
+    #endregion
+
+    public static long PackLong(int left, int right) => (long)left << 32 | (uint)right;
+
+    public static void UnpackLong(long value, out int left, out int right)
     {
-        var absA = Math.Abs(a);
-        var absB = Math.Abs(b);
-        var diff = Math.Abs(a - b);
-
-        if (a == b)
-            return true;
-
-        if (a == 0 || b == 0 || diff < float.Epsilon)
-        {
-            // a or b is zero or both are extremely close to it
-            // relative error is less meaningful here
-            return diff < epsilon;
-        }
-
-        // use relative error
-        return diff / (absA + absB) < epsilon;
+        left = (int)(value >> 32);
+        right = (int)(value & 0xffffffffL);
     }
-
-    public static bool NearlyEquals(this double a, double b, double epsilon = 0.0001D)
+    
+    public static double RoundUpValue(double value, int decimalpoint = 0)
     {
-        var absA = Math.Abs(a);
-        var absB = Math.Abs(b);
-        var diff = Math.Abs(a - b);
+        var result = Math.Round(value, decimalpoint);
 
-        if (a == b)
-        { // shortcut, handles infinities
-            return true;
-        }
+        if (result < value)
+            result += Math.Pow(10, -decimalpoint);
 
-        if (a == 0 || b == 0 || diff < double.Epsilon)
-        {
-            // a or b is zero or both are extremely close to it
-            // relative error is less meaningful here
-            return diff < epsilon;
-        }
-
-        // use relative error
-        return diff / (absA + absB) < epsilon;
+        return result;
     }
-
-    public static bool NearlyEquals(this double a, int absB, double epsilon = 0.0001D)
-    {
-        var absA = Math.Abs(a);
-        var diff = Math.Abs(a - absB);
-
-        if (a == absB)
-        { // shortcut, handles infinities
-            return true;
-        }
-
-        if (a == 0 || absB == 0 || diff < double.Epsilon)
-        {
-            // a or b is zero or both are extremely close to it
-            // relative error is less meaningful here
-            return diff < epsilon;
-        }
-
-        // use relative error
-        return diff / (absA + absB) < epsilon;
-    }
-
-    public static bool NearlyEquals(this double? value1, double? value2, double unimportantDifference = 0.0001)
-    {
-        if (value1 != value2)
-        {
-            if (value1 == null || value2 == null)
-                return false;
-
-            return Math.Abs(value1.Value - value2.Value) < unimportantDifference;
-        }
-
-        return true;
-    }
-
+    
     /// <summary>
     /// Forces an integer to be between two values.
     /// </summary>

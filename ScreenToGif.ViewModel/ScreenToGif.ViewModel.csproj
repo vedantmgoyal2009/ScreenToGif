@@ -11,10 +11,10 @@
 
   <ItemGroup>
     <PackageReference Include="KGySoft.Drawing" Version="6.3.2" />
+    <PackageReference Include="WriteableBitmapEx" Version="1.6.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScreenToGif.Model\ScreenToGif.Domain.csproj" />
     <ProjectReference Include="..\ScreenToGif.Util\ScreenToGif.Util.csproj" />
   </ItemGroup>
 

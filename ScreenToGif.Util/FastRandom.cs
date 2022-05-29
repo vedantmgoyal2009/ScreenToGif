@@ -16,7 +16,11 @@ public class FastRandom
 
     public int Next(int upperBound)
     {
-        var t = (_x ^ (_x << 11)); _x = _y; _y = _z; _z = _w;
+        var t = (_x ^ (_x << 11));
+        _x = _y;
+        _y = _z;
+        _z = _w;
+
         return (int) ((RealUnitInt*(int) (0x7FFFFFFF & (_w = (_w ^ (_w >> 19)) ^ (t ^ (t >> 8)))))*upperBound);
     }
 }

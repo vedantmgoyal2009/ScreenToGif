@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows;
@@ -10,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using ScreenToGif.Util.Settings;
+using System.Net.Http;
 using Application = System.Windows.Application;
 
 namespace ScreenToGif.Util;
@@ -23,7 +23,7 @@ public static class LocalizationHelper
 
     public static CultureInfo CurrentCultureInfo { get; set; }
 
-    public static void SelectCulture(string culture)
+    public static async Task SelectCulture(string culture)
     {
         CurrentCultureInfo ??= CultureInfo.CurrentUICulture;
 
@@ -107,8 +107,7 @@ public static class LocalizationHelper
         if (!UserSettings.All.CheckForTranslationUpdates)
             return;
 
-        //Async, fire and forget.
-        Task.Factory.StartNew(() => CheckForUpdates(culture));
+        await CheckForUpdates(culture).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -127,7 +126,7 @@ public static class LocalizationHelper
     ///      Don't download, erase current translation
     /// </summary>
     /// <param name="culture">The culture that should be searched for updates.</param>
-    internal static void CheckForUpdates(string culture)
+    internal static async Task CheckForUpdates(string culture)
     {
         try
         {
@@ -140,7 +139,7 @@ public static class LocalizationHelper
             Directory.CreateDirectory(folder);
 
             //Get when the available resource was updated.
-            var updated = GetWhenResourceWasUpdated(culture);
+            var updated = await GetWhenResourceWasUpdated(culture).ConfigureAwait(false);
 
             //If resource available is older than assembly.
             if (!updated.HasValue || updated <= File.GetLastWriteTime(ProcessHelper.GetEntryAssemblyPath()))
@@ -156,11 +155,11 @@ public static class LocalizationHelper
             {
                 //If current translation is older than the available one.
                 if (new FileInfo(file).LastWriteTimeUtc < updated.Value.ToUniversalTime())
-                    DownloadLatest(file, culture);
+                    await DownloadLatest(file, culture).ConfigureAwait(false);
             }
             else
             {
-                DownloadLatest(file, culture);
+                await DownloadLatest(file, culture).ConfigureAwait(false);
             }
 
             //If a new translation was not downloaded (now or previously), ignore the following code.
@@ -201,27 +200,29 @@ public static class LocalizationHelper
     /// </summary>
     /// <param name="culture">The culture of the resource to be checked.</param>
     /// <returns>The date when the resource file was last updated.</returns>
-    private static DateTime? GetWhenResourceWasUpdated(string culture)
+    private static async Task<DateTime?> GetWhenResourceWasUpdated(string culture)
     {
         //Gets the latest commit that changed the translation resource.
-        var req = (HttpWebRequest)WebRequest.Create($"https://api.github.com/repos/NickeManarin/ScreenToGif/commits?path=ScreenToGif/Resources/Localization/StringResources.{culture}.xaml&page=1&per_page=1");
-        req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393";
-        req.Proxy = WebHelper.GetProxy();
+        var proxy = WebHelper.GetProxy();
+        var handler = new HttpClientHandler
+        {
+            Proxy = proxy,
+            UseProxy = proxy != null
+        };
 
-        var res = (HttpWebResponse)req.GetResponse();
-
-        using var resultStream = res.GetResponseStream();
-        using var reader = new StreamReader(resultStream);
-
-        var result = reader.ReadToEnd();
+        using var client = new HttpClient(handler);
+        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393");
+        using var response = await client.GetAsync($"https://api.github.com/repos/NickeManarin/ScreenToGif/commits?path=ScreenToGif/Resources/Localization/StringResources.{culture}.xaml&page=1&per_page=1").ConfigureAwait(false);
+        var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        
         var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result), new XmlDictionaryReaderQuotas());
         var release = XElement.Load(jsonReader);
 
         //Gets the date of of the last commit that changed the translation file.
-        var dateText = release.FirstNode.XPathSelectElement("commit")?.XPathSelectElement("committer")?.XPathSelectElement("date")?.Value;
+        var dateText = release.FirstNode?.XPathSelectElement("commit")?.XPathSelectElement("committer")?.XPathSelectElement("date")?.Value;
 
         //If was not possible to convert the time, keep using the current resource.
-        if (!DateTime.TryParse(dateText, out DateTime modificationDate))
+        if (!DateTime.TryParse(dateText, out var modificationDate))
             return null;
 
         //If the current resource is newer then the available one, keep using the current.
@@ -233,18 +234,20 @@ public static class LocalizationHelper
     /// </summary>
     /// <param name="file">The destination path of the resource.</param>
     /// <param name="culture">The culture of the resource to be downloaded.</param>
-    private static void DownloadLatest(string file, string culture)
+    private static async Task DownloadLatest(string file, string culture)
     {
-        var request = (HttpWebRequest)WebRequest.Create($"https://api.github.com/repos/NickeManarin/ScreenToGif/contents/ScreenToGif/Resources/Localization/StringResources.{culture}.xaml");
-        request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393";
-        request.Proxy = WebHelper.GetProxy();
+        var proxy = WebHelper.GetProxy();
+        var handler = new HttpClientHandler
+        {
+            Proxy = proxy,
+            UseProxy = proxy != null
+        };
 
-        var response = (HttpWebResponse)request.GetResponse();
+        using var client = new HttpClient(handler);
+        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393");
+        using var response = await client.GetAsync($"https://api.github.com/repos/NickeManarin/ScreenToGif/contents/ScreenToGif/Resources/Localization/StringResources.{culture}.xaml").ConfigureAwait(false);
+        var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-        using var resultStream = response.GetResponseStream();
-        using var reader = new StreamReader(resultStream);
-
-        var result = reader.ReadToEnd();
         var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result), new XmlDictionaryReaderQuotas());
         var release = XElement.Load(jsonReader);
 
@@ -257,7 +260,7 @@ public static class LocalizationHelper
         if (File.Exists(file))
             File.Delete(file);
 
-        File.WriteAllText(file, Encoding.UTF8.GetString(Convert.FromBase64String(contentBase64)).Replace("&#x0d;", "\r"));
+        await File.WriteAllTextAsync(file, Encoding.UTF8.GetString(Convert.FromBase64String(contentBase64)).Replace("&#x0d;", "\r"));
     }
 
     public static void SaveDefaultResource(string path)
@@ -278,8 +281,8 @@ public static class LocalizationHelper
 
             var settings = new XmlWriterSettings { Indent = true };
 
-            using (var writer = XmlWriter.Create(path, settings))
-                XamlWriter.Save(resourceDictionary, writer);
+            using var writer = XmlWriter.Create(path, settings);
+            XamlWriter.Save(resourceDictionary, writer);
         }
         catch (Exception ex)
         {

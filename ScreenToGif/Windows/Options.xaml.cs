@@ -21,6 +21,7 @@ using ScreenToGif.Domain.Enums;
 using ScreenToGif.Native.Helpers;
 using ScreenToGif.Util;
 using ScreenToGif.Util.InterProcessChannel;
+using ScreenToGif.Util.Native;
 using ScreenToGif.Util.Settings;
 using ScreenToGif.ViewModel.ExportPresets;
 using ScreenToGif.ViewModel.Tasks;
@@ -681,7 +682,7 @@ public partial class Options : Window, INotification
 
     #region Language
 
-    private void LanguagePanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void LanguagePanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         //To avoid being called during startup of the window and to avoid being called twice after selection changes.
         if (!IsLoaded || e.AddedItems.Count == 0)
@@ -689,7 +690,7 @@ public partial class Options : Window, INotification
 
         try
         {
-            LocalizationHelper.SelectCulture(UserSettings.All.LanguageCode);
+            await LocalizationHelper.SelectCulture(UserSettings.All.LanguageCode);
 
             ForceUpdateSystemTray();
         }
@@ -1302,7 +1303,7 @@ public partial class Options : Window, INotification
 
         if (!string.IsNullOrWhiteSpace(adjusted) && File.Exists(adjusted))
         {
-            Native.Helpers.Other.ShowFileProperties(Path.GetFullPath(adjusted));
+            Util.Native.Other.ShowFileProperties(Path.GetFullPath(adjusted));
             return;
         }
 
@@ -1404,7 +1405,7 @@ public partial class Options : Window, INotification
 
         if (!string.IsNullOrWhiteSpace(adjusted) && File.Exists(adjusted))
         {
-            Native.Helpers.Other.ShowFileProperties(Path.GetFullPath(adjusted));
+            Util.Native.Other.ShowFileProperties(Path.GetFullPath(adjusted));
             return;
         }
 

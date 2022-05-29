@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using ScreenToGif.Util;
+using ScreenToGif.Util.Extensions;
 
 namespace ScreenToGif.Controls;
 //Bug: If the user drags quickly the Thumb and release afterwards, the OnAfterSelection event is not triggered.
@@ -92,7 +93,7 @@ public class SpectrumSlider : Slider
     {
         base.OnValueChanged(oldValue, newValue);
 
-        SetValue(SelectedColorProperty, ColorExtensions.ConvertHsvToRgb(360 - newValue, 1, 1, 255));
+        SetValue(SelectedColorProperty, ColorExtensions.HsvToRgb(360 - newValue, 1, 1));
     }
 
     #endregion
@@ -142,7 +143,7 @@ public class SpectrumSlider : Slider
             ColorInterpolationMode = ColorInterpolationMode.SRgbLinearInterpolation
         };
 
-        var colorsList = IsAlphaSpectrum ? ColorExtensions.GenerateAlphaSpectrum(SpectrumColor) : ColorExtensions.GenerateHsvSpectrum(40);
+        var colorsList = IsAlphaSpectrum ? Util.Extensions.ColorExtensions.GenerateAlphaSpectrum(SpectrumColor) : Util.Extensions.ColorExtensions.GenerateHsvSpectrum(40);
         var stopIncrement = 1d / colorsList.Count;
         var isDecimal = stopIncrement % 1 > 0;
 
@@ -156,27 +157,6 @@ public class SpectrumSlider : Slider
     }
 
     #endregion
-}
-
-#endregion
-
-#region HsvColor
-
-/// <summary>
-/// Describes a color in terms of Hue, Saturation, and Value (brightness)
-/// </summary>
-internal struct HsvColor
-{
-    public double H;
-    public double S;
-    public double V;
-
-    public HsvColor(double h, double s, double v)
-    {
-        H = h;
-        S = s;
-        V = v;
-    }
 }
 
 #endregion
