@@ -50,6 +50,10 @@ public static class Migration
 
             case "2.36": //To 2.37
                 Migration2_36_0To2_37_0.Up(properties);
+                goto case "2.37";
+
+            case "2.37": //To 3
+                Migration2_37_0To3_0_0.Up(properties);
                 goto default;
 
             default:

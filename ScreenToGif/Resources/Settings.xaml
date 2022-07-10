@@ -204,7 +204,10 @@
     <WindowState x:Key="EditorWindowState">Normal</WindowState>
     <e:PasteBehaviors x:Key="PasteBehavior">AfterSelected</e:PasteBehaviors>
     <s:Boolean x:Key="LoopedPlayback">True</s:Boolean>
-    
+
+    <!--Editor • Timeline-->
+    <s:Double x:Key="TimelineHeight">120</s:Double>
+
     <!--Editor • New Animation-->
     <Color x:Key="NewAnimationColor">#FFFFFFFF</Color>
     <s:Int32 x:Key="NewAnimationWidth">500</s:Int32>

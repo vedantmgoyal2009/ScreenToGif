@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using ScreenToGif.Controls.Recorder;
 using ScreenToGif.Domain.Enums;
 using ScreenToGif.Domain.Events;
 using ScreenToGif.Domain.Exceptions;
@@ -6,7 +7,6 @@ using ScreenToGif.Domain.Models;
 using ScreenToGif.Domain.Models.Native;
 using ScreenToGif.Domain.Models.Project.Recording;
 using ScreenToGif.Native.External;
-using ScreenToGif.Native.Helpers;
 using ScreenToGif.Util;
 using ScreenToGif.Util.Capture;
 using ScreenToGif.Util.Extensions;
@@ -17,7 +17,6 @@ using ScreenToGif.ViewModel;
 using ScreenToGif.Windows.Other;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,7 +31,7 @@ using Size = System.Windows.Size;
 
 namespace ScreenToGif.Windows;
 
-public partial class NewRecorder
+public partial class NewRecorder : BaseScreenRecorder
 {
     #region Variables
 
@@ -461,7 +460,7 @@ public partial class NewRecorder
     {
         var relativePoint = e.GetPosition(WidthIntegerBox);
         var screenPoint = WidthIntegerBox.PointToScreen(new Point(0, 0));
-        var scale = this.Scale();
+        var scale = this.GetVisualScale();
 
         User32.SetCursorPos((int)(screenPoint.X + relativePoint.X * scale), (int)(screenPoint.Y + relativePoint.Y * scale));
     }
@@ -1594,8 +1593,8 @@ public partial class NewRecorder
         }
 
         //Move the command window to the final place.
-        Left = left / (this.Scale() / monitor.Scale);
-        Top = top / (this.Scale() / monitor.Scale);
+        Left = left / (this.GetVisualScale() / monitor.Scale);
+        Top = top / (this.GetVisualScale() / monitor.Scale);
     }
 
     /// <summary>
@@ -1766,21 +1765,21 @@ public partial class NewRecorder
         _regionSelection.DisplayGuidelines();
     }
 
-    internal override void StartCapture()
+    public override void StartCapture()
     {
         DisplayTimer.Start();
 
         base.StartCapture();
     }
 
-    internal override void PauseCapture()
+    public override void PauseCapture()
     {
         DisplayTimer.Pause();
 
         base.PauseCapture();
     }
 
-    internal override async Task StopCapture()
+    public override async Task StopCapture()
     {
         DisplayTimer.Stop();
 

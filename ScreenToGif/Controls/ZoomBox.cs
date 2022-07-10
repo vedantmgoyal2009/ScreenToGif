@@ -366,7 +366,7 @@ public class ZoomBox : Control
 
         //Calculates how much bigger or smaller the image should be presented, based on the window and image scale (DPI/96).
         ImageDpi = ImageScale * 96d;
-        ScaleDiff = this.Scale() / ImageScale;
+        ScaleDiff = this.GetVisualScale() / ImageScale;
 
         //Apply the zoom, with the scale difference.
         if (_scaleTransform != null)
@@ -460,7 +460,7 @@ public class ZoomBox : Control
     {
         var image = path.SourceFrom();
         var imageScale = Math.Round(image.DpiX / 96d, 2);
-        var scaleDiff = this.Scale() / imageScale;
+        var scaleDiff = this.GetVisualScale() / imageScale;
         //var size = new Size(image.Width * imageScale, image.Height * imageScale);
 
         return new Size(image.Width * 1d / scaleDiff, image.Height * 1d / scaleDiff);

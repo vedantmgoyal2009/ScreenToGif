@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:n="clr-namespace:ScreenToGif.Controls"
                     xmlns:c="clr-namespace:ScreenToGif.Util.Converters;assembly=ScreenToGif.Util"
-                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
+                    xmlns:controls="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls">
 
     <c:DoubleToPercentage x:Key="DoubleToPercentageConverter"/>
     <c:BytesToSize x:Key="BytesToSizeConverter"/>
@@ -233,12 +234,12 @@
 
             <Border.ContextMenu>
                 <ContextMenu>
-                    <n:ExtendedMenuItem x:Name="CopyMenuItem" Header="{DynamicResource S.Editor.Home.Copy}" Icon="{DynamicResource Vector.Copy}"/>
+                    <controls:ExtendedMenuItem x:Name="CopyMenuItem" Header="{DynamicResource S.Editor.Home.Copy}" Icon="{DynamicResource Vector.Copy}"/>
                     <Separator/>
-                    <n:ExtendedMenuItem x:Name="CopyImageMenuItem" Header="{DynamicResource S.Encoder.Copy.Image}" Visibility="Collapsed"/>
-                    <n:ExtendedMenuItem x:Name="CopyFilenameMenuItem" Header="{DynamicResource S.Encoder.Copy.Filename}"/>
-                    <n:ExtendedMenuItem x:Name="CopyFolderMenuItem" Header="{DynamicResource S.Encoder.Copy.Folder}"/>
-                    <n:ExtendedMenuItem x:Name="CopyLinkMenuItem" Header="{DynamicResource S.Encoder.Copy.Link}" Visibility="Collapsed"/>
+                    <controls:ExtendedMenuItem x:Name="CopyImageMenuItem" Header="{DynamicResource S.Encoder.Copy.Image}" Visibility="Collapsed"/>
+                    <controls:ExtendedMenuItem x:Name="CopyFilenameMenuItem" Header="{DynamicResource S.Encoder.Copy.Filename}"/>
+                    <controls:ExtendedMenuItem x:Name="CopyFolderMenuItem" Header="{DynamicResource S.Encoder.Copy.Folder}"/>
+                    <controls:ExtendedMenuItem x:Name="CopyLinkMenuItem" Header="{DynamicResource S.Encoder.Copy.Link}" Visibility="Collapsed"/>
                 </ContextMenu>
             </Border.ContextMenu>
         </Border>

@@ -296,11 +296,11 @@ namespace ScreenToGif.Native.External
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsIconic(IntPtr hWnd);
 
-        [DllImport(Constants.User32, EntryPoint = "GetWindowLong")]
-        internal static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
+        [DllImport(Constants.User32)]
+        internal static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
-        [DllImport(Constants.User32, EntryPoint = "GetWindowLongPtr")]
-        internal static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+        [DllImport(Constants.User32)]
+        internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         /// <summary>
         /// Retrieves the handle to the ancestor of the specified window. 

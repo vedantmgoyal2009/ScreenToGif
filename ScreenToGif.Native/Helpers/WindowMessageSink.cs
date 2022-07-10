@@ -2,7 +2,6 @@ using System.ComponentModel;
 using ScreenToGif.Domain.Enums;
 using ScreenToGif.Native.External;
 using ScreenToGif.Native.Structs;
-using System.Windows;
 
 namespace ScreenToGif.Native.Helpers
 {
@@ -75,7 +74,7 @@ namespace ScreenToGif.Native.Helpers
         {
             CreateMessageWindow();
 
-            _doubleClick.Interval = unchecked(User32.GetDoubleClickTime());
+            _doubleClick.Interval = User32.GetDoubleClickTime();
             _doubleClick.Tick += DoubleClick_Tick;
         }
 

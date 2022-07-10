@@ -4,13 +4,13 @@
                     xmlns:c="clr-namespace:ScreenToGif.Util.Converters;assembly=ScreenToGif.Util"
                     xmlns:e="clr-namespace:ScreenToGif.Domain.Enums;assembly=ScreenToGif.Domain"
                     xmlns:s="clr-namespace:System;assembly=mscorlib"
-                    xmlns:t="clr-namespace:ScreenToGif.Util.Settings;assembly=ScreenToGif.Util">
+                    xmlns:t="clr-namespace:ScreenToGif.Util.Settings;assembly=ScreenToGif.Util"
+                    xmlns:controls="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/ScreenToGif;component/Themes/Common.xaml"/>
         <ResourceDictionary Source="/ScreenToGif;component/Themes/EncoderListViewItem.xaml"/>
         <ResourceDictionary Source="/ScreenToGif;component/Themes/Ribbon.xaml"/>
-        <ResourceDictionary Source="/ScreenToGif;component/Themes/Controls/Timeline.xaml"/>
         <ResourceDictionary Source="/ScreenToGif;component/Themes/Controls/ExtendedComboBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
@@ -848,284 +848,7 @@
         </Setter>
     </Style>
 
-    <!--ExtendedMenuItem Style-->
-    <Style TargetType="{x:Type n:ExtendedMenuItem}">
-        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}, FallbackValue={x:Static HorizontalAlignment.Left}}"/>
-        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}, FallbackValue={x:Static VerticalAlignment.Center}}"/>
-        <Setter Property="Foreground" Value="{DynamicResource Element.Foreground.Medium}"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="Padding" Value="2"/>
-        <Setter Property="Height" Value="24"/>
 
-        <!--SubmenuItem-->
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type n:ExtendedMenuItem}">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_38">
-                        <Grid x:Name="Grid" Uid="Grid_49">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="MenuItemIconColumnGroup" MinWidth="24" Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition MinWidth="5" SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
-                                <ColumnDefinition Width="14"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Grid x:Name="CheckSquare" Grid.Column="0" Background="Transparent" Margin="3,0" VerticalAlignment="Center">
-                                <Viewbox x:Name="CheckViewBox" Visibility="Collapsed" Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}" Stretch="Uniform">
-                                    <Path x:Name="GlyphPanel" Data="M0,2L0,4.8 2.5,7.4 7.1,2.8 7.1,0 2.5,4.6z" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" Uid="Path_12" Visibility="Hidden"/>
-                                </Viewbox>
-
-                                <Border x:Name="ImageBorder" Background="{TemplateBinding Icon}" Opacity="{DynamicResource Element.Opacity}"
-                                        Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </Grid>
-
-                            <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" VerticalAlignment="Center"
-                                              Content="{TemplateBinding Header}" Grid.Column="1" ContentSource="Header" Margin="3,0" 
-                                              RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Uid="ContentPresenter_33"/>
-
-                            <TextBlock Grid.Column="2" x:Name="InputGestureText" Uid="TextBlock_10" Margin="3,0" Text="{TemplateBinding InputGestureText}" 
-                                       Foreground="{DynamicResource Element.Foreground.Gray112}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
-                            <Setter Property="Background" TargetName="CheckSquare" Value="{DynamicResource Element.Background.Hover}"/>
-                        </Trigger>
-                        <Trigger Property="HasIcon" Value="True">
-                            <Setter Property="Visibility" TargetName="ImageBorder" Value="Visible"/>
-                        </Trigger>
-                        <Trigger Property="HasIcon" Value="False">
-                            <Setter Property="Visibility" TargetName="CheckViewBox" Value="Visible"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="Role" Value="TopLevelHeader">
-                <Setter Property="Foreground" Value="{DynamicResource Element.Foreground.Medium}"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="Padding" Value="6,2"/>
-                <Setter Property="MinHeight" Value="26"/>
-                <Setter Property="MinWidth" Value="50"/>
-
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type n:ExtendedMenuItem}">
-                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_39">
-                                <Grid x:Name="Grid" Uid="Grid_49" IsSharedSizeScope="False">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid x:Name="CheckSquare" Grid.Column="0" Background="Transparent" Visibility="Collapsed">
-                                        <Viewbox x:Name="CheckViewBox" Visibility="Collapsed" Margin="2,0,0,0" Stretch="Uniform" Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}">
-                                            <Path x:Name="GlyphPanel" Data="M0,2L0,4.8 2.5,7.4 7.1,2.8 7.1,0 2.5,4.6z" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" Margin="4,0,6,0" 
-                                                  Uid="Path_12" Visibility="Hidden" VerticalAlignment="Center"/>
-                                        </Viewbox>
-
-                                        <Border x:Name="ImageBorder" Background="{TemplateBinding Icon}" Opacity="{DynamicResource Element.Opacity}" Margin="2,0,0,0" Visibility="Collapsed" 
-                                                Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Grid>
-
-                                    <ContentPresenter Grid.Column="1" x:Name="ContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentSource="Header" Margin="3,0,6,0"  
-                                                      RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Uid="ContentPresenter_35" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                                    <!-- Popup with the SubMenus -->
-                                    <Popup Grid.Column="0" Grid.ColumnSpan="2" Name="SubMenuPopup" Placement="Bottom" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade" HorizontalOffset="-2">
-                                        <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{DynamicResource Element.Background}" BorderBrush="{DynamicResource Element.Border}" 
-                                                BorderThickness="1" Effect="{DynamicResource Shadow.Border.Small}" Margin="1">
-                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
-                                        </Border>
-                                    </Popup>
-                                </Grid>
-                            </Border>
-
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
-                                    <Setter Property="Background" TargetName="CheckSquare" Value="{DynamicResource Element.Background.Hover}"/>
-                                </Trigger>
-                                <Trigger Property="HasIcon" Value="True">
-                                    <Setter Property="Visibility" TargetName="ImageBorder" Value="Visible"/>
-                                    <Setter Property="Visibility" TargetName="CheckSquare" Value="Visible"/>
-                                </Trigger>
-                                <Trigger Property="HasIcon" Value="False">
-                                    <Setter Property="Visibility" TargetName="CheckViewBox" Value="Collapsed"/>
-                                    <Setter Property="Visibility" TargetName="CheckSquare" Value="Collapsed"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-
-            <Trigger Property="Role" Value="TopLevelItem">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type n:ExtendedMenuItem}">
-                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_39">
-                                <Grid x:Name="Grid" Uid="Grid_49" IsSharedSizeScope="False">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition SharedSizeGroup="MenuItemIconColumnGroup" MinWidth="24" Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition MinWidth="5" SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
-                                        <ColumnDefinition Width="14"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid Grid.Column="0" x:Name="CheckSquare" Background="Transparent" Margin="3,0" Visibility="Collapsed">
-                                        <Viewbox x:Name="CheckViewBox" Visibility="Collapsed" Stretch="Uniform" Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}">
-                                            <Path x:Name="GlyphPanel" Data="M0,2L0,4.8 2.5,7.4 7.1,2.8 7.1,0 2.5,4.6z" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight"
-                                                  Uid="Path_12" Visibility="Hidden" VerticalAlignment="Center"/>
-                                        </Viewbox>
-
-                                        <Border x:Name="ImageBorder" Background="{TemplateBinding Icon}" Opacity="{DynamicResource Element.Opacity}" Visibility="Collapsed" 
-                                                Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Grid>
-
-                                    <ContentPresenter Grid.Column="1" x:Name="ContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" 
-                                                      Content="{TemplateBinding Header}" ContentSource="Header" Margin="3,0" 
-                                                      RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                                      Uid="ContentPresenter_35" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                </Grid>
-                            </Border>
-
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
-                                    <Setter Property="Background" TargetName="CheckSquare" Value="{DynamicResource Element.Background.Hover}"/>
-                                </Trigger>
-                                <Trigger Property="HasIcon" Value="True">
-                                    <Setter Property="Visibility" TargetName="ImageBorder" Value="Visible"/>
-                                    <Setter Property="Visibility" TargetName="CheckSquare" Value="Visible"/>
-                                </Trigger>
-                                <Trigger Property="HasIcon" Value="False">
-                                    <Setter Property="Visibility" TargetName="CheckViewBox" Value="Collapsed"/>
-                                    <Setter Property="Visibility" TargetName="CheckSquare" Value="Collapsed"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-
-            <Trigger Property="Role" Value="SubmenuHeader">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type n:ExtendedMenuItem}">
-                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_42">
-                                <Grid x:Name="Grid" Uid="Grid_50">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition SharedSizeGroup="MenuItemIconColumnGroup" MinWidth="24" Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition MinWidth="5" SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
-                                        <ColumnDefinition Width="14"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid x:Name="CheckSquare" Grid.Column="0" Background="Transparent" Margin="3,0" Visibility="Collapsed">
-                                        <Viewbox x:Name="CheckViewBox" Visibility="Collapsed" Stretch="Uniform" Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}">
-                                            <Path x:Name="GlyphPanel" Data="M0,2L0,4.8 2.5,7.4 7.1,2.8 7.1,0 2.5,4.6z" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" 
-                                                  Uid="Path_12" Visibility="Hidden" VerticalAlignment="Center"/>
-                                        </Viewbox>
-
-                                        <Border x:Name="ImageBorder" Background="{TemplateBinding Icon}" Opacity="{DynamicResource Element.Opacity}" Visibility="Collapsed" 
-                                                Height="{TemplateBinding ContentHeight}" Width="{TemplateBinding ContentWidth}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Grid>
-
-                                    <ContentPresenter Grid.Column="1" x:Name="ContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" 
-                                                      ContentSource="Header" Margin="3,0" RecognizesAccessKey="True" 
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Uid="ContentPresenter_39" VerticalAlignment="Center"/>
-
-                                    <TextBlock x:Name="InputGestureText" Grid.Column="2" Margin="3,0" 
-                                               Text="{TemplateBinding InputGestureText}" Uid="TextBlock_10" Foreground="{DynamicResource Element.Foreground.Gray112}" 
-                                               FontSize="12" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Left"/>
-
-                                    <Path x:Name="Path" Grid.Column="3" Data="M0,0L4,3.5 0,7z" Fill="{TemplateBinding Foreground}" Margin="4,0,6,0" Uid="Path_16" VerticalAlignment="Center"/>
-
-                                    <Popup Name="Popup" Grid.Column="3" Placement="Right" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade" VerticalOffset="-2">
-                                        <Border Name="SubmenuBorder" SnapsToDevicePixels="True" Background="{DynamicResource Element.Background}" BorderBrush="{DynamicResource Element.Border}"
-                                                BorderThickness="1" Effect="{DynamicResource Shadow.Border.Small}" Margin="1">
-                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
-                                        </Border>
-                                    </Popup>
-                                </Grid>
-                            </Border>
-
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
-                                    <Setter Property="Background" TargetName="CheckSquare" Value="{DynamicResource Element.Background.Hover}"/>
-                                </Trigger>
-                                <Trigger Property="HasIcon" Value="True">
-                                    <Setter Property="Visibility" TargetName="ImageBorder" Value="Visible"/>
-                                    <Setter Property="Visibility" TargetName="CheckSquare" Value="Visible"/>
-                                </Trigger>
-                                <Trigger Property="HasIcon" Value="False">
-                                    <Setter Property="Visibility" TargetName="CheckViewBox" Value="Collapsed"/>
-                                    <Setter Property="Visibility" TargetName="CheckSquare" Value="Collapsed"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-
-            <Trigger Property="IsHighlighted" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource Element.Foreground}"/>
-                <Setter Property="Background" Value="{DynamicResource Brush.MenuItem.Background.Hover}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource Brush.MenuItem.Border.Hover}"/>
-            </Trigger>
-
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Brush.MenuItem.Background.Pressed}"/>
-            </Trigger>
-
-            <!--When !DarkMode, !IsMouseOver, !IsKeyboardFocused-->
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="Role" Value="TopLevelHeader"/>
-                    <Condition Property="IsOverNonClientArea" Value="True"/>
-                    <Condition Property="DarkMode" Value="False"/>
-                    <Condition Property="IsMouseOver" Value="False"/>
-                    <Condition Property="IsKeyboardFocused" Value="False"/>
-                </MultiTrigger.Conditions>
-
-                <Setter Property="Foreground" Value="#FF000000"/>
-            </MultiTrigger>
-
-            <!--When DarkMode, !IsMouseOver, !IsKeyboardFocused-->
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="Role" Value="TopLevelHeader"/>
-                    <Condition Property="IsOverNonClientArea" Value="True"/>
-                    <Condition Property="DarkMode" Value="True"/>
-                    <Condition Property="IsMouseOver" Value="False"/>
-                    <Condition Property="IsKeyboardFocused" Value="False"/>
-                </MultiTrigger.Conditions>
-
-                <Setter Property="Foreground" Value="WhiteSmoke"/>
-            </MultiTrigger>
-
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.7"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
    
     <!--HideableTabControl Style-->
     <Style TargetType="{x:Type n:HideableTabControl}">
@@ -1170,19 +893,19 @@
                         </Popup>
 
                         <Menu Grid.Row="0" Grid.Column="2" Effect="{x:Null}" Background="Transparent" VerticalAlignment="Center">
-                            <n:ExtendedMenuItem x:Name="ExtrasMenuItem" Header="{DynamicResource S.Editor.Extras}" Icon="{DynamicResource Vector.Editor}" ContentHeight="16" ContentWidth="16" BorderThickness="0">
-                                <n:ExtendedMenuItem x:Name="OptionsMenuItem" Header="{DynamicResource S.StartUp.Options}" Icon="{DynamicResource Vector.Options}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding OptionsCommand}"/>
-                                <n:ExtendedMenuItem x:Name="FeedbackMenuItem" Header="{DynamicResource S.Feedback.Feedback}" Icon="{DynamicResource Vector.Application}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding FeedbackCommand}"/>
-                                <n:ExtendedMenuItem x:Name="TroubleshootMenuItem" Header="{DynamicResource S.Troubleshoot.Title}" Icon="{DynamicResource Vector.Warning}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding TroubleshootCommand}"/>
+                            <controls:ExtendedMenuItem x:Name="ExtrasMenuItem" Header="{DynamicResource S.Editor.Extras}" Icon="{DynamicResource Vector.Editor}" ContentHeight="16" ContentWidth="16" BorderThickness="0">
+                                <controls:ExtendedMenuItem x:Name="OptionsMenuItem" Header="{DynamicResource S.StartUp.Options}" Icon="{DynamicResource Vector.Options}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding OptionsCommand}"/>
+                                <controls:ExtendedMenuItem x:Name="FeedbackMenuItem" Header="{DynamicResource S.Feedback.Feedback}" Icon="{DynamicResource Vector.Application}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding FeedbackCommand}"/>
+                                <controls:ExtendedMenuItem x:Name="TroubleshootMenuItem" Header="{DynamicResource S.Troubleshoot.Title}" Icon="{DynamicResource Vector.Warning}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding TroubleshootCommand}"/>
                                 
                                 <Separator Height="1"/>
-                                
-                                <n:ExtendedMenuItem x:Name="HelpMenuItem" Header="{DynamicResource S.Editor.Help}" Icon="{DynamicResource Vector.Question}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding HelpCommand}"/>
-                            </n:ExtendedMenuItem>
+
+                                <controls:ExtendedMenuItem x:Name="HelpMenuItem" Header="{DynamicResource S.Editor.Help}" Icon="{DynamicResource Vector.Question}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding HelpCommand}"/>
+                            </controls:ExtendedMenuItem>
                         </Menu>
 
                         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="ContentBorder" BorderBrush="{DynamicResource Element.Border.Light}" BorderThickness="0,1" Background="{DynamicResource Panel.Background.Level2}">

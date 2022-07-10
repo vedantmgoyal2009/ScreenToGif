@@ -29,17 +29,21 @@ namespace ScreenToGif;
 
 public partial class App : IDisposable
 {
-    #region Properties
-
-    internal static NotifyIcon NotifyIcon { get; private set; }
-
-    internal static ApplicationViewModel MainViewModel { get; private set; }
-
+    private static AppViewModel _viewModel;
     private Mutex _mutex;
     private bool _accepted;
     private readonly List<Exception> _exceptionList = new();
     private readonly object _lock = new();
 
+    #region Properties
+
+    internal static AppViewModel ViewModel => _viewModel ??= new AppViewModel();
+
+    internal static NotifyIcon NotifyIcon { get; private set; }
+
+    //TODO: Remove.
+    internal static ApplicationViewModelOld MainViewModelOld { get; private set; }
+    
     #endregion
 
     #region Events
@@ -156,56 +160,29 @@ public partial class App : IDisposable
         //Render mode.
         RenderOptions.ProcessRenderMode = UserSettings.All.DisableHardwareAcceleration ? RenderMode.SoftwareOnly : RenderMode.Default;
 
+        //TODO: Remove.
+        MainViewModelOld = (ApplicationViewModelOld)FindResource("AppViewModel") ?? new ApplicationViewModelOld();
+
+        //var test = new TestField(); test.ShowDialog(); return;
+
         SetWorkaroundForDispatcher();
-
-        #region Tray icon and view model
-
-        NotifyIcon = (NotifyIcon)FindResource("NotifyIcon");
-
-        if (NotifyIcon != null)
-        {
-            NotifyIcon.Visibility = UserSettings.All.ShowNotificationIcon || UserSettings.All.StartMinimized || UserSettings.All.StartUp == 5 ? Visibility.Visible : Visibility.Collapsed;
-
-            //Replace the old option with the new setting.
-            if (UserSettings.All.StartUp == 5)
-            {
-                UserSettings.All.StartMinimized = true;
-                UserSettings.All.ShowNotificationIcon = true;
-                UserSettings.All.StartUp = 0;
-            }
-
-            //using (var iconStream = GetResourceStream(new Uri("pack://application:,,,/Resources/Logo.ico"))?.Stream)
-            //{
-            //    if (iconStream != null)
-            //        NotifyIcon.Icon = new System.Drawing.Icon(iconStream);
-            //}
-        }
-
-        MainViewModel = (ApplicationViewModel)FindResource("AppViewModel") ?? new ApplicationViewModel();
-
+        PrepareNotificationIcon();
         RegisterShortcuts();
-
-        #endregion
-
-        //var test = new TestField(); test.ShowDialog(); Environment.Exit(1); return;
-        //var test = new Windows.EditorEx(); test.ShowDialog(); return;
-        //var test = new Windows.NewWebcam(); test.ShowDialog(); return;
-        //var test = Settings.UserSettings.All.StartupTop;
 
         #region Tasks
 
-        Task.Factory.StartNew(MainViewModel.ClearTemporaryFiles, TaskCreationOptions.LongRunning);
-        Task.Factory.StartNew(async () => await MainViewModel.CheckForUpdates(),TaskCreationOptions.LongRunning);
-        Task.Factory.StartNew(MainViewModel.SendFeedback, TaskCreationOptions.LongRunning);
+        Task.Factory.StartNew(MainViewModelOld.ClearTemporaryFiles, TaskCreationOptions.LongRunning);
+        Task.Factory.StartNew(async () => await MainViewModelOld.CheckForUpdates(),TaskCreationOptions.LongRunning);
+        Task.Factory.StartNew(MainViewModelOld.SendFeedback, TaskCreationOptions.LongRunning);
 
         #endregion
 
         #region Startup
 
         if (Arguments.Open)
-            MainViewModel.Open.Execute(Arguments.WindownToOpen, true);
+            MainViewModelOld.Open.Execute(Arguments.WindownToOpen, true);
         else
-            MainViewModel.Open.Execute(UserSettings.All.StartUp);
+            MainViewModelOld.Open.Execute(UserSettings.All.StartUp);
 
         #endregion
     }
@@ -220,9 +197,9 @@ public partial class App : IDisposable
                 Arguments.Prepare(args);
 
             if (Arguments.Open)
-                MainViewModel.Open.Execute(Arguments.WindownToOpen, true);
+                MainViewModelOld.Open.Execute(Arguments.WindownToOpen, true);
             else
-                MainViewModel.Open.Execute(UserSettings.All.StartUp);
+                MainViewModelOld.Open.Execute(UserSettings.All.StartUp);
         }
         catch (Exception e)
         {
@@ -348,7 +325,7 @@ public partial class App : IDisposable
 
     #region Methods
 
-    private void SetSecurityProtocol()
+    private static void SetSecurityProtocol()
     {
         try
         {
@@ -358,6 +335,25 @@ public partial class App : IDisposable
         catch (Exception ex)
         {
             LogWriter.Log(ex, "Impossible to set the network properties");
+        }
+    }
+
+    private void PrepareNotificationIcon()
+    {
+        NotifyIcon = (NotifyIcon)FindResource("NotifyIcon");
+
+        if (NotifyIcon == null)
+            return;
+
+        NotifyIcon.Visibility = UserSettings.All.ShowNotificationIcon || UserSettings.All.StartMinimized || UserSettings.All.StartUp == 5 ? Visibility.Visible : Visibility.Collapsed;
+        //NotifyIcon.CommandBindings = this.CommandB
+
+        //TODO: Replace the old option with the new setting. Do this in the migration step.
+        if (UserSettings.All.StartUp == 5)
+        {
+            UserSettings.All.StartMinimized = true;
+            UserSettings.All.ShowNotificationIcon = true;
+            UserSettings.All.StartUp = 0;
         }
     }
 
@@ -389,30 +385,30 @@ public partial class App : IDisposable
 
         //Registers all shortcuts.
         var screen = HotKeyCollection.Default.TryRegisterHotKey(UserSettings.All.RecorderModifiers, UserSettings.All.RecorderShortcut, () =>
-            { if (!Global.IgnoreHotKeys && MainViewModel.OpenRecorder.CanExecute(null)) MainViewModel.OpenRecorder.Execute(null); }, true);
+            { if (!Global.IgnoreHotKeys && MainViewModelOld.OpenRecorder.CanExecute(null)) MainViewModelOld.OpenRecorder.Execute(null); }, true);
 
         var webcam = HotKeyCollection.Default.TryRegisterHotKey(UserSettings.All.WebcamRecorderModifiers, UserSettings.All.WebcamRecorderShortcut, () =>
-            { if (!Global.IgnoreHotKeys && MainViewModel.OpenWebcamRecorder.CanExecute(null)) MainViewModel.OpenWebcamRecorder.Execute(null); }, true);
+            { if (!Global.IgnoreHotKeys && MainViewModelOld.OpenWebcamRecorder.CanExecute(null)) MainViewModelOld.OpenWebcamRecorder.Execute(null); }, true);
 
         var board = HotKeyCollection.Default.TryRegisterHotKey(UserSettings.All.BoardRecorderModifiers, UserSettings.All.BoardRecorderShortcut, () =>
-            { if (!Global.IgnoreHotKeys && MainViewModel.OpenBoardRecorder.CanExecute(null)) MainViewModel.OpenBoardRecorder.Execute(null); }, true);
+            { if (!Global.IgnoreHotKeys && MainViewModelOld.OpenBoardRecorder.CanExecute(null)) MainViewModelOld.OpenBoardRecorder.Execute(null); }, true);
 
         var editor = HotKeyCollection.Default.TryRegisterHotKey(UserSettings.All.EditorModifiers, UserSettings.All.EditorShortcut, () =>
-            { if (!Global.IgnoreHotKeys && MainViewModel.OpenEditor.CanExecute(null)) MainViewModel.OpenEditor.Execute(null); }, true);
+            { if (!Global.IgnoreHotKeys && MainViewModelOld.OpenEditor.CanExecute(null)) MainViewModelOld.OpenEditor.Execute(null); }, true);
 
         var options = HotKeyCollection.Default.TryRegisterHotKey(UserSettings.All.OptionsModifiers, UserSettings.All.OptionsShortcut, () =>
-            { if (!Global.IgnoreHotKeys && MainViewModel.OpenOptions.CanExecute(null)) MainViewModel.OpenOptions.Execute(null); }, true);
+            { if (!Global.IgnoreHotKeys && MainViewModelOld.OpenOptions.CanExecute(null)) MainViewModelOld.OpenOptions.Execute(null); }, true);
 
         var exit = HotKeyCollection.Default.TryRegisterHotKey(UserSettings.All.ExitModifiers, UserSettings.All.ExitShortcut, () =>
-            { if (!Global.IgnoreHotKeys && MainViewModel.ExitApplication.CanExecute(null)) MainViewModel.ExitApplication.Execute(null); }, true);
+            { if (!Global.IgnoreHotKeys && MainViewModelOld.ExitApplication.CanExecute(null)) MainViewModelOld.ExitApplication.Execute(null); }, true);
 
         //Updates the input gesture text of each command.
-        MainViewModel.RecorderGesture = screen ? Other.GetSelectKeyText(UserSettings.All.RecorderShortcut, UserSettings.All.RecorderModifiers, true, true) : "";
-        MainViewModel.WebcamRecorderGesture = webcam ? Other.GetSelectKeyText(UserSettings.All.WebcamRecorderShortcut, UserSettings.All.WebcamRecorderModifiers, true, true) : "";
-        MainViewModel.BoardRecorderGesture = board ? Other.GetSelectKeyText(UserSettings.All.BoardRecorderShortcut, UserSettings.All.BoardRecorderModifiers, true, true) : "";
-        MainViewModel.EditorGesture = editor ? Other.GetSelectKeyText(UserSettings.All.EditorShortcut, UserSettings.All.EditorModifiers, true, true) : "";
-        MainViewModel.OptionsGesture = options ? Other.GetSelectKeyText(UserSettings.All.OptionsShortcut, UserSettings.All.OptionsModifiers, true, true) : "";
-        MainViewModel.ExitGesture = exit ? Other.GetSelectKeyText(UserSettings.All.ExitShortcut, UserSettings.All.ExitModifiers, true, true) : "";
+        MainViewModelOld.RecorderGesture = screen ? Other.GetSelectKeyText(UserSettings.All.RecorderShortcut, UserSettings.All.RecorderModifiers, true, true) : "";
+        MainViewModelOld.WebcamRecorderGesture = webcam ? Other.GetSelectKeyText(UserSettings.All.WebcamRecorderShortcut, UserSettings.All.WebcamRecorderModifiers, true, true) : "";
+        MainViewModelOld.BoardRecorderGesture = board ? Other.GetSelectKeyText(UserSettings.All.BoardRecorderShortcut, UserSettings.All.BoardRecorderModifiers, true, true) : "";
+        MainViewModelOld.EditorGesture = editor ? Other.GetSelectKeyText(UserSettings.All.EditorShortcut, UserSettings.All.EditorModifiers, true, true) : "";
+        MainViewModelOld.OptionsGesture = options ? Other.GetSelectKeyText(UserSettings.All.OptionsShortcut, UserSettings.All.OptionsModifiers, true, true) : "";
+        MainViewModelOld.ExitGesture = exit ? Other.GetSelectKeyText(UserSettings.All.ExitShortcut, UserSettings.All.ExitModifiers, true, true) : "";
     }
 
     private void ShowException(Exception exception)

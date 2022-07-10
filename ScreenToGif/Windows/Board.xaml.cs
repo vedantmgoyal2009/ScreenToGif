@@ -55,7 +55,7 @@ public partial class Board
 
     private void Board_Loaded(object sender, RoutedEventArgs e)
     {
-        _dpi = this.Dpi();
+        _dpi = this.GetVisualDpi();
 
         WidthIntegerBox.Scale = _dpi / 96d;
         HeightIntegerBox.Scale = _dpi / 96d;

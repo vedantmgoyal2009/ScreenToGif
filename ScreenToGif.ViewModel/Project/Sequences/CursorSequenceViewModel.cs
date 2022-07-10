@@ -1,5 +1,6 @@
 using ScreenToGif.Domain.Models.Project.Cached.Sequences;
 using ScreenToGif.Util;
+using ScreenToGif.ViewModel.Editor;
 using ScreenToGif.ViewModel.Project.Sequences.SubSequences;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
@@ -19,7 +20,7 @@ public class CursorSequenceViewModel : RasterSequenceViewModel
         set => SetProperty(ref _cursorEvents, value);
     }
 
-    public static CursorSequenceViewModel FromModel(CursorSequence sequence)
+    public static CursorSequenceViewModel FromModel(CursorSequence sequence, EditorViewModel baseViewModel)
     {
         return new CursorSequenceViewModel
         {
@@ -31,6 +32,7 @@ public class CursorSequenceViewModel : RasterSequenceViewModel
             Effects = new ObservableCollection<object>(sequence.Effects), //TODO
             StreamPosition = sequence.StreamPosition,
             CachePath = sequence.CachePath,
+            EditorViewModel = baseViewModel,
             Left = sequence.Left,
             Top = sequence.Top,
             Width = sequence.Width,
@@ -40,12 +42,12 @@ public class CursorSequenceViewModel : RasterSequenceViewModel
         };
     }
 
-    internal override void RenderAt(IntPtr current, int canvasWidth, int canvasHeight, TimeSpan timestamp, double quality, string cachePath)
+    public override void RenderAt(IntPtr current, int canvasWidth, int canvasHeight, TimeSpan timestamp, double quality, string cachePath)
     {
         var ticks = (ulong)timestamp.Ticks;
 
         //Get first cursor after timestamp.
-        var cursor = CursorEvents.FirstOrDefault(f => ticks >= f.TimeStampInTicks);
+        var cursor = CursorEvents.FirstOrDefault(f => f.TimeStampInTicks >= ticks);
 
         if (cursor == null)
             return;
@@ -151,7 +153,8 @@ public class CursorSequenceViewModel : RasterSequenceViewModel
 
             for (var col = offsetX; col < width; col++)
             {
-                var targetIndex = (row - offsetY + posY) * targetPitch + (col - offsetX + posX) * 4;
+                //var targetIndex = (row - offsetY + posY) * targetPitch + (col - offsetX + posX) * 4;
+                var targetIndex = (row - offsetY + Math.Max(posY, 0)) * targetPitch + (col - offsetX + Math.Max(posX, 0)) * 4;
 
                 //AND mask is taken from the first half of the cursor image.
                 //XOR mask is taken from the second half of the cursor image, hence the "+ actualHeight * cursorPitch". 
@@ -179,7 +182,8 @@ public class CursorSequenceViewModel : RasterSequenceViewModel
         {
             for (var col = offsetX; col < width; col++)
             {
-                var targetIndex = (row - offsetY + posY) * targetPitch + (col - offsetX + posX) * 4;
+                //var targetIndex = (row - offsetY + posY) * targetPitch + (col - offsetX + posX) * 4;
+                var targetIndex = (row - offsetY + Math.Max(posY, 0)) * targetPitch + (col - offsetX + Math.Max(posX, 0)) * 4;
                 var bufferIndex = row * cursorPitch + col * 4;
 
                 if (bufferIndex > buffer.Count)
@@ -209,7 +213,8 @@ public class CursorSequenceViewModel : RasterSequenceViewModel
         {
             for (var col = offsetX; col < width; col++)
             {
-                var surfaceIndex = (row + posY) * targetPitch + (col + posX) * 4;
+                //var surfaceIndex = (row + posY) * targetPitch + (col + posX) * 4;
+                var surfaceIndex = (row - offsetY + Math.Max(posY, 0)) * targetPitch + (col - offsetX + Math.Max(posX, 0)) * 4;
                 var bufferIndex = row * cursorPitch + col * 4;
 
                 if (bufferIndex > buffer.Count)

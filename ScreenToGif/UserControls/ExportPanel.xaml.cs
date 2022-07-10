@@ -812,13 +812,13 @@ public partial class ExportPanel : UserControl, IPanel
         {
             if (!Other.IsFfmpegPresent())
             {
-                RaiseValidatedEvent("S.Editor.Warning.Ffmpeg", StatusReasons.MissingFfmpeg, () => App.MainViewModel.OpenOptions.Execute(Options.ExtrasIndex));
+                RaiseValidatedEvent("S.Editor.Warning.Ffmpeg", StatusReasons.MissingFfmpeg, () => App.MainViewModelOld.OpenOptions.Execute(Options.ExtrasIndex));
                 return false;
             }
 
             if (!string.IsNullOrWhiteSpace(UserSettings.All.FfmpegLocation) && UserSettings.All.FfmpegLocation.ToCharArray().Any(x => Path.GetInvalidPathChars().Contains(x)))
             {
-                RaiseValidatedEvent("S.Options.Extras.FfmpegLocation.Invalid", StatusReasons.MissingFfmpeg, () => App.MainViewModel.OpenOptions.Execute(Options.ExtrasIndex));
+                RaiseValidatedEvent("S.Options.Extras.FfmpegLocation.Invalid", StatusReasons.MissingFfmpeg, () => App.MainViewModelOld.OpenOptions.Execute(Options.ExtrasIndex));
                 return false;
             }
 
@@ -851,13 +851,13 @@ public partial class ExportPanel : UserControl, IPanel
         {
             if (!Other.IsGifskiPresent())
             {
-                RaiseValidatedEvent("S.Editor.Warning.Gifski", StatusReasons.MissingGifski, () => App.MainViewModel.OpenOptions.Execute(Options.ExtrasIndex));
+                RaiseValidatedEvent("S.Editor.Warning.Gifski", StatusReasons.MissingGifski, () => App.MainViewModelOld.OpenOptions.Execute(Options.ExtrasIndex));
                 return false;
             }
 
             if (!string.IsNullOrWhiteSpace(UserSettings.All.GifskiLocation) && UserSettings.All.GifskiLocation.ToCharArray().Any(x => Path.GetInvalidPathChars().Contains(x)))
             {
-                RaiseValidatedEvent("S.Options.Extras.GifskiLocation.Invalid", StatusReasons.MissingGifski, () => App.MainViewModel.OpenOptions.Execute(Options.ExtrasIndex));
+                RaiseValidatedEvent("S.Options.Extras.GifskiLocation.Invalid", StatusReasons.MissingGifski, () => App.MainViewModelOld.OpenOptions.Execute(Options.ExtrasIndex));
                 return false;
             }
         }

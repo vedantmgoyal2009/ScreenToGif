@@ -722,7 +722,7 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
-    
+
     <DrawingBrush x:Key="Vector.Flattr" Stretch="Uniform" AlignmentX="Center" AlignmentY="Center">
         <DrawingBrush.Drawing>
             <DrawingGroup>

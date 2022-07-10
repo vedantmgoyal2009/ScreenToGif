@@ -291,7 +291,7 @@ public class SelectControlOld : Control
 
     private void SystemEvents_DisplaySettingsChanged(object o, EventArgs eventArgs)
     {
-        Scale = this.Scale();
+        Scale = this.GetVisualScale();
 
         Monitors = MonitorHelper.AllMonitorsScaled(Scale, true);
 

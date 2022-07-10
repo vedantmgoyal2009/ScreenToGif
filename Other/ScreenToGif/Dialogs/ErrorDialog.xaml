@@ -1,0 +1,37 @@
+<c:ExWindow x:Class="ScreenToGif.Dialogs.ErrorDialog"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:c="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
+            Title="ScreenToGif • Error" MinHeight="280" MinWidth="600" Width="600"
+            SizeToContent="Height" MaxHeight="500" MaxWidth="700" WindowStyle="None" Topmost="True"
+            WindowStartupLocation="CenterScreen" ShowMaximizeButton="False" ShowMinimizeButton="False">
+
+    <Grid Background="{DynamicResource Brush.Dialog.Background.Alt}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" x:Name="TitleTextBlock" Text="Title" FontWeight="SemiBold" FontSize="20" FontFamily="Segoe UI" TextWrapping="Wrap" Margin="24,24,24,6"/>
+
+        <ScrollViewer Grid.Row="1" Margin="24,6,24,24" VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="DetailsTextBlock" FontWeight="Regular" FontSize="14" FontFamily="Segoe UI" TextWrapping="Wrap">
+                <Run x:Name="DetailsRun">Content</Run>
+            </TextBlock>
+        </ScrollViewer>
+        
+        <Separator Grid.Row="2" Height="1"/>
+
+        <Grid Grid.Row="3" Background="{DynamicResource Brush.Window.Background}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <c:ExButton Grid.Column="0" x:Name="DismissButton" Text="{DynamicResource S.Dialog.Error.Dismiss}" Margin="24,24,4,24" IsAccented="True" IsDefault="True" Click="DismissButton_Click"/>
+            <c:ExButton Grid.Column="1" x:Name="FeedbackButton" Text="{DynamicResource S.Dialog.Error.SendFeedback}" Margin="4,24,24,24" Click="FeedbackButton_Click"/>
+        </Grid>
+    </Grid>
+</c:ExWindow>

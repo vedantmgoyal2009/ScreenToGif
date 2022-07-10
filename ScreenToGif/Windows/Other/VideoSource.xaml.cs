@@ -337,7 +337,7 @@ public partial class VideoSource : Window
         {
             if (!Util.Other.IsFfmpegPresent())
             {
-                StatusBand.Warning(LocalizationHelper.Get("S.Editor.Warning.Ffmpeg"), () => App.MainViewModel.OpenOptions.Execute(Options.ExtrasIndex));
+                StatusBand.Warning(LocalizationHelper.Get("S.Editor.Warning.Ffmpeg"), () => App.MainViewModelOld.OpenOptions.Execute(Options.ExtrasIndex));
                 FaultLoading();
                 return;
             }

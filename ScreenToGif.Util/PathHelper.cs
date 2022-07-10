@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace ScreenToGif.Util;
@@ -23,5 +24,23 @@ public static class PathHelper
         var date = DateTime.Now.ToString(Regex.Replace(match.Value, "[?]", ""));
 
         return name.Replace(match.ToString(), date);
+    }
+
+    /// <summary>
+    /// When dealing with relative paths, the app will fails to point to the right folder when starting it via the "Open with..." or automatic startup methods.
+    /// </summary>
+    public static string AdjustPath(string path)
+    {
+        //If the path is relative, File.Exists() was returning C:\\Windows\\System32\ffmpeg.exe when the app was launched from the "Open with" context menu.
+        //So, in order to get the correct location, I need to combine the current base directory with the relative path.
+        if (!string.IsNullOrWhiteSpace(path) && !Path.IsPathRooted(path))
+        {
+            var adjusted = path.StartsWith("." + Path.AltDirectorySeparatorChar) ? path.TrimStart('.', Path.AltDirectorySeparatorChar) :
+                path.StartsWith("." + Path.DirectorySeparatorChar) ? path.TrimStart('.', Path.DirectorySeparatorChar) : path;
+
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, adjusted);
+        }
+
+        return path;
     }
 }

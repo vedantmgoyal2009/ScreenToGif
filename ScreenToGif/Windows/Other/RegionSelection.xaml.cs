@@ -196,14 +196,14 @@ public partial class RegionSelection : Window
         DisplayThumbs();
         Show();
 
-        Scale = this.Scale();
+        Scale = this.GetVisualScale();
         Dpi = Scale * 96d;
     } 
 
     private void DisplaySelection(bool ignoreThumbs = true)
     {
-        Left = (Rect.Left - (ignoreThumbs || _horizontalAlignment == HorizontalAlignment.Right ? 0 : HorizontalBorder.ActualWidth)) / (this.Scale() / Monitor.Scale);
-        Top = (Rect.Top - (ignoreThumbs || _verticalAlignment == VerticalAlignment.Bottom ? 0 : VerticalBorder.ActualHeight)) / (this.Scale() / Monitor.Scale);
+        Left = (Rect.Left - (ignoreThumbs || _horizontalAlignment == HorizontalAlignment.Right ? 0 : HorizontalBorder.ActualWidth)) / (this.GetVisualScale() / Monitor.Scale);
+        Top = (Rect.Top - (ignoreThumbs || _verticalAlignment == VerticalAlignment.Bottom ? 0 : VerticalBorder.ActualHeight)) / (this.GetVisualScale() / Monitor.Scale);
 
         SelectionRectangle.Width = Rect.Width;
         SelectionRectangle.Height = Rect.Height;
@@ -246,8 +246,8 @@ public partial class RegionSelection : Window
         }
             
         //Offset.
-        Left = (Rect.Left - (_horizontalAlignment == HorizontalAlignment.Right ? 0 : HorizontalBorder.ActualWidth)) / (this.Scale() / Monitor.Scale);
-        Top = (Rect.Top - (_verticalAlignment == VerticalAlignment.Bottom ? 0 : VerticalBorder.ActualHeight)) / (this.Scale() / Monitor.Scale); 
+        Left = (Rect.Left - (_horizontalAlignment == HorizontalAlignment.Right ? 0 : HorizontalBorder.ActualWidth)) / (this.GetVisualScale() / Monitor.Scale);
+        Top = (Rect.Top - (_verticalAlignment == VerticalAlignment.Bottom ? 0 : VerticalBorder.ActualHeight)) / (this.GetVisualScale() / Monitor.Scale); 
 
         //Grid positioning.
         Grid.SetRow(HorizontalBorder, 1);

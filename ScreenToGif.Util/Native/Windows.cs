@@ -329,7 +329,7 @@ namespace ScreenToGif.Util.Native
             var info = new MonitorInfoEx();
             User32.GetMonitorInfo(new HandleRef(null, pointer), info);
 
-            var rect = info.rcWork.ToRectangle();
+            var rect = info.Work.ToRectangle();
 
             Gdi32.DeleteObject(pointer);
 
@@ -343,7 +343,7 @@ namespace ScreenToGif.Util.Native
             var info = new MonitorInfoEx();
             User32.GetMonitorInfo(new HandleRef(null, pointer), info);
 
-            var rect = info.rcWork.ToRectangle();
+            var rect = info.Work.ToRectangle();
 
             return new Size(rect.Width, rect.Height);
         }

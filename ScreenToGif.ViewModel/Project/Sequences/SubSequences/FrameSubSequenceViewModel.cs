@@ -1,4 +1,5 @@
 using ScreenToGif.Domain.Models.Project.Cached.Sequences.SubSequences;
+using ScreenToGif.ViewModel.Editor;
 
 namespace ScreenToGif.ViewModel.Project.Sequences.SubSequences;
 
@@ -21,7 +22,7 @@ public class FrameSubSequenceViewModel : RasterSubSequenceViewModel
     /// </summary>
     public override ulong DataStreamPosition => StreamPosition + 55;
 
-    public static FrameSubSequenceViewModel FromModel(FrameSubSequence sequence)
+    public static FrameSubSequenceViewModel FromModel(FrameSubSequence sequence, EditorViewModel baseViewModel)
     {
         return new FrameSubSequenceViewModel
         {

@@ -1,5 +1,6 @@
 using ScreenToGif.Domain.Models.Project.Cached;
 using ScreenToGif.Domain.ViewModels;
+using ScreenToGif.ViewModel.Editor;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
@@ -14,6 +15,7 @@ public class ProjectViewModel : BaseViewModel
     private double _verticalDpi = 96d;
     private Brush _background = Brushes.White;
     private ObservableCollection<TrackViewModel> _tracks;
+    private readonly EditorViewModel _editorViewModel;
 
     public CachedProject Project { get; set; }
 
@@ -50,7 +52,18 @@ public class ProjectViewModel : BaseViewModel
     public Brush Background
     {
         get => _background;
-        set => SetProperty(ref _background, value);
+        set
+        {
+            SetProperty(ref _background, value);
+
+            EditorViewModel?.Render();
+        }
+    }
+
+    internal EditorViewModel EditorViewModel
+    {
+        get => _editorViewModel;
+        private init => SetProperty(ref _editorViewModel, value);
     }
 
     public ObservableCollection<TrackViewModel> Tracks
@@ -59,7 +72,7 @@ public class ProjectViewModel : BaseViewModel
         set => SetProperty(ref _tracks, value);
     }
 
-    public static ProjectViewModel FromModel(CachedProject project)
+    public static ProjectViewModel FromModel(CachedProject project, EditorViewModel editorViewModel)
     {
         return new ProjectViewModel
         {
@@ -70,7 +83,8 @@ public class ProjectViewModel : BaseViewModel
             HorizontalDpi = project.HorizontalDpi,
             VerticalDpi = project.VerticalDpi,
             Background = project.Background,
-            Tracks = new ObservableCollection<TrackViewModel>(project.Tracks.Select(TrackViewModel.FromModel).ToList())
+            EditorViewModel = editorViewModel,
+            Tracks = new ObservableCollection<TrackViewModel>(project.Tracks.Select(s => TrackViewModel.FromModel(s, editorViewModel)).ToList())
         };
     }
 

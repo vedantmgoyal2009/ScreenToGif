@@ -271,11 +271,11 @@ public class HideableTabControl : TabControl
             _notificationButton.IsOverNonClientArea = UserSettings.All.EditorExtendChrome;
         }
 
-        if (_extrasMenuItem != null)
-        {
-            _extrasMenuItem.DarkMode = !darkForeground;
-            _extrasMenuItem.IsOverNonClientArea = UserSettings.All.EditorExtendChrome;
-        }
+        //if (_extrasMenuItem != null)
+        //{
+        //    _extrasMenuItem.DarkMode = !darkForeground;
+        //    _extrasMenuItem.IsOverNonClientArea = UserSettings.All.EditorExtendChrome;
+        //}
     }
 
 

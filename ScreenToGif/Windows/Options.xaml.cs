@@ -861,7 +861,7 @@ public partial class Options : Window, INotification
 
         try
         {
-            var parent = Util.Other.AdjustPath(UserSettings.All.TemporaryFolderResolved);
+            var parent = PathHelper.AdjustPath(UserSettings.All.TemporaryFolderResolved);
             var path = Path.Combine(parent, "ScreenToGif", "Recording");
 
             if (!Directory.Exists(path))
@@ -888,7 +888,7 @@ public partial class Options : Window, INotification
         }
         finally
         {
-            App.MainViewModel.CheckDiskSpace();
+            App.MainViewModelOld.CheckDiskSpace();
             CheckSpace(true);
         }
     }
@@ -904,7 +904,7 @@ public partial class Options : Window, INotification
         var isRelative = !string.IsNullOrWhiteSpace(path) && !Path.IsPathRooted(path);
         var notAlt = !string.IsNullOrWhiteSpace(path) && UserSettings.All.TemporaryFolderResolved.Contains(Path.DirectorySeparatorChar);
 
-        path = Util.Other.AdjustPath(path);
+        path = PathHelper.AdjustPath(path);
 
         var initial = Directory.Exists(path) ? path : Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
@@ -969,7 +969,7 @@ public partial class Options : Window, INotification
         var isRelative = !string.IsNullOrWhiteSpace(path) && !Path.IsPathRooted(path);
         var notAlt = !string.IsNullOrWhiteSpace(path) && UserSettings.All.LogsFolder.Contains(Path.DirectorySeparatorChar);
 
-        path = Util.Other.AdjustPath(path);
+        path = PathHelper.AdjustPath(path);
 
         var initial = Directory.Exists(path) ? path : Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
@@ -1104,7 +1104,7 @@ public partial class Options : Window, INotification
 
         #region Status
 
-        var path = Util.Other.AdjustPath(UserSettings.All.TemporaryFolderResolved);
+        var path = PathHelper.AdjustPath(UserSettings.All.TemporaryFolderResolved);
         var drive = DriveInfo.GetDrives().FirstOrDefault(w => w.RootDirectory.FullName == Path.GetPathRoot(path));
 
         if (drive != null)
@@ -1130,7 +1130,7 @@ public partial class Options : Window, INotification
 
         try
         {
-            App.MainViewModel.CheckDiskSpace();
+            App.MainViewModelOld.CheckDiskSpace();
 
             FilesRun.Text = _fileCount == 0 ? LocalizationHelper.Get("S.Options.Storage.Status.Files.None") :
                 LocalizationHelper.GetWithFormat("S.Options.Storage.Status.Files." + (_fileCount > 1 ? "Plural" : "Singular"), "{0} files", _fileCount);
@@ -1152,7 +1152,7 @@ public partial class Options : Window, INotification
     {
         _folderList = new List<DirectoryInfo>();
 
-        var path = Util.Other.AdjustPath(UserSettings.All.TemporaryFolderResolved);
+        var path = PathHelper.AdjustPath(UserSettings.All.TemporaryFolderResolved);
         var cache = Path.Combine(path, "ScreenToGif", "Recording");
 
         if (!Directory.Exists(cache))
@@ -1299,7 +1299,7 @@ public partial class Options : Window, INotification
     {
         CheckTools(true, false);
 
-        var adjusted = Util.Other.AdjustPath(UserSettings.All.FfmpegLocation);
+        var adjusted = PathHelper.AdjustPath(UserSettings.All.FfmpegLocation);
 
         if (!string.IsNullOrWhiteSpace(adjusted) && File.Exists(adjusted))
         {
@@ -1401,7 +1401,7 @@ public partial class Options : Window, INotification
     {
         CheckTools(false, true);
 
-        var adjusted = Util.Other.AdjustPath(UserSettings.All.GifskiLocation);
+        var adjusted = PathHelper.AdjustPath(UserSettings.All.GifskiLocation);
 
         if (!string.IsNullOrWhiteSpace(adjusted) && File.Exists(adjusted))
         {
@@ -1617,7 +1617,7 @@ public partial class Options : Window, INotification
     {
         try
         {
-            var path = Util.Other.AdjustPath(UserSettings.All.FfmpegLocation);
+            var path = PathHelper.AdjustPath(UserSettings.All.FfmpegLocation);
 
             if (string.IsNullOrWhiteSpace(path))
                 return;
@@ -1639,7 +1639,7 @@ public partial class Options : Window, INotification
     {
         try
         {
-            var path = Util.Other.AdjustPath(UserSettings.All.GifskiLocation);
+            var path = PathHelper.AdjustPath(UserSettings.All.GifskiLocation);
 
             if (string.IsNullOrWhiteSpace(path))
                 return;
@@ -1683,7 +1683,7 @@ public partial class Options : Window, INotification
 
                 if (Util.Other.IsFfmpegPresent(true, true))
                 {
-                    var info = new FileInfo(Util.Other.AdjustPath(UserSettings.All.FfmpegLocation));
+                    var info = new FileInfo(PathHelper.AdjustPath(UserSettings.All.FfmpegLocation));
                     info.Refresh();
 
                     FfmpegImageCard.Status = ExtrasStatus.Ready;
@@ -1704,7 +1704,7 @@ public partial class Options : Window, INotification
 
                 if (Util.Other.IsGifskiPresent(true, true))
                 {
-                    var info = new FileInfo(Util.Other.AdjustPath(UserSettings.All.GifskiLocation));
+                    var info = new FileInfo(PathHelper.AdjustPath(UserSettings.All.GifskiLocation));
                     info.Refresh();
 
                     GifskiImageCard.Status = ExtrasStatus.Ready;
@@ -1884,11 +1884,11 @@ public partial class Options : Window, INotification
         {
             CheckForUpdatesLabel.IsEnabled = false;
 
-            await App.MainViewModel.CheckForUpdates(true);
+            await App.MainViewModelOld.CheckForUpdates(true);
 
             if (Global.UpdateAvailable != null)
             {
-                App.MainViewModel.PromptUpdate.Execute(null);
+                App.MainViewModelOld.PromptUpdate.Execute(null);
                 return;
             }
 

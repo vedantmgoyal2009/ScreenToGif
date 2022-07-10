@@ -1,3 +1,4 @@
+using ScreenToGif.Controls.Recorder;
 using System;
 using System.ComponentModel;
 using System.Linq;

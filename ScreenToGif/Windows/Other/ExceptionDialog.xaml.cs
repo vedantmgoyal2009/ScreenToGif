@@ -49,8 +49,8 @@ public partial class ExceptionDialog : Window
         if (feedback.ShowDialog() != true)
             return;
 
-        if (App.MainViewModel != null)
-            await Task.Factory.StartNew(App.MainViewModel.SendFeedback, TaskCreationOptions.LongRunning);
+        if (App.MainViewModelOld != null)
+            await Task.Factory.StartNew(App.MainViewModelOld.SendFeedback, TaskCreationOptions.LongRunning);
     }
 
     #endregion

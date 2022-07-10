@@ -38,29 +38,32 @@ public class BrushAnimation : AnimationTimeline
         //To solid color.
         if (To is SolidColorBrush solidTo)
         {
-            if (From is LinearGradientBrush linear)
+            switch (From)
             {
-                var newLinear = new LinearGradientBrush();
-
-                foreach (var stop in linear.GradientStops)
+                case LinearGradientBrush linear:
                 {
-                    var animation = new ColorAnimation(stop.Color, solidTo.Color, Duration);
-                    var color = animation.GetCurrentValue(stop.Color, solidTo.Color, animationClock);
+                    var newLinear = new LinearGradientBrush();
 
-                    newLinear.GradientStops.Add(new GradientStop(color, stop.Offset));
+                    foreach (var stop in linear.GradientStops)
+                    {
+                        var animation = new ColorAnimation(stop.Color, solidTo.Color, Duration);
+                        var color = animation.GetCurrentValue(stop.Color, solidTo.Color, animationClock);
+
+                        newLinear.GradientStops.Add(new GradientStop(color, stop.Offset));
+                    }
+
+                    return newLinear;
                 }
 
-                return newLinear;
-            }
-
-            if (From is SolidColorBrush solid)
-            {
-                var newsolid = new SolidColorBrush();
-                var solidAnimation = new ColorAnimation(solid.Color, solidTo.Color, Duration);
+                case SolidColorBrush solid:
+                {
+                    var newsolid = new SolidColorBrush();
+                    var solidAnimation = new ColorAnimation(solid.Color, solidTo.Color, Duration);
                     
-                newsolid.Color = solidAnimation.GetCurrentValue(solid.Color, solidTo.Color, animationClock);
+                    newsolid.Color = solidAnimation.GetCurrentValue(solid.Color, solidTo.Color, animationClock);
 
-                return newsolid;
+                    return newsolid;
+                }
             }
         }
 

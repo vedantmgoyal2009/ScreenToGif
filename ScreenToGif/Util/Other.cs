@@ -137,56 +137,7 @@ public static class Other
         return new Point(Math.Round(point.X * scale, MidpointRounding.AwayFromZero), Math.Round(point.Y * scale, MidpointRounding.AwayFromZero));
     }
 
-    /// <summary>
-    /// Gets the DPI of the current window.
-    /// </summary>
-    /// <param name="window">The Window.</param>
-    /// <returns>The DPI of the given Window.</returns>
-    public static double Dpi(this Window window)
-    {
-        var source = PresentationSource.FromVisual(window);
-
-        if (source?.CompositionTarget != null)
-            return 96d * source.CompositionTarget.TransformToDevice.M11;
-
-        return 96d;
-    }
-
-    /// <summary>
-    /// Gets the DPI of the system.
-    /// </summary>
-    /// <returns>The DPI of the system.</returns>
-    public static double DpiOfSystem()
-    {
-        using (var source = new HwndSource(new HwndSourceParameters()))
-            return 96d * (source.CompositionTarget?.TransformToDevice.M11 ?? 1D);
-    }
-
-    /// <summary>
-    /// Gets the scale of the current window.
-    /// </summary>
-    /// <param name="window">The Window.</param>
-    /// <returns>The scale of the given Window.</returns>
-    public static double Scale(this Visual window)
-    {
-        var source = PresentationSource.FromVisual(window);
-
-        if (source?.CompositionTarget != null)
-            return source.CompositionTarget.TransformToDevice.M11;
-
-        return 1d;
-    }
-
-    /// <summary>
-    /// Gets the scale of the system.
-    /// </summary>
-    /// <returns>The scale of the system.</returns>
-    public static double ScaleOfSystem()
-    {
-        using (var source = new HwndSource(new HwndSourceParameters()))
-            return source.CompositionTarget?.TransformToDevice.M11 ?? 1D;
-    }
-
+    
     public static List<DetectedRegion> AdjustPosition(this List<DetectedRegion> list, double x, double y)
     {
         foreach (var region in list)
@@ -361,29 +312,11 @@ public static class Other
 
     #region Dependencies
 
-    /// <summary>
-    /// When dealing with relative paths, the app will fails to point to the right folder when starting it via the "Open with..." or automatic startup methods.
-    /// </summary>
-    public static string AdjustPath(string path)
-    {
-        //If the path is relative, File.Exists() was returning C:\\Windows\\System32\ffmpeg.exe when the app was launched from the "Open with" context menu.
-        //So, in order to get the correct location, I need to combine the current base directory with the relative path.
-        if (!string.IsNullOrWhiteSpace(path) && !Path.IsPathRooted(path))
-        {
-            var adjusted = path.StartsWith("." + Path.AltDirectorySeparatorChar) ? path.TrimStart('.', Path.AltDirectorySeparatorChar) :
-                path.StartsWith("." + Path.DirectorySeparatorChar) ? path.TrimStart('.', Path.DirectorySeparatorChar) : path;
-
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, adjusted);
-        }
-
-        return path;
-    }
-
     public static bool IsFfmpegPresent(bool ignoreEnvironment = false, bool ignoreEmpty = false)
     {
         //If the path is relative, File.Exists() was returning C:\\Windows\\System32\ffmpeg.exe when the app was launched from the "Open with" context menu.
         //So, in order to get the correct location, I need to combine the current base directory with the relative path.
-        var realPath = AdjustPath(UserSettings.All.FfmpegLocation);
+        var realPath = PathHelper.AdjustPath(UserSettings.All.FfmpegLocation);
 
         //File location already chosen or detected.
         if (!string.IsNullOrWhiteSpace(realPath) && File.Exists(realPath))
@@ -393,7 +326,7 @@ public static class Other
         if (!ignoreEmpty && string.IsNullOrWhiteSpace(UserSettings.All.FfmpegLocation))
         {
             //Same path as application.
-            if (File.Exists(AdjustPath("ffmpeg.exe")))
+            if (File.Exists(PathHelper.AdjustPath("ffmpeg.exe")))
             {
                 UserSettings.All.FfmpegLocation = "ffmpeg.exe";
                 return true;
@@ -444,14 +377,14 @@ public static class Other
     {
         //If the path is relative, File.Exists() was returning C:\\Windows\\System32\Gifski.dll when the app was launched from the "Open with" context menu.
         //So, in order to get the correct location, I need to combine the current base directory with the relative path.
-        var realPath = AdjustPath(UserSettings.All.GifskiLocation);
+        var realPath = PathHelper.AdjustPath(UserSettings.All.GifskiLocation);
 
         //File location already chosen or detected.
         if (!string.IsNullOrWhiteSpace(realPath) && File.Exists(realPath))
             return true;
 
         //The path was not selected, but the file exists inside the same folder.
-        if (!ignoreEmpty && string.IsNullOrWhiteSpace(UserSettings.All.GifskiLocation) && File.Exists(AdjustPath("gifski.dll")))
+        if (!ignoreEmpty && string.IsNullOrWhiteSpace(UserSettings.All.GifskiLocation) && File.Exists(PathHelper.AdjustPath("gifski.dll")))
         {
             UserSettings.All.GifskiLocation = "gifski.dll";
             return true;

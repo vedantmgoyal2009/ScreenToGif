@@ -10,6 +10,7 @@
         xmlns:t="clr-namespace:ScreenToGif.Util.Settings;assembly=ScreenToGif.Util"
         xmlns:o="clr-namespace:ScreenToGif.UserControls"
         xmlns:e="clr-namespace:ScreenToGif.Domain.Enums;assembly=ScreenToGif.Domain"
+        xmlns:controls="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
         x:Name="EditorWindow" Title="{DynamicResource S.Editor.Title}" MinHeight="500" MinWidth="700" 
         Background="{DynamicResource Panel.Background.Level3}" UseLayoutRounding="True" Icon="/Resources/Logo.ico"
         FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}"
@@ -1379,16 +1380,16 @@
                        AllowDrop="True" Drop="Control_Drop" DragEnter="Control_DragEnter" MouseLeftButtonUp="ZoomBoxControl_MouseLeftButtonUp" PreviewMouseWheel="ZoomBox_MouseWheel">
                 <n:ZoomBox.ContextMenu>
                     <ContextMenu>
-                        <n:ExtendedMenuItem x:Name="PlayMenuItem" Header="{DynamicResource S.Editor.Playback.Play}" Icon="{StaticResource Vector.Play}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Play}"
-                                            InputGestureText="{DynamicResource S.Keys.Space}"/>
+                        <controls:ExtendedMenuItem x:Name="PlayMenuItem" Header="{DynamicResource S.Editor.Playback.Play}" Icon="{StaticResource Vector.Play}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Play}"
+                                  InputGestureText="{DynamicResource S.Keys.Space}"/>
                         <Separator/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Editor.Home.Undo}" Icon="{StaticResource Vector.Undo}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Undo}"/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Editor.Home.Redo}" Icon="{StaticResource Vector.Redo}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Redo}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Editor.Home.Undo}" Icon="{StaticResource Vector.Undo}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Undo}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Editor.Home.Redo}" Icon="{StaticResource Vector.Redo}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Redo}"/>
                         <Separator/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.SaveAs}" Icon="{StaticResource Vector.Gif}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.SaveAs}"/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Recorder.Discard}" Icon="{StaticResource Vector.Remove}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.DiscardProject}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.SaveAs}" Icon="{StaticResource Vector.Gif}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.SaveAs}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Recorder.Discard}" Icon="{StaticResource Vector.Remove}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.DiscardProject}"/>
                         <Separator/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.RemoveFrames}" Icon="{StaticResource Vector.RemoveImage}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Delete}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.RemoveFrames}" Icon="{StaticResource Vector.RemoveImage}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Delete}"/>
                     </ContextMenu>
                 </n:ZoomBox.ContextMenu>
             </n:ZoomBox>
@@ -1654,11 +1655,11 @@
             <Grid Grid.Row="1" Grid.Column="0" x:Name="WelcomeGrid" Background="{DynamicResource Panel.Background.Level3}" Visibility="Visible" AllowDrop="True" Drop="Control_Drop" DragEnter="Control_DragEnter">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.NewRecording}" Icon="{StaticResource Vector.Record.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewRecording}"/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.NewWebcamRecording}" Icon="{StaticResource Vector.Camera.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewWebcamRecording}"/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.NewBoardRecording}" Icon="{StaticResource Vector.Board.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewBoardRecording}"/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.NewBlankAnimation}" Icon="{StaticResource Vector.File.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewAnimation}"/>
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Context.NewFromMediaProject}" Icon="{StaticResource Vector.Open}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Load}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.NewRecording}" Icon="{StaticResource Vector.Record.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewRecording}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.NewWebcamRecording}" Icon="{StaticResource Vector.Camera.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewWebcamRecording}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.NewBoardRecording}" Icon="{StaticResource Vector.Board.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewBoardRecording}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.NewBlankAnimation}" Icon="{StaticResource Vector.File.New}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.NewAnimation}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Context.NewFromMediaProject}" Icon="{StaticResource Vector.Open}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.Load}"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
 
@@ -1808,10 +1809,10 @@
                             <ListBox Grid.Row="1" x:Name="ClipboardListBox" Margin="10,5,5,5" MinHeight="60" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.Resources>
                                     <ContextMenu x:Key="ClipboardContextMenu">
-                                        <n:ExtendedMenuItem Header="{DynamicResource S.Clipboard.Entry}" Icon="{StaticResource Vector.Paste}" ContentHeight="16" ContentWidth="16" IsHitTestVisible="False"/>
+                                        <controls:ExtendedMenuItem Header="{DynamicResource S.Clipboard.Entry}" Icon="{StaticResource Vector.Paste}" ContentHeight="16" ContentWidth="16" IsHitTestVisible="False"/>
                                         <Separator/>
-                                        <n:ExtendedMenuItem Header="{DynamicResource S.Clipboard.Explore}" Icon="{StaticResource Vector.Open}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.ExploreClipboard}"/>
-                                        <n:ExtendedMenuItem Header="{DynamicResource S.Clipboard.Remove}" Icon="{StaticResource Vector.Remove}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.RemoveClipboardEntry}"/>
+                                        <controls:ExtendedMenuItem Header="{DynamicResource S.Clipboard.Explore}" Icon="{StaticResource Vector.Open}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.ExploreClipboard}"/>
+                                        <controls:ExtendedMenuItem Header="{DynamicResource S.Clipboard.Remove}" Icon="{StaticResource Vector.Remove}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.RemoveClipboardEntry}"/>
                                     </ContextMenu>
                                 </ListBox.Resources>
 
@@ -4302,8 +4303,8 @@
 
             <ListView.Resources>
                 <ContextMenu x:Key="FrameListContextMenu">
-                    <n:ExtendedMenuItem Header="{DynamicResource S.Editor.List.OpenImage}" Icon="{StaticResource Vector.Image}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.OpenImage}"/>
-                    <n:ExtendedMenuItem Header="{DynamicResource S.Editor.List.ExploreFolder}" Icon="{StaticResource Vector.Open}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.ExploreFolder}"/>
+                    <controls:ExtendedMenuItem Header="{DynamicResource S.Editor.List.OpenImage}" Icon="{StaticResource Vector.Image}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.OpenImage}"/>
+                    <controls:ExtendedMenuItem Header="{DynamicResource S.Editor.List.ExploreFolder}" Icon="{StaticResource Vector.Open}" ContentHeight="16" ContentWidth="16" Command="{StaticResource Command.ExploreFolder}"/>
                 </ContextMenu>
             </ListView.Resources>
 

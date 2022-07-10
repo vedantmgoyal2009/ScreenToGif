@@ -57,8 +57,8 @@ public abstract class ScreenCapture : BaseCapture, IScreenCapture
         //Frame cache on memory/disk.
         _fileStream = new FileStream(project.FramesCachePath, FileMode.Create, FileAccess.Write, FileShare.None);
         _bufferedStream = new BufferedStream(_fileStream, UserSettings.All.MemoryCacheSize * 1_048_576); //Each 1 MB has 1_048_576 bytes.
-        CompressStream = new DeflateStream(_bufferedStream, UserSettings.All.CaptureCompression, true);
-
+        CompressStream = new DeflateStream(_bufferedStream, UserSettings.All.CaptureCompression, false);
+        
         //Events (cursor, key presses) cache on memory/disk.
         _eventsFileStream = new FileStream(project.EventsCachePath, FileMode.Create, FileAccess.Write, FileShare.None);
         _eventsBufferedStream = new BufferedStream(_eventsFileStream, 10 * 1_048_576); //Each 1 MB has 1_048_576 bytes.
@@ -138,8 +138,8 @@ public abstract class ScreenCapture : BaseCapture, IScreenCapture
         var recordingEvent = new CursorEvent
         {
             TimeStampInTicks = Stopwatch.GetElapsedTicks(),
-            Left = Left - x,
-            Top = Top - y,
+            Left = x - Left,
+            Top = y - Top,
             LeftButton = left,
             RightButton = right,
             MiddleButton = middle,
@@ -264,7 +264,7 @@ public abstract class ScreenCapture : BaseCapture, IScreenCapture
         //Finishing writing the events to the cache.
         await CompressStream.FlushAsync();
         await CompressStream.DisposeAsync();
-        await _bufferedStream.FlushAsync();
+        //await _bufferedStream.FlushAsync();
         await _bufferedStream.DisposeAsync();
         await _fileStream.DisposeAsync();
         

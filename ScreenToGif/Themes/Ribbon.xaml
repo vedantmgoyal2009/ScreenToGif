@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:r="clr-namespace:ScreenToGif.Controls.Ribbon"
                     xmlns:c="clr-namespace:ScreenToGif.Controls"
-                    xmlns:v="clr-namespace:ScreenToGif.Util.Converters;assembly=ScreenToGif.Util">
+                    xmlns:v="clr-namespace:ScreenToGif.Util.Converters;assembly=ScreenToGif.Util"
+                    xmlns:controls="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls">
 
     <v:ColorToAlpha x:Key="ColorToAlphaConverter"/>
     <v:InvertedBool x:Key="InvertedBool"/>
@@ -75,17 +76,17 @@
                         </Popup>
 
                         <Menu Grid.Row="0" Grid.Column="2" Effect="{x:Null}" Background="Transparent" VerticalAlignment="Center">
-                            <c:ExtendedMenuItem x:Name="ExtrasMenuItem" Header="{DynamicResource S.Editor.Extras}" Icon="{DynamicResource Vector.Editor}" ContentHeight="16" ContentWidth="16" BorderThickness="0">
-                                <c:ExtendedMenuItem x:Name="OptionsMenuItem" Header="{DynamicResource S.StartUp.Options}" Icon="{DynamicResource Vector.Options}" 
+                            <controls:ExtendedMenuItem x:Name="ExtrasMenuItem" Header="{DynamicResource S.Editor.Extras}" Icon="{DynamicResource Vector.Editor}" ContentHeight="16" ContentWidth="16" BorderThickness="0">
+                                <controls:ExtendedMenuItem x:Name="OptionsMenuItem" Header="{DynamicResource S.StartUp.Options}" Icon="{DynamicResource Vector.Options}" 
                                                     ContentHeight="16" ContentWidth="16" Command="{TemplateBinding OptionsCommand}"/>
-                                <c:ExtendedMenuItem x:Name="FeedbackMenuItem" Header="{DynamicResource S.Feedback.Feedback}" Icon="{DynamicResource Vector.Application}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding FeedbackCommand}"/>
-                                <c:ExtendedMenuItem x:Name="TroubleshootMenuItem" Header="{DynamicResource S.Troubleshoot.Title}" Icon="{DynamicResource Vector.Warning}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding TroubleshootCommand}"/>
+                                <controls:ExtendedMenuItem x:Name="FeedbackMenuItem" Header="{DynamicResource S.Feedback.Feedback}" Icon="{DynamicResource Vector.Application}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding FeedbackCommand}"/>
+                                <controls:ExtendedMenuItem x:Name="TroubleshootMenuItem" Header="{DynamicResource S.Troubleshoot.Title}" Icon="{DynamicResource Vector.Warning}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding TroubleshootCommand}"/>
                                 <Separator Height="1"/>
-                                <c:ExtendedMenuItem x:Name="HelpMenuItem" Header="{DynamicResource S.Editor.Help}" Icon="{DynamicResource Vector.Question}" 
-                                                    ContentHeight="16" ContentWidth="16" Command="{TemplateBinding HelpCommand}"/>
-                            </c:ExtendedMenuItem>
+                                <controls:ExtendedMenuItem x:Name="HelpMenuItem" Header="{DynamicResource S.Editor.Help}" Icon="{DynamicResource Vector.Question}" 
+                                                           ContentHeight="16" ContentWidth="16" Command="{TemplateBinding HelpCommand}"/>
+                            </controls:ExtendedMenuItem>
                         </Menu>
 
                         <!--Content-->
@@ -348,9 +349,9 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type r:RibbonItem}">
-                            <c:ExtendedMenuItem Header="{TemplateBinding Text}" Icon="{TemplateBinding Icon}" ItemsSource="{TemplateBinding Menu}">
+                            <controls:ExtendedMenuItem Header="{TemplateBinding Text}" Icon="{TemplateBinding Icon}" ItemsSource="{TemplateBinding Menu}">
                                 <ContentControl Content="{TemplateBinding Content}"/>
-                            </c:ExtendedMenuItem>
+                            </controls:ExtendedMenuItem>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -361,7 +362,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type r:RibbonItem}">
-                            <c:ExtendedMenuItem Header="{TemplateBinding Text}" Icon="{TemplateBinding Icon}" ItemsSource="{TemplateBinding Menu}"/>
+                            <controls:ExtendedMenuItem Header="{TemplateBinding Text}" Icon="{TemplateBinding Icon}" ItemsSource="{TemplateBinding Menu}"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>

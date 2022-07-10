@@ -1,0 +1,133 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:n="clr-namespace:ScreenToGif.Controls">
+
+    <!--Button • Horizontal • Text-->
+    <Style TargetType="{x:Type n:ExButton}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="{DynamicResource Brush.Button.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Padding" Value="3,1"/>
+        <Setter Property="IconWidth" Value="16"/>
+        <Setter Property="IconHeight" Value="16"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style.FocusVisual}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type n:ExButton}">
+                    <Border x:Name="MainBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4" MinHeight="{TemplateBinding MinHeight}" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" x:Name="IconBorder" Background="{TemplateBinding Icon}" Margin="5,3,0,3"
+                                    Height="{TemplateBinding IconHeight}" Width="{TemplateBinding IconWidth}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TextBlockInternal" MaxWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}"
+                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Text="{TemplateBinding Text}" TextWrapping="{TemplateBinding TextWrapping}" Effect="{TemplateBinding Effect}"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="KeyGestureTextBlock" Text="{TemplateBinding KeyGesture}" Foreground="{DynamicResource Brush.Button.Foreground}" 
+                                       FontSize="10" HorizontalAlignment="Center" Margin="0" Padding="0" Opacity="0.8" Height="12"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="KeyGesture" Value="{x:Static s:String.Empty}">
+                            <Setter TargetName="KeyGestureTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <Setter TargetName="IconBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsAccented" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Accent}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Accent}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Accent}"/>
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsAccented" Value="False"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Hover}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Hover}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Hover}"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsAccented" Value="True"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Accent.Hover}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Accent.Hover}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Accent.Hover}"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsPressed" Value="True"/>
+                    <Condition Property="IsAccented" Value="False"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Pressed}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Pressed}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Pressed}"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsPressed" Value="True"/>
+                    <Condition Property="IsAccented" Value="True"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Accent.Pressed}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Accent.Pressed}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Accent.Pressed}"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="False"/>
+                    <Condition Property="IsAccented" Value="False"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Disabled}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Disabled}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Disabled}"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="False"/>
+                    <Condition Property="IsAccented" Value="True"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource Brush.Button.Background.Accent.Disabled}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.Button.Border.Accent.Disabled}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Button.Foreground.Accent.Disabled}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

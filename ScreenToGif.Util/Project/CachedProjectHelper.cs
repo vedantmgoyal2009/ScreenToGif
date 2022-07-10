@@ -64,8 +64,8 @@ public static class CachedProjectHelper
         //Track.
         var track = await CreateTrack(project, "Frames");
 
-        //Sequence.
-        var lastFrame = recording.Frames.Last();
+        //Sequence. BUG: Sometimes, the last frame comes with Ticks == 0;
+        var lastFrame = recording.Frames.LastOrDefault(l => l.Ticks > 0) ?? recording.Frames.First();
 
         var sequence = new FrameSequence
         {

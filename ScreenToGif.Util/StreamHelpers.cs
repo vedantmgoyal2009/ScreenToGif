@@ -95,8 +95,12 @@ public static class StreamHelpers
     public static byte[] ReadBytes(this Stream ms, int count)
     {
         var buffer = new byte[count];
+        var read = ms.Read(buffer, 0, count);
 
-        if (ms.Read(buffer, 0, count) != count)
+        while (read < count)
+            read += ms.Read(buffer, read, count - read);
+
+        if (read != count)
             throw new EndOfStreamException("End reached.");
 
         return buffer;

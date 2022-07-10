@@ -437,7 +437,7 @@ public static class ColorExtensions
 
     public static Color GenerateRandomPastel()
     {
-        return HslToRgb(new FastRandom(360).Next(360), 0.75, 0.6);
+        return HslToRgb(new FastRandom((uint) DateTime.Now.Second).Next(360), 0.75, 0.6);
     }
 
     #endregion

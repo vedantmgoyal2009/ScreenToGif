@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="Brush.Accent" Color="#005FB8"/>
+    <SolidColorBrush x:Key="Brush.Foreground" Color="#e4000000"/>
+    <SolidColorBrush x:Key="Brush.FocusVisual" Color="#e4000000"/>
+
+    <SolidColorBrush x:Key="Brush.Window.Background" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="Brush.Dialog.Background.Alt" Color="#FFFFFF"/>
+
+    <!--TitleBar-->
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Foreground" Color="#e4000000"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Background.Hover" Color="#0a000000"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Background.Pressed" Color="#06000000"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Foreground.Pressed" Color="#9b000000"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Foreground.Disabled" Color="#5c000000"/>
+
+    <!--Button-->
+    <LinearGradientBrush x:Key="Brush.Button.Border" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#ECECEC" Offset="0.9"></GradientStop>
+        <GradientStop Color="#D2D2D2" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background" Color="#B3FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground" Color="#e4000000"/>
+    <LinearGradientBrush x:Key="Brush.Button.Border.Hover" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#ECECEC" Offset="0.9"></GradientStop>
+        <GradientStop Color="#D2D2D2" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background.Hover" Color="#80f9f9f9"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Hover" Color="#e4000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Pressed" Color="#0f000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Pressed" Color="#4df9f9f9"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Pressed" Color="#9b000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Disabled" Color="#0f000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Disabled" Color="#4df9f9f9"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Disabled" Color="#5c000000"/>
+
+    <!--Button • Accented-->
+    <LinearGradientBrush x:Key="Brush.Button.Border.Accent" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#146CBE" Offset="0.9"></GradientStop>
+        <GradientStop Color="#013B70" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent" Color="#005FB8"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent" Color="#FFFFFF"/>
+    <LinearGradientBrush x:Key="Brush.Button.Border.Accent.Hover" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#2B79C4" Offset="0.9"></GradientStop>
+        <GradientStop Color="#104374" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent.Hover" Color="#e6005fb8"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Hover" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Accent.Pressed" Color="#4288CA"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent.Pressed" Color="#cc005fb8"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Pressed" Color="#b3ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Accent.Disabled" Color="#37000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent.Disabled" Color="#37000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Disabled" Color="#FFFFFF"/>
+
+    <!--CheckBox-->
+    <SolidColorBrush x:Key="Brush.CheckBox.Background" Color="#06000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border" Color="#72000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Hover" Color="#0f000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Hover" Color="#72000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Pressed" Color="#18000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Pressed" Color="#37000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked" Color="#005FB8"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked" Color="#005FB8"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked.Hover" Color="#e6005fb8"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked.Hover" Color="#e6005fb8"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Hover" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked.Pressed" Color="#cc005fb8"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked.Pressed" Color="#cc005fb8"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Pressed" Color="#b3ffffff"/>
+
+    <!--Missing Disabled, Dark theme-->
+
+    <!--ContextMenu-->
+    <SolidColorBrush x:Key="Brush.ContextMenu.Background" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="Brush.ContextMenu.BorderBrush" Color="#0f000000"/>
+    <DropShadowEffect x:Key="Brush.ContextMenu.Shadow" Color="#000000" BlurRadius="16" ShadowDepth="8" Opacity="0.14" RenderingBias="Performance"/>
+
+    <SolidColorBrush x:Key="Brush.Menu.Foreground" Color="#e4000000"/>
+    <SolidColorBrush x:Key="Brush.Menu.Foreground.Weak" Color="#9b000000"/>
+    <SolidColorBrush x:Key="Brush.Menu.Background.Hover" Color="#0a000000"/>
+
+    <SolidColorBrush x:Key="Brush.Separator.Background" Color="#0f000000"/>
+
+    <!--Hyperlink-->
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground" Color="#003E92"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Background.Hover" Color="#0a000000"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Hover" Color="#001A68"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Background.Pressed" Color="#06000000"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Pressed" Color="#005FB8"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Disabled" Color="#5c000000"/>
+</ResourceDictionary>

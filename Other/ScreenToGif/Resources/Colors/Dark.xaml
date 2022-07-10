@@ -1,0 +1,76 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="Brush.Accent" Color="#60CDFF"/>
+    <SolidColorBrush x:Key="Brush.Foreground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.FocusVisual" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="Brush.Window.Background" Color="#202020"/>
+    <SolidColorBrush x:Key="Brush.Dialog.Background.Alt" Color="#0effffff"/>
+
+    <!--TitleBar-->
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Foreground" Color="#ffffff"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Background.Hover" Color="#0fffffff"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Background.Pressed" Color="#0bffffff"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Foreground.Pressed" Color="#c8ffffff"/>
+    <SolidColorBrush x:Key="Brush.TitleBar.Button.Foreground.Disabled" Color="#87ffffff"/>
+
+    <!--Button-->
+    <LinearGradientBrush x:Key="Brush.Button.Border" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#313131" Offset="0.9"></GradientStop>
+        <GradientStop Color="#2B2B2B" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background" Color="#0fffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground" Color="#FFFFFF"/>
+    <LinearGradientBrush x:Key="Brush.Button.Border.Hover" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#313131" Offset="0"></GradientStop>
+        <GradientStop Color="#2C2C2C" Offset="0.095"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background.Hover" Color="#15ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Hover" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Pressed" Color="#12ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Pressed" Color="#08ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Pressed" Color="#c8ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Disabled" Color="#12ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Disabled" Color="#0bffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Disabled" Color="#5dffffff"/>
+
+    <!--Button • Accented-->
+    <LinearGradientBrush x:Key="Brush.Button.Border.Accent" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#6CD1FF" Offset="0.9"></GradientStop>
+        <GradientStop Color="#53B1DC" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent" Color="#60CDFF"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent" Color="#000000"/>
+    <LinearGradientBrush x:Key="Brush.Button.Border.Accent.Hover" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#67C1EA" Offset="0.08"></GradientStop>
+        <GradientStop Color="#4EA2C8" Offset="0.14"></GradientStop>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent.Hover" Color="#e660cdff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Hover" Color="#000000"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Accent.Pressed" Color="#60B1D6"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent.Pressed" Color="#cc60cdff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Pressed" Color="#00000080"/>
+    <SolidColorBrush x:Key="Brush.Button.Border.Accent.Disabled" Color="#28ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Background.Accent.Disabled" Color="#28ffffff"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Disabled" Color="#87ffffff"/>
+
+    <!--ContextMenu-->
+    <SolidColorBrush x:Key="Brush.ContextMenu.Background" Color="#2E2E2E"/>
+    <SolidColorBrush x:Key="Brush.ContextMenu.BorderBrush" Color="#14FFFFFF"/>
+    <DropShadowEffect x:Key="Brush.ContextMenu.Shadow" Color="#000000" BlurRadius="16" ShadowDepth="8" Opacity="0.26" RenderingBias="Performance"/>
+
+    <SolidColorBrush x:Key="Brush.Menu.Foreground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Menu.Foreground.Weak" Color="#c8ffffff"/>
+    <SolidColorBrush x:Key="Brush.Menu.Background.Hover" Color="#0fffffff"/>
+
+    <SolidColorBrush x:Key="Brush.Separator.Background" Color="#1a000000"/>
+
+    <!--Hyperlink-->
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground" Color="#99EBFF"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Background.Hover" Color="#0fffffff"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Hover" Color="#99EBFF"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Background.Press" Color="#0bffffff"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Press" Color="#60CDFF"/>
+    <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Disabled" Color="#5dffffff"/>
+</ResourceDictionary>

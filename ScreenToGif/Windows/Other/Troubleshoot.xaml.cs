@@ -73,7 +73,7 @@ public partial class Troubleshoot : Window
                     recorder.Pause();
             }
 
-            var diff = window.Scale() / monitor.Scale;
+            var diff = window.GetVisualScale() / monitor.Scale;
             var top = window.Top / diff;
             var left = window.Left / diff;
             var width = window.ActualWidth;
@@ -150,7 +150,7 @@ public partial class Troubleshoot : Window
         {
             foreach (var window in Application.Current.Windows.OfType<Window>().Where(w => w.GetType() != typeof(Troubleshoot) && w.IsVisible).OrderBy(o => o.Width).ThenBy(o => o.Height))
             {
-                var scale = window.Scale();
+                var scale = window.GetVisualScale();
 
                 var top = window.Top * scale;
                 var left = window.Left * scale;

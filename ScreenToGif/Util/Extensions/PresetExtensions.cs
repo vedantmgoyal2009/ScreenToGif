@@ -45,7 +45,7 @@ internal static class PresetExtensions
     public static async Task<ValidatedEventArgs> IsValid(GfycatPreset preset)
     {
         if (!preset.IsAnonymous && !await Gfycat.IsAuthorized(preset))
-            return new ValidatedEventArgs("S.SaveAs.Warning.Upload.NotAuthorized", StatusReasons.UploadServiceUnauthorized, () => App.MainViewModel.OpenOptions.Execute(Options.UploadIndex));
+            return new ValidatedEventArgs("S.SaveAs.Warning.Upload.NotAuthorized", StatusReasons.UploadServiceUnauthorized, () => App.MainViewModelOld.OpenOptions.Execute(Options.UploadIndex));
 
         return await preset.IsValid();
     }
@@ -53,7 +53,7 @@ internal static class PresetExtensions
     public static async Task<ValidatedEventArgs> IsValid(ImgurPreset preset)
     {
         if (!preset.IsAnonymous && !await Imgur.IsAuthorized(preset))
-            return new ValidatedEventArgs("S.SaveAs.Warning.Upload.NotAuthorized", StatusReasons.UploadServiceUnauthorized, () => App.MainViewModel.OpenOptions.Execute(Options.UploadIndex));
+            return new ValidatedEventArgs("S.SaveAs.Warning.Upload.NotAuthorized", StatusReasons.UploadServiceUnauthorized, () => App.MainViewModelOld.OpenOptions.Execute(Options.UploadIndex));
 
         return await preset.IsValid();
     }
@@ -61,7 +61,7 @@ internal static class PresetExtensions
     public static async Task<ValidatedEventArgs> IsValid(YandexPreset preset)
     {
         if (!preset.IsAnonymous && !YandexDisk.IsAuthorized(preset))
-            return new ValidatedEventArgs("S.SaveAs.Warning.Upload.NotAuthorized", StatusReasons.UploadServiceUnauthorized, () => App.MainViewModel.OpenOptions.Execute(Options.UploadIndex));
+            return new ValidatedEventArgs("S.SaveAs.Warning.Upload.NotAuthorized", StatusReasons.UploadServiceUnauthorized, () => App.MainViewModelOld.OpenOptions.Execute(Options.UploadIndex));
 
         return await preset.IsValid();
     }

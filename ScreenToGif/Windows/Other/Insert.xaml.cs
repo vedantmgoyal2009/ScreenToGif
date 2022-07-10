@@ -284,7 +284,7 @@ public partial class Insert : Window
         //The image should be displayed based on the scale of the screen.
         _leftScale = Math.Round(left.DpiX / 96d, 2);
         _rightScale = Math.Round(right.DpiX / 96d, 2);
-        var scale = this.Scale();
+        var scale = this.GetVisualScale();
 
         _leftDpi = left.DpiX;
         _rightDpi = right.DpiX;
@@ -372,7 +372,7 @@ public partial class Insert : Window
         #endregion
 
         var after = AfterRadioButton.IsChecked == true;
-        var scale = this.Scale();
+        var scale = this.GetVisualScale();
         var result = await Task.Run(() => InsertFrames(after, scale));
 
         if (result)

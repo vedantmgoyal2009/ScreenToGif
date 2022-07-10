@@ -14,7 +14,7 @@ internal static class StorageUtils
 
         try
         {
-            var cache = Other.AdjustPath(UserSettings.All.TemporaryFolderResolved);
+            var cache = PathHelper.AdjustPath(UserSettings.All.TemporaryFolderResolved);
 
             Directory.Delete(cache, true);
         }

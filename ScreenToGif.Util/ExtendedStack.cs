@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace ScreenToGif.Util;
 
 public class ExtendedStack<T> : LinkedList<T>

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Microsoft.Win32;
+using ScreenToGif.Controls.Recorder;
 using ScreenToGif.Domain.Enums;
 using ScreenToGif.Domain.Events;
 using ScreenToGif.Model;
@@ -20,7 +21,7 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace ScreenToGif.Windows;
 
-public partial class Webcam
+public partial class Webcam : BaseRecorder
 {
     #region Variables
 

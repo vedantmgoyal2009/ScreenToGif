@@ -1,6 +1,7 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:n="clr-namespace:ScreenToGif.Controls"
+        xmlns:controls="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
         x:Class="ScreenToGif.Windows.Other.TestField" x:Name="ThisWindow"
         Title="Window Test" Height="350" Width="450" WindowStartupLocation="CenterScreen" 
         SnapsToDevicePixels="True" Loaded="WindowTest_OnLoaded" LocationChanged="WindowTest_OnLocationChanged" Closed="Window_Closed">
@@ -18,6 +19,13 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+
+        <!--<Border x:Name="Border" BorderBrush="#00000044" BorderThickness="1" Margin="2" Padding="4" Background="#2E2E2E" CornerRadius="8">
+            <StackPanel KeyboardNavigation.DirectionalNavigation="Cycle">
+                <controls:ExtendedMenuItem Header="{StaticResource S.NewRecording}" Icon="{StaticResource Vector.Record.New}" InputGestureText="Ctrl + N" Tag="S.NewRecording"/>
+                <MenuItem Header="Exit"/>
+            </StackPanel>
+        </Border>-->
 
         <!--<n:ExtendedButton Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="{StaticResource Vector.Encoder.MostUsed}" Text="Example" ContentWidth="18" ContentHeight="18"/>
         <n:ImageButton Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{StaticResource Vector.Encoder.MostUsed}" Text="Example" ContentWidth="18" ContentHeight="18"/>-->

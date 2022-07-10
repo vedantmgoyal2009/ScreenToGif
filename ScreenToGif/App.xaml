@@ -5,6 +5,7 @@
              xmlns:cx="clr-namespace:ScreenToGif.Util.Converters"
              xmlns:n="clr-namespace:ScreenToGif.Controls"
              xmlns:viewModel="clr-namespace:ScreenToGif.ViewModel"
+             xmlns:k="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
              ShutdownMode="OnExplicitShutdown" Startup="App_Startup" Exit="App_Exit" 
              DispatcherUnhandledException="App_DispatcherUnhandledException">
 
@@ -59,7 +60,7 @@
                 <ResourceDictionary Source="/Resources/Localization/StringResources.en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <viewModel:ApplicationViewModel x:Key="AppViewModel"/>
+            <viewModel:ApplicationViewModelOld x:Key="AppViewModel"/>
 
             <!--Converter-->
             <BooleanToVisibilityConverter x:Key="Bool2Visibility"/>
@@ -84,24 +85,23 @@
             <DropShadowEffect x:Key="Shadow.Invariant" ShadowDepth="0" Color="Transparent" Opacity="0" BlurRadius="0" RenderingBias="Performance"/>
 
             <!--Notification Icon-->
-            <n:NotifyIcon x:Key="NotifyIcon" IconSource="/Resources/Logo.ico" DataContext="{StaticResource AppViewModel}" NotifyToolTipText="ScreenToGif" Visibility="Collapsed" 
+            <k:NotifyIcon x:Key="NotifyIcon" DataContext="{StaticResource AppViewModel}" NotifyToolTipText="ScreenToGif" Visibility="Collapsed" 
                           LeftClickCommand="{Binding TrayLeftClick}" DoubleLeftClickCommand="{Binding TrayDoubleLeftClick}" MiddleClickCommand="{Binding TrayMiddleClick}">
-                <n:NotifyIcon.ContextMenu>
-                    
+                <k:NotifyIcon.ContextMenu>
                     <ContextMenu>
-                        <n:ExtendedMenuItem Header ="{StaticResource S.NewRecording}" Icon="{StaticResource Vector.Record.New}" Command="{Binding OpenRecorder}" InputGestureText="{Binding RecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewRecording"/>
-                        <n:ExtendedMenuItem Header ="{StaticResource S.NewWebcamRecording}" Icon="{StaticResource Vector.Camera.New}" Command="{Binding OpenWebcamRecorder}" InputGestureText="{Binding WebcamRecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewWebcamRecording"/>
-                        <n:ExtendedMenuItem Header="{StaticResource S.NewBoardRecording}" Icon="{StaticResource Vector.Board.New}" Command="{Binding OpenBoardRecorder}" InputGestureText="{Binding BoardRecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewBoardRecording"/>
+                        <k:ExtendedMenuItem Header ="{StaticResource S.NewRecording}" Icon="{StaticResource Vector.Record.New}" Command="{Binding OpenRecorder}" InputGestureText="{Binding RecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewRecording"/>
+                        <k:ExtendedMenuItem Header ="{StaticResource S.NewWebcamRecording}" Icon="{StaticResource Vector.Camera.New}" Command="{Binding OpenWebcamRecorder}" InputGestureText="{Binding WebcamRecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewWebcamRecording"/>
+                        <k:ExtendedMenuItem Header="{StaticResource S.NewBoardRecording}" Icon="{StaticResource Vector.Board.New}" Command="{Binding OpenBoardRecorder}" InputGestureText="{Binding BoardRecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewBoardRecording"/>
                         <Separator/>
-                        <n:ExtendedMenuItem Header="{StaticResource S.StartUp.Editor}" Icon="{StaticResource Vector.Editor}" Command="{Binding OpenEditor}" InputGestureText="{Binding EditorGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.StartUp.Editor"/>
-                        <n:ExtendedMenuItem Header="{StaticResource S.StartUp.Options}" Icon="{StaticResource Vector.Options}" Command="{Binding OpenOptions}" InputGestureText="{Binding OptionsGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.StartUp.Options"/>
-                        <n:ExtendedMenuItem Header="{StaticResource S.Feedback.Feedback}" Icon="{StaticResource Vector.Application}" Command="{Binding OpenFeedback}" Tag="S.Feedback.Feedback"/>
-                        <n:ExtendedMenuItem Header="{StaticResource S.Troubleshoot.Title}" Icon="{StaticResource Vector.Warning}" Command="{Binding OpenTroubleshoot}" Tag="S.Troubleshoot.Title"/>
+                        <k:ExtendedMenuItem Header="{StaticResource S.StartUp.Editor}" Icon="{StaticResource Vector.Editor}" Command="{Binding OpenEditor}" InputGestureText="{Binding EditorGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.StartUp.Editor"/>
+                        <k:ExtendedMenuItem Header="{StaticResource S.StartUp.Options}" Icon="{StaticResource Vector.Options}" Command="{Binding OpenOptions}" InputGestureText="{Binding OptionsGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.StartUp.Options"/>
+                        <k:ExtendedMenuItem Header="{StaticResource S.Feedback.Feedback}" Icon="{StaticResource Vector.Application}" Command="{Binding OpenFeedback}" Tag="S.Feedback.Feedback"/>
+                        <k:ExtendedMenuItem Header="{StaticResource S.Troubleshoot.Title}" Icon="{StaticResource Vector.Warning}" Command="{Binding OpenTroubleshoot}" Tag="S.Troubleshoot.Title"/>
                         <Separator/>
-                        <n:ExtendedMenuItem Header="{StaticResource S.Exit}" Icon="{StaticResource Vector.Close}" Command="{Binding ExitApplication}" InputGestureText="{Binding ExitGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.Exit"/>
+                        <k:ExtendedMenuItem Header="{StaticResource S.Exit}" Icon="{StaticResource Vector.Close}" Command="{Binding ExitApplication}" InputGestureText="{Binding ExitGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.Exit"/>
                     </ContextMenu>
-                </n:NotifyIcon.ContextMenu>
-            </n:NotifyIcon>
+                </k:NotifyIcon.ContextMenu>
+            </k:NotifyIcon>
 
             <Style x:Key="Style.FocusVisual.NoMargin">
                 <Setter Property="Control.Template">
@@ -190,29 +190,6 @@
                         <ControlTemplate TargetType="{x:Type ToolTip}">
                             <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Margin="2" Background="{TemplateBinding Background}" Padding="5" TextBlock.Foreground="{TemplateBinding Foreground}">
                                 <ContentPresenter Content="{TemplateBinding Content}" Width="Auto" HorizontalAlignment="Center" TextBlock.Foreground="{TemplateBinding Foreground}"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!--ContextMenu-->
-            <Style TargetType="{x:Type ContextMenu}">
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
-                <Setter Property="Placement" Value="Bottom"/>
-                <Setter Property="HorizontalOffset" Value="-5"/>
-                <Setter Property="Effect" Value="{DynamicResource Shadow.Border.Dark}"/>
-                <Setter Property="Background" Value="{DynamicResource Element.Background}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource Element.Border}"/>
-                <Setter Property="Foreground" Value="{DynamicResource Element.Foreground.Medium}"/>
-
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ContextMenu}">
-                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Margin="2" Background="{TemplateBinding Background}">
-                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>

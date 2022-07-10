@@ -217,7 +217,7 @@ public partial class DownloadDialog : Window
         DownloadProgressBar.Visibility = Visibility.Visible;
         RunAfterwardsCheckBox.Visibility = Visibility.Collapsed;
 
-        var result = await App.MainViewModel.DownloadUpdate();
+        var result = await App.MainViewModelOld.DownloadUpdate();
 
         //If cancelled.
         if (!IsLoaded)

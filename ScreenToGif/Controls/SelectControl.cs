@@ -1239,7 +1239,7 @@ public class SelectControl : Control
 
     private void SystemEvents_DisplaySettingsChanged(object o, EventArgs eventArgs)
     {
-        Scale = this.Scale();
+        Scale = this.GetVisualScale();
     }
 
     private void Control_Unloaded(object sender, RoutedEventArgs e)

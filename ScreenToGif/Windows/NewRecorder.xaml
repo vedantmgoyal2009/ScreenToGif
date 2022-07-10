@@ -1,4 +1,4 @@
-<n:BaseScreenRecorder x:Class="ScreenToGif.Windows.NewRecorder"
+<r:BaseScreenRecorder x:Class="ScreenToGif.Windows.NewRecorder"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:n="clr-namespace:ScreenToGif.Controls"
@@ -6,12 +6,14 @@
                       xmlns:cx="clr-namespace:ScreenToGif.Util.Converters"
                       xmlns:t="clr-namespace:ScreenToGif.Util.Settings;assembly=ScreenToGif.Util"
                       xmlns:e="clr-namespace:ScreenToGif.Domain.Enums;assembly=ScreenToGif.Domain"
+                      xmlns:r="clr-namespace:ScreenToGif.Controls.Recorder;assembly=ScreenToGif.Controls"
+                      xmlns:controls="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
                       x:Name="RecorderWindow" Title="ScreenToGif" SnapsToDevicePixels="True" UseLayoutRounding="True" AllowsTransparency="False"
                       WindowStyle="None" Topmost="True" Icon="../Resources/Logo.ico" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" MinWidth="220"
                       FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}" WindowStartupLocation="Manual"
                       Loaded="Window_Loaded" Activated="Window_Activated" KeyDown="Window_KeyDown" StateChanged="Window_StateChanged" Closing="Window_Closing">
 
-    <n:BaseRecorder.TaskbarItemInfo>
+    <r:BaseRecorder.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfoCollection>
@@ -66,7 +68,7 @@
                 </ThumbButtonInfoCollection>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
-    </n:BaseRecorder.TaskbarItemInfo>
+    </r:BaseRecorder.TaskbarItemInfo>
     
     <Border Background="{DynamicResource Panel.Background}" BorderThickness="1" BorderBrush="{DynamicResource Element.Border.Weak}">
         <Grid>
@@ -207,35 +209,35 @@
                                    SelectedIndex="{Binding Source={x:Static t:UserSettings.All}, Path=CaptureFrequency, Converter={StaticResource EnumToInt}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    ToolTip="{DynamicResource S.Recorder.SwitchFrequency}" ToolTipService.Placement="Bottom" ToolTipService.HorizontalOffset="-5"
                                    Command="{Binding SwitchFrequencyCommand}" CommandParameter="Switch">
-                        
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency}" IsHitTestVisible="False" Icon="{StaticResource Vector.Record}" ContentHeight="16" ContentWidth="16" Tag="I"/>
+
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency}" IsHitTestVisible="False" Icon="{StaticResource Vector.Record}" ContentHeight="16" ContentWidth="16" Tag="I"/>
 
                         <Separator Height="1" Margin="3,2"/>
 
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Manual}" Tag="S.Options.Recorder.Frequency.Manual" IsCheckable="True" Icon="{StaticResource Vector.Camera}" ContentHeight="16" ContentWidth="16" 
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Manual}" Tag="S.Options.Recorder.Frequency.Manual" IsCheckable="True" Icon="{StaticResource Vector.Camera}" ContentHeight="16" ContentWidth="16" 
                                          IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Manual}, UpdateSourceTrigger=PropertyChanged}" 
                                          IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
                                          Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Manual}"/>
 
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Interaction}" Tag="S.Options.Recorder.Frequency.Interaction" IsCheckable="True" Icon="{StaticResource Vector.Cursor}" ContentHeight="16" ContentWidth="16" 
-                                         IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Interaction}, UpdateSourceTrigger=PropertyChanged}" 
-                                         IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
-                                         Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Interaction}"/>
-                        
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Second}" Tag="S.Options.Recorder.Frequency.Second" IsCheckable="True" Icon="{StaticResource Vector.Delay}" ContentHeight="16" ContentWidth="16" 
-                                         IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerSecond}, UpdateSourceTrigger=PropertyChanged}" 
-                                         IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
-                                         Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerSecond}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Interaction}" Tag="S.Options.Recorder.Frequency.Interaction" IsCheckable="True" Icon="{StaticResource Vector.Cursor}" ContentHeight="16" ContentWidth="16" 
+                                                   IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Interaction}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Interaction}"/>
 
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Minute}" Tag="S.Options.Recorder.Frequency.Minute" IsCheckable="True" Icon="{StaticResource Vector.Delay.Minute}" ContentHeight="16" ContentWidth="16" 
-                                         IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerMinute}, UpdateSourceTrigger=PropertyChanged}" 
-                                         IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
-                                         Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerMinute}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Second}" Tag="S.Options.Recorder.Frequency.Second" IsCheckable="True" Icon="{StaticResource Vector.Delay}" ContentHeight="16" ContentWidth="16" 
+                                                   IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerSecond}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerSecond}"/>
 
-                        <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Hour}" Tag="S.Options.Recorder.Frequency.Hour" IsCheckable="True" Icon="{StaticResource Vector.Delay.Hour}" ContentHeight="16" ContentWidth="16" 
-                                         IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerHour}, UpdateSourceTrigger=PropertyChanged}" 
-                                         IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
-                                         Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerHour}"/>
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Minute}" Tag="S.Options.Recorder.Frequency.Minute" IsCheckable="True" Icon="{StaticResource Vector.Delay.Minute}" ContentHeight="16" ContentWidth="16" 
+                                                   IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerMinute}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerMinute}"/>
+
+                        <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Hour}" Tag="S.Options.Recorder.Frequency.Hour" IsCheckable="True" Icon="{StaticResource Vector.Delay.Hour}" ContentHeight="16" ContentWidth="16" 
+                                                   IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerHour}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerHour}"/>
                     </n:SplitButton>
                 </Grid>
 
@@ -286,9 +288,9 @@
                     <n:SplitButton Grid.Row="1" ContentHeight="20" Padding="3" Style="{StaticResource Style.SplitButton.NoBorder}"
                                    SelectedIndex="{Binding Source={x:Static t:UserSettings.All}, Path=RecorderModeIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Foreground="{Binding Source={x:Static t:UserSettings.All}, Path=RecorderForeground, Mode=TwoWay, Converter={StaticResource ColorToBrush}}">
-                        <n:ExtendedMenuItem Icon="{StaticResource Vector.Crop}" Header="{DynamicResource S.Recorder.Area.Select}" Tag="S.Recorder.Area" ContentHeight="16" ContentWidth="16" Click="RegionButton_Click"/>
-                        <n:ExtendedMenuItem Icon="{StaticResource Vector.Application}" Header="{DynamicResource S.Recorder.Window.Select}" Tag="S.Recorder.Window" ContentHeight="16" ContentWidth="16" Click="WindowButton_Click"/>
-                        <n:ExtendedMenuItem Icon="{StaticResource Vector.Monitor}" Header="{DynamicResource S.Recorder.Screen.Select}" Tag="S.Recorder.Screen" ContentHeight="16" ContentWidth="16" Click="FullScreenButton_Click"/>
+                        <controls:ExtendedMenuItem Icon="{StaticResource Vector.Crop}" Header="{DynamicResource S.Recorder.Area.Select}" Tag="S.Recorder.Area" ContentHeight="16" ContentWidth="16" Click="RegionButton_Click"/>
+                        <controls:ExtendedMenuItem Icon="{StaticResource Vector.Application}" Header="{DynamicResource S.Recorder.Window.Select}" Tag="S.Recorder.Window" ContentHeight="16" ContentWidth="16" Click="WindowButton_Click"/>
+                        <controls:ExtendedMenuItem Icon="{StaticResource Vector.Monitor}" Header="{DynamicResource S.Recorder.Screen.Select}" Tag="S.Recorder.Screen" ContentHeight="16" ContentWidth="16" Click="FullScreenButton_Click"/>
                     </n:SplitButton>
                 </Grid>
 
@@ -376,33 +378,33 @@
                                   Command="{Binding SwitchFrequencyCommand}" CommandParameter="Switch">
                     <n:ExtendedButton.ContextMenu>
                         <ContextMenu IsOpen="False">
-                            <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency}" IsHitTestVisible="False" Icon="{StaticResource Vector.Record}" ContentHeight="16" ContentWidth="16"/>
+                            <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency}" IsHitTestVisible="False" Icon="{StaticResource Vector.Record}" ContentHeight="16" ContentWidth="16"/>
                             <Separator/>
 
-                            <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Manual}" IsCheckable="True" Icon="{StaticResource Vector.Camera}" ContentHeight="16" ContentWidth="16" 
-                                                IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Manual}}" 
-                                                IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}" 
-                                                Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Manual}"/>
+                            <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Manual}" IsCheckable="True" Icon="{StaticResource Vector.Camera}" ContentHeight="16" ContentWidth="16" 
+                                                       IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Manual}}" 
+                                                       IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}" 
+                                                       Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Manual}"/>
 
-                            <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Interaction}" IsCheckable="True" Icon="{StaticResource Vector.Cursor}" ContentHeight="16" ContentWidth="16" 
-                                                IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Interaction}}" 
-                                                IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
-                                                Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Interaction}"/>
-                            
-                            <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Second}" IsCheckable="True" Icon="{StaticResource Vector.Delay}" ContentHeight="16" ContentWidth="16" 
-                                                IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerSecond}}" 
-                                                IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}" 
-                                                Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerSecond}"/>
+                            <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Interaction}" IsCheckable="True" Icon="{StaticResource Vector.Cursor}" ContentHeight="16" ContentWidth="16" 
+                                                       IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.Interaction}}" 
+                                                       IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}, UpdateSourceTrigger=PropertyChanged}" 
+                                                       Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.Interaction}"/>
 
-                            <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Minute}" IsCheckable="True" Icon="{StaticResource Vector.Delay.Minute}" ContentHeight="16" ContentWidth="16" 
-                                                IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerMinute}}" 
-                                                IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}"
-                                                Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerMinute}"/>
+                            <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Second}" IsCheckable="True" Icon="{StaticResource Vector.Delay}" ContentHeight="16" ContentWidth="16" 
+                                                       IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerSecond}}" 
+                                                       IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}" 
+                                                       Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerSecond}"/>
 
-                            <n:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Hour}" IsCheckable="True" Icon="{StaticResource Vector.Delay.Hour}" ContentHeight="16" ContentWidth="16" 
-                                                IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerHour}}" 
-                                                IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}" 
-                                                Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerHour}"/>
+                            <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Minute}" IsCheckable="True" Icon="{StaticResource Vector.Delay.Minute}" ContentHeight="16" ContentWidth="16" 
+                                                       IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerMinute}}" 
+                                                       IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}"
+                                                       Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerMinute}"/>
+
+                            <controls:ExtendedMenuItem Header="{DynamicResource S.Options.Recorder.Frequency.Hour}" IsCheckable="True" Icon="{StaticResource Vector.Delay.Hour}" ContentHeight="16" ContentWidth="16" 
+                                                       IsChecked="{Binding CaptureFrequency, Source={x:Static t:UserSettings.All}, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static e:CaptureFrequencies.PerHour}}" 
+                                                       IsEnabled="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked, Converter={StaticResource InvertedBool}}" 
+                                                       Command="{Binding SwitchFrequencyCommand}" CommandParameter="{x:Static e:CaptureFrequencies.PerHour}"/>
                         </ContextMenu>
                     </n:ExtendedButton.ContextMenu>
                 </n:ExtendedButton>
@@ -413,9 +415,9 @@
                                SelectedIndex="{Binding Source={x:Static t:UserSettings.All}, Path=RecorderModeIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Foreground="{Binding Source={x:Static t:UserSettings.All}, Path=RecorderForeground, Mode=TwoWay, Converter={StaticResource ColorToBrush}}"
                                Visibility="{Binding ElementName=RegionGrid, Path=IsEnabled, Converter={StaticResource Bool2Visibility}}">
-                    <n:ExtendedMenuItem Icon="{StaticResource Vector.Crop}" Header="{DynamicResource S.Recorder.Area}" ContentHeight="16" ContentWidth="16" Click="RegionButton_Click"/>
-                    <n:ExtendedMenuItem Icon="{StaticResource Vector.Application}" Header="{DynamicResource S.Recorder.Window}" ContentHeight="16" ContentWidth="16" Click="WindowButton_Click"/>
-                    <n:ExtendedMenuItem Icon="{StaticResource Vector.Monitor}" Header="{DynamicResource S.Recorder.Screen}" ContentHeight="16" ContentWidth="16" Click="FullScreenButton_Click"/>
+                    <controls:ExtendedMenuItem Icon="{StaticResource Vector.Crop}" Header="{DynamicResource S.Recorder.Area}" ContentHeight="16" ContentWidth="16" Click="RegionButton_Click"/>
+                    <controls:ExtendedMenuItem Icon="{StaticResource Vector.Application}" Header="{DynamicResource S.Recorder.Window}" ContentHeight="16" ContentWidth="16" Click="WindowButton_Click"/>
+                    <controls:ExtendedMenuItem Icon="{StaticResource Vector.Monitor}" Header="{DynamicResource S.Recorder.Screen}" ContentHeight="16" ContentWidth="16" Click="FullScreenButton_Click"/>
                 </n:SplitButton>
 
                 <!--Discard-->
@@ -445,4 +447,4 @@
             </Grid>
         </Grid>
     </Border>
-</n:BaseScreenRecorder>
+</r:BaseScreenRecorder>

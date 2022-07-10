@@ -17,7 +17,6 @@ using ScreenToGif.ViewModel;
 using ScreenToGif.Windows.Other;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -160,6 +159,9 @@ public partial class Recorder
         SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
     }
 
+    //Issues:
+    //Recording, pausing and quickly stopping causes the cache to be sent not as complete.
+    //Sometimes, stoping causes the last frame to have timestamp zeroed.
 
     #region Events
 
@@ -382,7 +384,7 @@ public partial class Recorder
             return;
 
         var screenPoint = box.PointToScreen(new Point(0, 0));
-        var scale = this.Scale();
+        var scale = this.GetVisualScale();
 
         User32.SetCursorPos((int)(screenPoint.X + (box.ActualWidth / 2) * scale), (int)(screenPoint.Y + (box.ActualHeight / 2) * scale));
     }
@@ -546,7 +548,7 @@ public partial class Recorder
         #region Get Handle and Window Rect
 
         var handle = User32.WindowFromPoint(new PointW { X = args.PosX, Y = args.PosY });
-        var scale = this.Scale();
+        var scale = this.GetVisualScale();
 
         if (_lastHandle != handle)
         {
@@ -1056,6 +1058,7 @@ public partial class Recorder
             Cursor = Cursors.AppStarting;
 
             _limitTimer.Stop();
+
             await StopCapture();
 
             if (Stage is RecorderStages.Recording or RecorderStages.Paused && Project?.Any == true)
@@ -1414,7 +1417,7 @@ public partial class Recorder
         Top = closest.NativeBounds.Top + 1;
         Left = closest.NativeBounds.Left + 1;
 
-        var diff = this.Scale() / closest.Scale;
+        var diff = this.GetVisualScale() / closest.Scale;
         Top = UserSettings.All.RecorderTop = top / diff;
         Left = UserSettings.All.RecorderLeft = left / diff;
         Height = UserSettings.All.RecorderHeight;
@@ -1433,7 +1436,7 @@ public partial class Recorder
 
         if (regionWidth < 0 || regionHeight < 0)
         {
-            var desc = $"Scale: {this.Scale()}\n\nScreen: {closest.AdapterName}\nBounds: {closest.Bounds}\n\nTopLeft: {top}x{left}\nWidthHeight: {regionWidth}x{regionHeight}";
+            var desc = $"Scale: {this.GetVisualScale()}\n\nScreen: {closest.AdapterName}\nBounds: {closest.Bounds}\n\nTopLeft: {top}x{left}\nWidthHeight: {regionWidth}x{regionHeight}";
 
             LogWriter.Log("Wrong recorder window sizing", desc);
 
@@ -1592,21 +1595,21 @@ public partial class Recorder
         DisplayGuidelines();
     }
 
-    internal override void StartCapture()
+    public override void StartCapture()
     {
         DisplayTimer.Start();
 
         base.StartCapture();
     }
 
-    internal override void PauseCapture()
+    public override void PauseCapture()
     {
         DisplayTimer.Pause();
 
         base.PauseCapture();
     }
 
-    internal override async Task StopCapture()
+    public override async Task StopCapture()
     {
         DisplayTimer.Stop();
 

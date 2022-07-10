@@ -8,7 +8,6 @@ using ScreenToGif.Util.Codification.Gif.LegacyEncoder;
 using ScreenToGif.Util.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -20,10 +19,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Resources;
+using Color = System.Windows.Media.Color;
 using Image = System.Drawing.Image;
 using Size = System.Drawing.Size;
-using Color = System.Windows.Media.Color;
 
 namespace ScreenToGif.ImageUtil;
 
@@ -1882,7 +1880,7 @@ public static class ImageMethods
             if (xx <= rectX && yy >= rectY + height) //Bottom left corner.
                 bottom = left = Math.Max(bottom, left);
 
-            var distance = new[] { left, top, right, bottom }.OrderBy(o => o).First();
+            var distance = new[] { left, top, right, bottom }.MinBy(o => o);
             return distance <= opacityDistance ? opacityPower / 100d * ((distance * 100d) / opacityDistance) / 100d : 1d;
         }
 
@@ -1894,7 +1892,7 @@ public static class ImageMethods
         var right2 = rectX + width - xx;
         var bottom2 = rectY + height - yy;
 
-        var distance2 = new[] { left2, top2, right2, bottom2 }.OrderBy(o => o).First();
+        var distance2 = new[] { left2, top2, right2, bottom2 }.MinBy(o => o);
         return distance2 <= opacityDistance ? opacityPower / 100d * ((distance2 * 100d) / opacityDistance) / 100d : 1d;
     }
 
@@ -2033,7 +2031,7 @@ public static class ImageMethods
                 Stretch = Stretch.Fill
             };
 
-            var uiScale = source.Scale();
+            var uiScale = source.GetVisualScale();
 
             //Test with high dpi.
             //For some reason, an InkCanvas with Strokes going beyond the bounds will report a strange bound even if clipped.
@@ -2151,44 +2149,6 @@ public static class ImageMethods
 
         return size;
     }
-
-    /// <summary>
-    /// Reads a given image resource into a WinForms icon.
-    /// </summary>
-    /// <param name="imageSource">Image source pointing to an icon file (*.ico).</param>
-    /// <returns>An icon object that can be used with the taskbar area.</returns>
-    public static Icon ToIcon(this ImageSource imageSource)
-    {
-        if (imageSource == null)
-            return null;
-
-        StreamResourceInfo streamInfo = null;
-
-        try
-        {
-            var uri = new Uri(imageSource.ToString());
-            streamInfo = Application.GetResourceStream(uri);
-
-            if (streamInfo == null)
-                throw new ArgumentException($"It was not possible to load the image source: '{imageSource}'.");
-
-            return new Icon(streamInfo.Stream);
-        }
-        catch (Win32Exception e)
-        {
-            LogWriter.Log(e, "It was not possible to load the notification area icon.", $"StreamInfo is null? {streamInfo == null}, Native error code: {e.NativeErrorCode}");
-            return null;
-        }
-        catch (Exception e)
-        {
-            LogWriter.Log(e, "It was not possible to load the notification area icon.", $"StreamInfo is null? {streamInfo == null}");
-            return null;
-        }
-        finally
-        {
-            streamInfo?.Stream?.Dispose();
-        }
-    }
-
+    
     #endregion
 }

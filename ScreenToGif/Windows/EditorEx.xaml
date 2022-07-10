@@ -3,23 +3,61 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:r="clr-namespace:ScreenToGif.Controls.Ribbon"
         xmlns:c="clr-namespace:ScreenToGif.Controls"
-        xmlns:l="clr-namespace:ScreenToGif.Windows"
-        xmlns:t="clr-namespace:ScreenToGif.Controls.Timeline"
-        xmlns:s="clr-namespace:ScreenToGif.Util.Settings;assembly=ScreenToGif.Util" xmlns:ex="clr-namespace:ScreenToGif.Controls.Ex"
+        xmlns:s="clr-namespace:ScreenToGif.Util.Settings;assembly=ScreenToGif.Util"
+        xmlns:timeline="clr-namespace:ScreenToGif.Controls.Timeline;assembly=ScreenToGif.Controls"
         x:Name="EditorWindow" Title="{DynamicResource S.Editor.Title}" MinHeight="500" MinWidth="700" 
         Background="{DynamicResource Panel.Background.Level3}" UseLayoutRounding="True"
         FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}"
-        Loaded="Window_Loaded" Activated="Window_Activated" Deactivated="Window_Deactivated">
+        Loaded="Window_Loaded" Activated="Window_Activated" Deactivated="Window_Deactivated" Closing="Window_Closing">
 
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition MinHeight="100"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto" MinHeight="100" MaxHeight="500"/>
+            <RowDefinition Height="{Binding TimelineHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           MinHeight="{Binding MinTimelineHeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MaxHeight="500"/>
         </Grid.RowDefinitions>
 
-        <r:Ribbon Grid.Row="0" x:Name="Ribbon">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Left: Menu, elevated pill with shadow: File, Insert, Options ??-->
+            <Menu Grid.Column="0" Margin="3">
+                <!--<c:ExtendedMenuItem Header="Project">
+                    <c:ExtendedMenuItem Icon="{StaticResource Vector.File.New}" Header="New">
+                        <c:ExtendedMenuItem Icon="{StaticResource Vector.Record.New}" Header="Screen Recording"></c:ExtendedMenuItem>
+                        <c:ExtendedMenuItem Icon="{StaticResource Vector.Camera.New}" Header="Webcam Recording"></c:ExtendedMenuItem>
+                        <c:ExtendedMenuItem Icon="{StaticResource Vector.Board.New}" Header="Sketchboard Recording"></c:ExtendedMenuItem>
+                    </c:ExtendedMenuItem>
+
+                    <c:ExtendedMenuItem Icon="{StaticResource Vector.Save}" Header="Save"></c:ExtendedMenuItem>
+                    <c:ExtendedMenuItem Icon="{StaticResource Vector.Save}" Header="Save As..."></c:ExtendedMenuItem>
+                    <Separator/>
+                    <c:ExtendedMenuItem Icon="{StaticResource Vector.Save}" Header="Export..." Command="{Binding ExportCommand}"></c:ExtendedMenuItem>
+                </c:ExtendedMenuItem>
+
+                <c:ExtendedMenuItem Header="Edit"></c:ExtendedMenuItem>
+                <c:ExtendedMenuItem Header="Insert"></c:ExtendedMenuItem>
+                <c:ExtendedMenuItem Header="Options"></c:ExtendedMenuItem>-->
+            </Menu>
+
+            <!--Middle, non elevated: Contextual list that opens options for Project, Layer, Sequence, Subsequence-->
+            <Grid Grid.Column="1">
+                
+            </Grid>
+
+            <!--Right: Special action buttons: Export, Update, etc.-->
+            <Grid Grid.Column="2" Margin="3">
+                <c:ExtendedButton Text="Export..." Icon="{StaticResource Vector.Save}" Command="{Binding ExportCommand}"/>
+            </Grid>
+        </Grid>
+
+        <r:Ribbon Grid.Row="0" x:Name="Ribbon" Visibility="Collapsed">
             <r:RibbonTab Header="{DynamicResource S.Editor.File}" Icon="{StaticResource Vector.Save}" IsSelected="True">
                 <Grid Height="94" Margin="2" Background="{DynamicResource Panel.Background.Level2}">
                     <Grid.ColumnDefinitions>
@@ -910,25 +948,26 @@
             </r:RibbonTab>
         </r:Ribbon>
 
-        <Grid Grid.Row="1" x:Name="MiddleGrid">
+        <Grid Grid.Row="1" x:Name="MiddleGrid" Background="{StaticResource Checker.DrawingBrush}">
             <!--Welcome screen-->
             <!--Decorator layer for displaying UI elements (rubber band selection [click and drag to select elements], selection rectangle, elements [TextBox])-->
 
             <!--Image Previewer-->
-            <ex:Previewer x:Name="Previewer" Source="{Binding RenderedImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Stretch="None"/>
+            <c:Previewer x:Name="Previewer" Source="{Binding RenderedImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Stretch="None"
+                          MouseDown="Previewer_OnMouseDown"/>
             <!--<Image x:Name="Previewer" Source="{Binding RenderedImage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>-->
             
             <!--Side panel (configurable size and position?)-->
             <!--Background-->
         </Grid>
 
-        <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" IsTabStop="False"/>
+        <!--Configurable height?-->
+        <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" IsTabStop="False" Visibility="{Binding Visibility, ElementName=Timeline, Mode=OneWay}"/>
 
         <!--Timeline with multiple tracks and sequences-->
-        <!--Configurable height?-->
-        <t:Timeline Grid.Row="3"
-                    Tracks="{Binding Project.Tracks, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Current="{Binding CurrentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    MouseDown="UIElement_OnMouseDown"/>
+        <timeline:Timeline Grid.Row="3" x:Name="Timeline" 
+                  Tracks="{Binding Project.Tracks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Current="{Binding Current, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Visibility="{Binding HasProject, Converter={StaticResource Bool2Visibility}, FallbackValue=False}"/>
     </Grid>
 </Window>

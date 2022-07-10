@@ -1,0 +1,143 @@
+<Application x:Class="ScreenToGif.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ScreenToGif"
+             xmlns:c="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
+             Startup="App_Startup" DispatcherUnhandledException="App_DispatcherUnhandledException">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--Themes-->
+                <!--<ResourceDictionary Source="/Resources/Colors/VeryDark.xaml"/>-->
+                <ResourceDictionary Source="/Resources/Colors/Dark.xaml"/>
+                <!--<ResourceDictionary Source="/Resources/Colors/Medium.xaml"/>-->
+                <ResourceDictionary Source="/Resources/Colors/Light.xaml"/>
+
+                <!--Localizations-->
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.ar.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.cs.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.da.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.de.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.el.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.es-AR.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.es.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.fi.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.fr.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.ja.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.he.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.hu.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.ko.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.it.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.nl.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.pl.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.pt.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.pt-PT.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.ru.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.sw.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.sv.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.tr.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.uk.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.vi.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.zh.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.zh-Hant.xaml"/>
+                <ResourceDictionary Source="/Resources/Localizations/StringResources.en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--How to instantiate the notify icon and its inner props? and then bing everything-->
+            <c:NotifyIcon x:Key="NotifyIcon" IconSource="/Resources/Logo.ico" NotifyToolTipText="ScreenToGif" Visibility="Collapsed" 
+                      LeftClickCommand="{Binding TrayLeftClick}" DoubleLeftClickCommand="{Binding TrayDoubleLeftClick}" MiddleClickCommand="{Binding TrayMiddleClick}">
+                <c:NotifyIcon.ContextMenu>
+                    <ContextMenu>
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.NewRecording}" Icon="{StaticResource Vector.Record.New}" Command="{Binding OpenRecorder}" InputGestureText="{Binding RecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewRecording"/>-->
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.NewWebcamRecording}" Icon="{StaticResource Vector.Camera.New}" Command="{Binding OpenWebcamRecorder}" InputGestureText="{Binding WebcamRecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewWebcamRecording"/>-->
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.NewBoardRecording}" Icon="{StaticResource Vector.Board.New}" Command="{Binding OpenBoardRecorder}" InputGestureText="{Binding BoardRecorderGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.NewBoardRecording"/>-->
+                        <Separator/>
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.StartUp.Editor}" Icon="{StaticResource Vector.Editor}" Command="{Binding OpenEditor}" InputGestureText="{Binding EditorGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.StartUp.Editor"/>-->
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.StartUp.Options}" Icon="{StaticResource Vector.Options}" Command="{Binding OpenOptions}" InputGestureText="{Binding OptionsGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.StartUp.Options"/>-->
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.Feedback.Feedback}" Icon="{StaticResource Vector.Application}" Command="{Binding OpenFeedback}" Tag="S.Feedback.Feedback"/>-->
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.Troubleshoot.Title}" Icon="{StaticResource Vector.Warning}" Command="{Binding OpenTroubleshoot}" Tag="S.Troubleshoot.Title"/>-->
+                        <Separator/>
+                        <!--<c:ExtendedMenuItem Header="{StaticResource S.Exit}" Icon="{StaticResource Vector.Close}" Command="{Binding ExitApplication}" InputGestureText="{Binding ExitGesture, UpdateSourceTrigger=PropertyChanged}" Tag="S.Exit"/>-->
+                    </ContextMenu>
+                </c:NotifyIcon.ContextMenu>
+            </c:NotifyIcon>
+
+            <!--Focus-->
+            <Style x:Key="Style.FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <!--<Border BorderThickness="3" BorderBrush="{DynamicResource Brush.FocusVisual}" CornerRadius="4" Margin="-4"/>-->
+                            <Rectangle Margin="-4" SnapsToDevicePixels="True" Stroke="{DynamicResource Brush.FocusVisual}" StrokeThickness="3" RadiusX="4" RadiusY="4"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--ContextMenu-->
+            <Style TargetType="{x:Type ContextMenu}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+                <Setter Property="Placement" Value="Bottom"/>
+                <Setter Property="HorizontalOffset" Value="-5"/>
+                <Setter Property="Effect" Value="{DynamicResource Brush.ContextMenu.Shadow}"/>
+                <Setter Property="Background" Value="{DynamicResource Brush.ContextMenu.Background}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brush.ContextMenu.BorderBrush}"/>
+                <!--<Setter Property="Foreground" Value="{DynamicResource Element.Foreground.Medium}"/>-->
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ContextMenu}">
+                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Margin="2" Padding="4" CornerRadius="7" Background="{TemplateBinding Background}">
+                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--Hyperlink-->
+            <Style TargetType="{x:Type Hyperlink}">
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Hyperlink.Foreground}"/>
+                <Setter Property="TextDecorations" Value="None"/>
+                <Setter Property="Cursor" Value="Hand"/>
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource Brush.Hyperlink.Background.Hover}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource Brush.Hyperlink.Foreground.Hover}"/>
+                    </Trigger>
+
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="{DynamicResource Brush.Hyperlink.Foreground.Disabled}"/>
+                    </Trigger>
+
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Cursor" Value="No"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Separator-->
+            <Style TargetType="{x:Type Separator}">
+                <Setter Property="Background" Value="{DynamicResource Brush.Separator.Background}"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Separator}">
+                            <Rectangle Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Fill="{TemplateBinding Background}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--TextBlock-->
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,139 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <UseWPF>true</UseWPF>
+    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
+    <Company>Nicke Manarin</Company>
+    <Description>Screen, webcam and sketchboard recorder, with integrated editor!</Description>
+    <Copyright>Copyright© Nicke Manarin 2022</Copyright>
+    <PackageProjectUrl>https://www.screentogif.com</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/nickemanarin/screentogif</RepositoryUrl>
+    <PackageTags>gif; recorder; editor; screen-recorder; gif-editor</PackageTags>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <ApplicationIcon>Resources\Logo.ico</ApplicationIcon>
+    <StartupObject>ScreenToGif.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="app.manifest" />
+    <None Remove="Resources\Logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="app.manifest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ScreenToGif.Controls\ScreenToGif.Controls.csproj" />
+    <ProjectReference Include="..\..\ScreenToGif.ViewModel\ScreenToGif.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Recorders\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\Colors\Dark.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Colors\Light.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.ar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.cs.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.da.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.de.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.el.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.en.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.es-AR.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.es.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.fi.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.fr.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.he.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.hu.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.it.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.ja.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.ko.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.nl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.pl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.pt-PT.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.pt.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.ru.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.sv.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.sw.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.tr.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.uk.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.vi.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.zh-Hant.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Resources\Localizations\StringResources.zh.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if exist &quot;$(DevEnvDir)..\..\VC\Auxiliary\Build\vsvars32.bat&quot; (&#xD;&#xA;  call &quot;$(DevEnvDir)..\..\VC\Auxiliary\Build\vsvars32.bat&quot;&#xD;&#xA;  editbin /largeaddressaware &quot;$(TargetPath)&quot;&#xD;&#xA;)" />
+  </Target>
+
+</Project>

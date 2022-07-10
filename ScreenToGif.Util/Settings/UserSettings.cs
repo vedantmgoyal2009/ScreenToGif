@@ -1,6 +1,5 @@
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -27,13 +26,12 @@ using XamlWriter = System.Windows.Markup.XamlWriter;
 
 namespace ScreenToGif.Util.Settings;
 
-public class UserSettings : INotifyPropertyChanged
+public partial class UserSettings : INotifyPropertyChanged
 {
     #region Variables
     
     private Version _version;
-
-
+    
     public event PropertyChangedEventHandler PropertyChanged;
 
     public static readonly object Lock = new();
@@ -46,7 +44,6 @@ public class UserSettings : INotifyPropertyChanged
 
     protected static ResourceDictionary _local;
     protected static ResourceDictionary _appData;
-    private static readonly ResourceDictionary Default;
 
     #endregion
 
@@ -57,9 +54,6 @@ public class UserSettings : INotifyPropertyChanged
 
         //Tries to load both settings files (from the local or AppData folder).
         LoadSettings();
-
-        //Reads the default settings (it's loaded by default).
-        Default = Application.Current.Resources.MergedDictionaries.FirstOrDefault(d => d.Source.OriginalString.EndsWith("/Settings.xaml"));
     }
 
 
@@ -445,21 +439,15 @@ public class UserSettings : INotifyPropertyChanged
     }
 
 
-    private static object GetValue([CallerMemberName] string key = "", object defaultValue = null)
+    private static object GetValue(object original = null, [CallerMemberName] string key = "")
     {
-        if (Default == null)
-            return defaultValue;
-
         if (Application.Current == null || Application.Current.Resources.Count == 0)
-            return Default[key];
+            return original;
 
-        if (Application.Current.Resources.Contains(key))
-            return Application.Current.Resources[key];
-
-        return Default[key] ?? defaultValue;
+        return Application.Current.Resources.Contains(key) ? Application.Current.Resources[key] : original;
     }
 
-    private static void SetValue(object value, [CallerMemberName] string key = "")
+    private static void SetValue(object value, object original = null, [CallerMemberName] string key = "")
     {
         lock (Lock)
         {
@@ -470,8 +458,9 @@ public class UserSettings : INotifyPropertyChanged
                 {
                     _local[key] = value;
 
+                    //TODO: Test by setting the value to null, when the original value is not null.
                     //If the value is being set to null, remove it.
-                    if (value == null && (!Default.Contains(key) || Default[key] == null))
+                    if (value == null && value != original)
                         _local.Remove(key);
                 }
                 else
@@ -489,7 +478,7 @@ public class UserSettings : INotifyPropertyChanged
                     _appData[key] = value;
 
                     //If the value is being set to null, remove it.
-                    if (value == null && (!Default.Contains(key) || Default[key] == null))
+                    if (value == null && value != original)
                         _appData.Remove(key);
                 }
                 else
@@ -514,187 +503,213 @@ public class UserSettings : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    //TODO: Move these properties to the other file.
 
     #region Properties
 
     #region Startup
 
+    private const double StartupTopOriginal = double.NaN;
     public double StartupTop
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(StartupTopOriginal);
+        set => SetValue(value, StartupTopOriginal);
     }
 
+    private const double StartupLeftOriginal = double.NaN;
     public double StartupLeft
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(StartupLeftOriginal);
+        set => SetValue(value, StartupLeftOriginal);
     }
 
+    private const double StartupHeightOriginal = double.NaN;
     public double StartupHeight
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(StartupHeightOriginal);
+        set => SetValue(value, StartupHeightOriginal);
     }
 
+    private const double StartupWidthOriginal = double.NaN;
     public double StartupWidth
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(StartupWidthOriginal);
+        set => SetValue(value, StartupWidthOriginal);
     }
 
+    private const WindowState StartupWindowStateOriginal = WindowState.Normal;
     public WindowState StartupWindowState
     {
-        get => (WindowState)GetValue();
-        set => SetValue(value);
+        get => (WindowState)GetValue(StartupWindowStateOriginal);
+        set => SetValue(value, StartupWindowStateOriginal);
     }
 
     #endregion
 
     #region Recorder
 
+    private readonly Rect _selectedRegionOriginal = Rect.Empty;
     public Rect SelectedRegion
     {
-        get => (Rect)GetValue();
-        set => SetValue(value);
+        get => (Rect)GetValue(_selectedRegionOriginal);
+        set => SetValue(value, _selectedRegionOriginal);
     }
 
+    private const double SelectedRegionScaleOriginal = 1d;
     public double SelectedRegionScale
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(SelectedRegionScaleOriginal);
+        set => SetValue(value, SelectedRegionScaleOriginal);
     }
 
+    private const int RecorderModeIndexOriginal = 0;
     public int RecorderModeIndex
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(RecorderModeIndexOriginal);
+        set => SetValue(value, RecorderModeIndexOriginal);
     }
 
+    private const int LatestFpsOriginal = 15;
     public int LatestFps
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(LatestFpsOriginal);
+        set => SetValue(value, LatestFpsOriginal);
     }
 
+    private const double RecorderLeftOriginal = double.NaN;
     public double RecorderLeft
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(RecorderLeftOriginal);
+        set => SetValue(value, RecorderLeftOriginal);
     }
 
+    private const double RecorderTopOriginal = double.NaN;
     public double RecorderTop
     {
-        get => (double)GetValue();
-        set => SetValue(value);
+        get => (double)GetValue(RecorderTopOriginal);
+        set => SetValue(value, RecorderTopOriginal);
     }
 
+    private const double RecorderWidthOriginal = 518d;
     public int RecorderWidth
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(RecorderWidthOriginal);
+        set => SetValue(value, RecorderWidthOriginal);
     }
 
+    private const double RecorderHeightOriginal = 269d;
     public int RecorderHeight
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(RecorderHeightOriginal);
+        set => SetValue(value, RecorderHeightOriginal);
     }
 
     #endregion
 
     #region Board
 
+    private const double BoardWidthOriginal = 616d;
     public int BoardWidth
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(BoardWidthOriginal);
+        set => SetValue(value, BoardWidthOriginal);
     }
 
+    private const double BoardHeightOriginal = 447d;
     public int BoardHeight
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(BoardHeightOriginal);
+        set => SetValue(value, BoardHeightOriginal);
     }
 
+    private readonly Color _boardColorOriginal = Color.FromArgb(255, 0,0,0);
     public Color BoardColor
     {
-        get => (Color)GetValue();
-        set => SetValue(value);
+        get => (Color)GetValue(_boardColorOriginal);
+        set => SetValue(value, _boardColorOriginal);
     }
 
+    private const int BoardStylusHeightOriginal = 10;
     public int BoardStylusHeight
     {
         get => (int)GetValue();
         set => SetValue(value);
     }
 
+    private const int BoardStylusWidthOriginal = 10;
     public int BoardStylusWidth
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(BoardStylusWidthOriginal);
+        set => SetValue(value, BoardStylusWidthOriginal);
     }
 
+    private const StylusTip BoardStylusTipOriginal = StylusTip.Ellipse;
     public StylusTip BoardStylusTip
     {
-        get => (StylusTip)GetValue();
-        set => SetValue(value);
+        get => (StylusTip)GetValue(BoardStylusTipOriginal);
+        set => SetValue(value, BoardStylusTipOriginal);
     }
 
+    private const bool BoardFitToCurveOriginal = false;
     public bool BoardFitToCurve
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(BoardFitToCurveOriginal);
+        set => SetValue(value, BoardFitToCurveOriginal);
     }
 
+    private const bool BoardIsHighlighterOriginal = false;
     public bool BoardIsHighlighter
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(BoardIsHighlighterOriginal);
+        set => SetValue(value, BoardIsHighlighterOriginal);
     }
 
+    private const int BoardEraserHeightOriginal = 10;
     public int BoardEraserHeight
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(BoardEraserHeightOriginal);
+        set => SetValue(value, BoardEraserHeightOriginal);
     }
 
+    private const int BoardEraserWidthOriginal = 10;
     public int BoardEraserWidth
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(BoardEraserWidthOriginal);
+        set => SetValue(value, BoardEraserWidthOriginal);
     }
 
+    private const StylusTip BoardEraserStylusTipOriginal = StylusTip.Rectangle;
     public StylusTip BoardEraserStylusTip
     {
-        get => (StylusTip)GetValue();
-        set => SetValue(value);
+        get => (StylusTip)GetValue(BoardEraserStylusTipOriginal);
+        set => SetValue(value, BoardEraserStylusTipOriginal);
     }
 
     #endregion
 
-    #region Insert
+    #region Insert TODO: Delete them.
 
     public Color InsertFillColor
     {
-        get => (Color)GetValue();
-        set => SetValue(value);
+        get => (Color)GetValue(Colors.White);
+        set => SetValue(value, Colors.White);
     }
 
     public int LatestFpsImport
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(15);
+        set => SetValue(value, 15);
     }
 
     #endregion
 
     #region Video source
 
+    private const int VideoImporterOriginal = 0;
     public int VideoImporter
     {
-        get => (int)GetValue();
-        set => SetValue(value);
+        get => (int)GetValue(VideoImporterOriginal);
+        set => SetValue(value, VideoImporterOriginal);
     }
 
     #endregion
@@ -703,8 +718,8 @@ public class UserSettings : INotifyPropertyChanged
 
     public string LatestFeedbackEmail
     {
-        get => (string)GetValue();
-        set => SetValue(value);
+        get => (string)GetValue(null);
+        set => SetValue(value, null);
     }
 
     #endregion
@@ -712,72 +727,55 @@ public class UserSettings : INotifyPropertyChanged
 
     #region Options • Application
 
-    public bool SingleInstance
-    {
-        get => (bool)GetValue();
-        set => SetValue(value);
-    }
+    
 
-    public bool StartMinimized
-    {
-        get => (bool)GetValue();
-        set => SetValue(value);
-    }
-
-    /// <summary>
-    /// The homepage of the app:
-    /// 0 - Startup window.
-    /// 1 - Recorder window.
-    /// 2 - Webcam window.
-    /// 3 - Board window.
-    /// 4 - Editor window.
-    /// </summary>
-    public int StartUp
-    {
-        get => (int)GetValue();
-        set => SetValue(value);
-    }
-
+    private const bool NotifyWhileClosingAppOriginal = true;
     public bool NotifyWhileClosingApp
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(NotifyWhileClosingAppOriginal);
+        set => SetValue(value, NotifyWhileClosingAppOriginal);
     }
 
+    private const bool DisableHardwareAccelerationOriginal = false;
     public bool DisableHardwareAcceleration
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(DisableHardwareAccelerationOriginal);
+        set => SetValue(value, DisableHardwareAccelerationOriginal);
     }
 
+    private const bool CheckForTranslationUpdatesOriginal = true;
     public bool CheckForTranslationUpdates
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(CheckForTranslationUpdatesOriginal);
+        set => SetValue(value, CheckForTranslationUpdatesOriginal);
     }
 
+    private const bool CheckForUpdatesOriginal = true;
     public bool CheckForUpdates
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(CheckForUpdatesOriginal);
+        set => SetValue(value, CheckForUpdatesOriginal);
     }
 
+    private const bool PortableUpdateOriginal = false;
     public bool PortableUpdate
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(PortableUpdateOriginal);
+        set => SetValue(value, PortableUpdateOriginal);
     }
 
+    private const bool ForceUpdateAsAdminOriginal = false;
     public bool ForceUpdateAsAdmin
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(ForceUpdateAsAdminOriginal);
+        set => SetValue(value, ForceUpdateAsAdminOriginal);
     }
 
+    private const bool InstallUpdatesOriginal = false;
     public bool InstallUpdates
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(InstallUpdatesOriginal);
+        set => SetValue(value, InstallUpdatesOriginal);
     }
 
     public bool PromptToInstall
@@ -869,7 +867,7 @@ public class UserSettings : INotifyPropertyChanged
 
     public bool RecorderThinMode
     {
-        get => (bool)GetValue(defaultValue: false);
+        get => (bool)GetValue();
         set => SetValue(value);
     }
 
@@ -1055,7 +1053,7 @@ public class UserSettings : INotifyPropertyChanged
 
     public bool GridColorsFollowSystem
     {
-        get => (bool)GetValue(defaultValue: false);
+        get => (bool)GetValue(false);
         set => SetValue(value);
     }
 
@@ -1211,7 +1209,7 @@ public class UserSettings : INotifyPropertyChanged
 
     public bool EditorExtendChrome
     {
-        get => (bool)GetValue(defaultValue: false);
+        get => (bool)GetValue(false);
         set => SetValue(value);
     }
 
@@ -1309,128 +1307,128 @@ public class UserSettings : INotifyPropertyChanged
 
     public Key RecorderShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys RecorderModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key WebcamRecorderShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys WebcamRecorderModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key BoardRecorderShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys BoardRecorderModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key EditorShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys EditorModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key OptionsShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys OptionsModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key ExitShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys ExitModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
 
     public Key StartPauseShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys StartPauseModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key StopShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys StopModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key DiscardShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys DiscardModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public Key FollowShortcut
     {
-        get => (Key)GetValue(defaultValue: Key.None);
+        get => (Key)GetValue(Key.None);
         set => SetValue(value);
     }
 
     public ModifierKeys FollowModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
     public ModifierKeys DisableFollowModifiers
     {
-        get => (ModifierKeys)GetValue(defaultValue: ModifierKeys.None);
+        get => (ModifierKeys)GetValue(ModifierKeys.None);
         set => SetValue(value);
     }
 
@@ -1502,7 +1500,7 @@ public class UserSettings : INotifyPropertyChanged
     //Proxy.
     public ProxyTypes ProxyMode
     {
-        get => (ProxyTypes)GetValue(defaultValue: ProxyTypes.Disabled);
+        get => (ProxyTypes)GetValue(ProxyTypes.Disabled);
         set => SetValue(value);
     }
 
@@ -1600,6 +1598,16 @@ public class UserSettings : INotifyPropertyChanged
         set => SetValue(value);
     }
 
+    #endregion
+
+    #region Editor • Timeline
+
+    public double TimelineHeight
+    {
+        get => (double)GetValue();
+        set => SetValue(value);
+    }
+    
     #endregion
 
     #region Editor • New Animation

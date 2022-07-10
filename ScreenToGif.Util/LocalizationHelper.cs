@@ -44,7 +44,7 @@ public static class LocalizationHelper
         #region Selected Culture
 
         //Search for the specified culture.
-        var requestedCulture = $"/Resources/Localization/StringResources.{culture}.xaml";
+        var requestedCulture = $"/Resources/Localizations/StringResources.{culture}.xaml";
         var requestedResource = dictionaryList.FirstOrDefault(d => d.Source?.OriginalString == requestedCulture);
 
         #endregion
@@ -55,7 +55,7 @@ public static class LocalizationHelper
         while (requestedResource == null && !string.IsNullOrEmpty(culture))
         {
             culture = CultureInfo.GetCultureInfo(culture).Parent.Name;
-            requestedCulture = $"/Resources/Localization/StringResources.{culture}.xaml";
+            requestedCulture = $"/Resources/Localizations/StringResources.{culture}.xaml";
             requestedResource = dictionaryList.FirstOrDefault(d => d.Source?.OriginalString == requestedCulture);
         }
 
@@ -92,7 +92,7 @@ public static class LocalizationHelper
         if (culture.StartsWith("en"))
             return;
 
-        var englishResource = dictionaryList.FirstOrDefault(d => d.Source?.OriginalString == "/Resources/Localization/StringResources.en.xaml");
+        var englishResource = dictionaryList.FirstOrDefault(d => d.Source?.OriginalString == "/Resources/Localizations/StringResources.en.xaml");
 
         if (englishResource != null)
         {

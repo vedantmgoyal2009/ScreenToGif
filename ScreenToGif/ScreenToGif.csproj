@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -152,8 +152,10 @@
     <Description>Screen, webcam and sketchboard recorder, with integrated editor!</Description>
     <SignAssembly>False</SignAssembly>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScreenToGif.Controls\ScreenToGif.Controls.csproj" />
     <ProjectReference Include="..\ScreenToGif.ViewModel\ScreenToGif.ViewModel.csproj" />
   </ItemGroup>
   <ItemGroup>

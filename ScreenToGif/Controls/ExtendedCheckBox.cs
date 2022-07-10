@@ -62,7 +62,8 @@ public class ExtendedCheckBox : CheckBox
 
     public void RaiseCheckedChangedEvent()
     {
-        if (CheckedChangedEvent == null) return;
+        if (CheckedChangedEvent == null)
+            return;
 
         var newEventArgs = new RoutedEventArgs(CheckedChangedEvent);
         RaiseEvent(newEventArgs);

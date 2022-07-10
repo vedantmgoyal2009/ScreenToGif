@@ -22,6 +22,7 @@ using System.Windows.Shell;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using ScreenToGif.Controls;
+using ScreenToGif.Controls.Recorder;
 using ScreenToGif.ImageUtil;
 using ScreenToGif.Model;
 using ScreenToGif.Util;
@@ -55,6 +56,7 @@ using ScreenToGif.Util.Settings;
 using ScreenToGif.ViewModel.ExportPresets;
 using ScreenToGif.ViewModel.ExportPresets.Image;
 using ScreenToGif.ViewModel.ExportPresets.Other;
+using ScreenToGif.ViewModel.Editor;
 
 namespace ScreenToGif.Windows
 {
@@ -581,7 +583,7 @@ namespace ScreenToGif.Windows
             Encoder.Minimize();
             ClosePanel(removeEvent: true);
 
-            App.MainViewModel.OpenRecorder.Execute(this);
+            App.MainViewModelOld.OpenRecorder.Execute(this);
         }
 
         private void NewWebcamRecording_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -590,7 +592,7 @@ namespace ScreenToGif.Windows
             Pause();
             ClosePanel(removeEvent: true);
 
-            App.MainViewModel.OpenWebcamRecorder.Execute(this);
+            App.MainViewModelOld.OpenWebcamRecorder.Execute(this);
         }
 
         private void NewBoardRecording_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -599,7 +601,7 @@ namespace ScreenToGif.Windows
             Pause();
             ClosePanel(removeEvent: true);
 
-            App.MainViewModel.OpenBoardRecorder.Execute(this);
+            App.MainViewModelOld.OpenBoardRecorder.Execute(this);
         }
 
         private void NewProject_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -621,7 +623,7 @@ namespace ScreenToGif.Windows
 
             using (var stream = new FileStream(fileName, FileMode.Create))
             {
-                var bitmapSource = ImageHelper.CreateEmtpyBitmapSource(UserSettings.All.NewAnimationColor, UserSettings.All.NewAnimationWidth, UserSettings.All.NewAnimationHeight, this.Dpi(), PixelFormats.Indexed1);
+                var bitmapSource = ImageHelper.CreateEmtpyBitmapSource(UserSettings.All.NewAnimationColor, UserSettings.All.NewAnimationWidth, UserSettings.All.NewAnimationHeight, this.GetVisualDpi(), PixelFormats.Indexed1);
 
                 if (bitmapSource.Format != PixelFormats.Bgra32)
                     bitmapSource = new FormatConvertedBitmap(bitmapSource, PixelFormats.Bgra32, null, 0);
@@ -893,7 +895,7 @@ namespace ScreenToGif.Windows
                 var size = Project.Frames[0].Path.SizeOf();
                 preset.Width = size.Width;
                 preset.Height = size.Height;
-                preset.Scale = this.Scale();
+                preset.Scale = this.GetVisualScale();
 
                 if (await Task.Run(() => SaveAsync(preset)))
                     ClosePanel();
@@ -1298,7 +1300,7 @@ namespace ScreenToGif.Windows
             if (size.Width < 2)
                 return;
 
-            var scale = this.Scale();
+            var scale = this.GetVisualScale();
 
             var borderHeight = ActualHeight - MainGrid.ActualHeight;
             var borderWidth = ActualWidth - MainGrid.ActualWidth;
@@ -2063,7 +2065,7 @@ namespace ScreenToGif.Windows
             BottomCropNumericUpDown.Value = (int)_cropAdorner.ClipRectangle.Bottom;
             RightCropNumericUpDown.Value = (int)_cropAdorner.ClipRectangle.Right;
 
-            var scale = this.Scale();
+            var scale = this.GetVisualScale();
             CropSizeTextBlock.Text = $"{(int)Math.Round(_cropAdorner.ClipRectangle.Width * scale)} × {(int)Math.Round(_cropAdorner.ClipRectangle.Height * scale)}";
 
             _resizing = false;
@@ -2487,7 +2489,7 @@ namespace ScreenToGif.Windows
             Pause();
             ShowPanel(PanelTypes.Watermark, LocalizationHelper.Get("S.Editor.Image.Watermark", true), "Vector.Watermark", ApplyWatermarkButton_Click);
 
-            TopWatermarkDoubleUpDown.Scale = LeftWatermarkDoubleUpDown.Scale = this.Scale();
+            TopWatermarkDoubleUpDown.Scale = LeftWatermarkDoubleUpDown.Scale = this.GetVisualScale();
             TopWatermarkDoubleUpDown.Value = UserSettings.All.WatermarkTop;
             LeftWatermarkDoubleUpDown.Value = UserSettings.All.WatermarkLeft;
 
@@ -2729,7 +2731,7 @@ namespace ScreenToGif.Windows
             Cursor = Cursors.AppStarting;
 
             var region = ObfuscateOverlaySelectControl.Selected;
-            var scale = this.Scale();
+            var scale = this.GetVisualScale();
             var selected = await Task.Run(() => ObfuscateAsync(region, scale, false));
 
             ShowHint("S.Hint.Overlay");
@@ -2768,7 +2770,7 @@ namespace ScreenToGif.Windows
             geometry = Geometry.Combine(geometry, rectangle, GeometryCombineMode.Xor, null);
 
             //Since the geometry is bound to the screen, it needs to be scaled to follow the image scale.
-            geometry.Transform = new ScaleTransform(this.Scale() / ZoomBoxControl.ImageScale, this.Scale() / ZoomBoxControl.ImageScale);
+            geometry.Transform = new ScaleTransform(this.GetVisualScale() / ZoomBoxControl.ImageScale, this.GetVisualScale() / ZoomBoxControl.ImageScale);
 
             var clippedImage = new Image
             {
@@ -4603,7 +4605,7 @@ namespace ScreenToGif.Windows
 
                     AddCropToElement(CropAreaGrid);
 
-                    BottomCropNumericUpDown.Scale = TopCropNumericUpDown.Scale = RightCropNumericUpDown.Scale = LeftCropNumericUpDown.Scale = this.Scale();
+                    BottomCropNumericUpDown.Scale = TopCropNumericUpDown.Scale = RightCropNumericUpDown.Scale = LeftCropNumericUpDown.Scale = this.GetVisualScale();
 
                     BottomCropNumericUpDown.Value = (int)(CaptionOverlayGrid.Height - (CaptionOverlayGrid.Height * .1));
                     TopCropNumericUpDown.Value = (int)(CaptionOverlayGrid.Height * .1);
@@ -4676,7 +4678,7 @@ namespace ScreenToGif.Windows
                     ShowHint("S.Hint.ApplySelectedOrAll", true);
                     break;
                 case PanelTypes.Obfuscate:
-                    ObfuscateOverlaySelectControl.Scale = this.Scale();
+                    ObfuscateOverlaySelectControl.Scale = this.GetVisualScale();
                     ObfuscateOverlaySelectControl.Retry();
                     ObfuscateGrid.Visibility = Visibility.Visible;
                     ShowHint("S.Hint.ApplySelected", true);
@@ -4827,7 +4829,7 @@ namespace ScreenToGif.Windows
                 return false;
 
             //The catch here is to get the closest monitor from current Top/Left point.
-            var monitors = MonitorHelper.AllMonitorsScaled(this.Scale());
+            var monitors = MonitorHelper.AllMonitorsScaled(this.GetVisualScale());
             var closest = monitors.FirstOrDefault(x => x.Bounds.Contains(new Point((int)left, (int)top))) ?? monitors.FirstOrDefault(x => x.IsPrimary);
 
             if (closest == null)
@@ -4851,7 +4853,7 @@ namespace ScreenToGif.Windows
 
             if (top > int.MaxValue || top < int.MinValue || left > int.MaxValue || left < int.MinValue || width > int.MaxValue || width < 0 || height > int.MaxValue || height < 0)
             {
-                var desc = $"On load: {onLoad}\nScale: {this.Scale()}\n\n" +
+                var desc = $"On load: {onLoad}\nScale: {this.GetVisualScale()}\n\n" +
                            $"Screen: {closest.AdapterName}\nBounds: {closest.Bounds}\n\nTopLeft: {top}x{left}\nWidthHeight: {width}x{height}\n\n" +
                            $"TopLeft Settings: {UserSettings.All.EditorTop}x{UserSettings.All.EditorLeft}\nWidthHeight Settings: {UserSettings.All.EditorWidth}x{UserSettings.All.EditorHeight}";
                 LogWriter.Log("Wrong Editor window sizing", desc);
@@ -6418,7 +6420,7 @@ namespace ScreenToGif.Windows
             #region Images
 
             //var size = Dispatcher.Invoke(() => FrameSize);
-            var dpi = Dispatcher.Invoke(this.Dpi);
+            var dpi = Dispatcher.Invoke(this.GetVisualDpi);
 
             var previousImage = Project.Frames[selected].Path.SourceFrom();
             var nextImage = UserSettings.All.FadeToType == FadeModes.NextFrame ? Project.Frames[Project.Frames.Count - 1 == selected ? 0 : selected + 1].Path.SourceFrom() :

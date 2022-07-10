@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
-using ScreenToGif.Native.Helpers;
 using ScreenToGif.Util;
 using ScreenToGif.Util.Extensions;
 using ScreenToGif.Util.Native;
@@ -54,7 +53,7 @@ public partial class Startup : INotification
 
     private void Update_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-        App.MainViewModel?.PromptUpdate.Execute(null);
+        App.MainViewModelOld?.PromptUpdate.Execute(null);
     }
 
     private void System_DisplaySettingsChanged(object sender, EventArgs e)
@@ -92,7 +91,7 @@ public partial class Startup : INotification
             return false;
 
         //The catch here is to get the closest monitor from current Top/Left point. 
-        var monitors = MonitorHelper.AllMonitorsScaled(this.Scale());
+        var monitors = MonitorHelper.AllMonitorsScaled(this.GetVisualScale());
         var closest = monitors.FirstOrDefault(x => x.Bounds.Contains(new Point((int)left, (int)top))) ?? monitors.FirstOrDefault(x => x.IsPrimary);
 
         if (closest == null)
@@ -116,7 +115,7 @@ public partial class Startup : INotification
 
         if (top > int.MaxValue || top < int.MinValue || left > int.MaxValue || left < int.MinValue || width > int.MaxValue || width < 0 || height > int.MaxValue || height < 0)
         {
-            var desc = $"On load: {onLoad}\nScale: {this.Scale()}\n\n" +
+            var desc = $"On load: {onLoad}\nScale: {this.GetVisualScale()}\n\n" +
                        $"Screen: {closest.AdapterName}\nBounds: {closest.Bounds}\n\nTopLeft: {top}x{left}\nWidthHeight: {width}x{height}\n\n" +
                        $"TopLeft Settings: {UserSettings.All.StartupTop}x{UserSettings.All.StartupLeft}\nWidthHeight Settings: {UserSettings.All.StartupWidth}x{UserSettings.All.StartupHeight}";
             LogWriter.Log("Wrong Startup window sizing", desc);
