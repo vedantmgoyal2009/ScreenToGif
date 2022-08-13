@@ -9,6 +9,9 @@ public static class ThemeHelper
 {
     public static void SelectTheme(AppThemes theme = AppThemes.Light)
     {
+        //TODO: Remove
+        //theme = AppThemes.FollowSystem;
+
         if (theme == AppThemes.FollowSystem)
             theme = IsSystemUsingDarkTheme() ? AppThemes.Dark : AppThemes.Light;
 
@@ -29,12 +32,6 @@ public static class ThemeHelper
 
         Application.Current.Resources.MergedDictionaries.Remove(res);
         Application.Current.Resources.MergedDictionaries.Add(res);
-
-        //Forces the refresh of the vectors with dynamic resources inside.
-        var glyphs = Application.Current.Resources.MergedDictionaries.FirstOrDefault(f => f.Source != null && f.Source.ToString().EndsWith("Resources/Glyphs.xaml"));
-
-        Application.Current.Resources.MergedDictionaries.Remove(glyphs);
-        Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new System.Uri("Resources/Glyphs.xaml", System.UriKind.RelativeOrAbsolute) });
 
         //TODO: Update the backdrop for all opened windows.
         //TODO: Update the theme for the notification icon.
@@ -73,6 +70,9 @@ public static class ThemeHelper
     public static AppThemes GetActiveTheme()
     {
         var theme = UserSettings.All.MainTheme;
+
+        //TODO: Remove
+        //theme = AppThemes.FollowSystem;
 
         if (theme == AppThemes.FollowSystem)
             theme = IsSystemUsingDarkTheme() ? AppThemes.Dark : AppThemes.Light;

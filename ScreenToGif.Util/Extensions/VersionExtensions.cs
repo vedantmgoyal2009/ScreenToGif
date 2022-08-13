@@ -4,7 +4,10 @@ public static class VersionExtensions
 {
     public static string ToStringShort(this Version version)
     {
-        var result = $"{version.Major}.{version.Minor}";
+        var result = $"{version.Major}";
+
+        if (version.Minor > 0)
+            result += ".{ version.Minor}";
 
         if (version.Build > 0)
             result += $".{version.Build}";

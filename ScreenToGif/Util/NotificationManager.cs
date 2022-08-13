@@ -12,12 +12,12 @@ internal class NotificationManager
     public static List<Notification> Notifications { get; set; } = new();
 
 
-    internal static void AddNotification(string text, StatusType kind, string tag, ICommand command = null, object commandParameter = null)
+    internal static void AddNotification(string text, StatusTypes kind, string tag, ICommand command = null, object commandParameter = null)
     {
         AddNotification(text, kind, tag, () => { command?.Execute(commandParameter); });
     }
 
-    internal static void AddNotification(string text, StatusType kind, string tag, Action action = null)
+    internal static void AddNotification(string text, StatusTypes kind, string tag, Action action = null)
     {
         var rand = new Random(Notifications.Count);
         var id = rand.Next();
@@ -74,7 +74,7 @@ internal class Notification
 
     public string Text { get; set; }
 
-    public StatusType Kind { get; set; }
+    public StatusTypes Kind { get; set; }
 
     public string Tag { get; set; }
 

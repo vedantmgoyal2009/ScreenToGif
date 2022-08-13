@@ -1,6 +1,6 @@
 namespace ScreenToGif.Domain.Enums;
 
-public enum StatusType : int
+public enum StatusTypes : int
 {
     None = 0,
     Info,

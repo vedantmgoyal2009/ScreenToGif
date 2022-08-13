@@ -17,7 +17,7 @@ public static class Arguments
     /// The path of the files passed as arguments to this executable.
     /// Only files that exists are not ignored.
     /// </summary>
-    public static List<string> FileNames { get; set; } = new List<string>();
+    public static List<string> FileNames { get; set; } = new();
 
     /// <summary>
     /// True if this instance should not try to display anything, besides the download window.
@@ -52,7 +52,7 @@ public static class Arguments
     /// <summary>
     /// The window to open with the -open command.
     /// </summary>
-    public static int WindownToOpen { get; set; }
+    public static int WindowToOpen { get; set; }
 
     /// <summary>
     /// The capture region.
@@ -183,41 +183,41 @@ public static class Arguments
                         case "m":
                         case "min":
                         case "minimized":
-                            WindownToOpen = -1;
+                            WindowToOpen = -1;
                             break;
 
                         case "up":
                         case "start":
                         case "startup":
-                            WindownToOpen = 0;
+                            WindowToOpen = 0;
                             break;
 
                         case "s":
                         case "screen":
                         case "screen-recorder":
-                            WindownToOpen = 1;
+                            WindowToOpen = 1;
                             break;
 
                         case "w":
                         case "webcam":
                         case "webcam-recorder":
-                            WindownToOpen = 2;
+                            WindowToOpen = 2;
                             break;
 
                         case "b":
                         case "board":
                         case "board-recorder":
-                            WindownToOpen = 3;
+                            WindowToOpen = 3;
                             break;
 
                         case "e":
                         case "editor":
-                            WindownToOpen = 4;
+                            WindowToOpen = 4;
                             break;
 
                         case "o":
                         case "options":
-                            WindownToOpen = 5;
+                            WindowToOpen = 5;
                             break;
 
                         default:
@@ -305,7 +305,7 @@ public static class Arguments
     public static void ClearAutomationArgs()
     {
         Open = false;
-        WindownToOpen = 0;
+        WindowToOpen = 0;
         Region = Rect.Empty;
         Frequency = 0;
         FrequencyType = null;

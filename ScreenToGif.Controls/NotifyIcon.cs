@@ -456,7 +456,7 @@ public class NotifyIcon : FrameworkElement, IDisposable
         //For some reason, the context menu of the systray icon is not updating its style.
         NotifyToolTipElement.Background = ContextMenu.Background = TryFindResource("Element.Background") as SolidColorBrush;
             
-        foreach (var menuItem in ContextMenu.Items.OfType<ExtendedMenuItem>())
+        foreach (var menuItem in ContextMenu.Items.OfType<ExMenuItem>())
         {
             menuItem.Foreground = TryFindResource("Element.Foreground.Medium") as SolidColorBrush;
 

@@ -7,7 +7,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="4,0,0,0"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource Style.FocusVisual}"/>
@@ -21,33 +21,33 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border x:Name="checkBoxBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" CornerRadius="3">
+                        <Border x:Name="CheckBorder" Height="20" Width="20" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" CornerRadius="3">
                             <Grid x:Name="markGrid">
-                                <Path x:Name="optionMark" Data="M0.00195312 3.49805C0.00195312 3.36133 0.0507812 3.24414 0.148438 3.14648C0.246094 3.04883 0.363281 3 0.5 3C0.636719 3 0.753906 3.04883 0.851562 3.14648L3.5 5.79492L9.14844 0.146484C9.24609 0.0488281 9.36328 0 9.5 0C9.57031 0 9.63477 0.0136719 9.69336 0.0410156C9.75586 0.0644531 9.80859 0.0996094 9.85156 0.146484C9.89844 0.189453 9.93555 0.242187 9.96289 0.304688C9.99023 0.363281 10.0039 0.427734 10.0039 0.498047C10.0039 0.634766 9.95312 0.753906 9.85156 0.855469L3.85156 6.85547C3.75391 6.95312 3.63672 7.00195 3.5 7.00195C3.36328 7.00195 3.24609 6.95312 3.14844 6.85547L0.148438 3.85547C0.0507812 3.75781 0.00195312 3.63867 0.00195312 3.49805Z" Fill="{DynamicResource Element.Glyph}" Margin="1" Opacity="0" Stretch="None"/>
-                                <Path x:Name="indeterminateMark" Data="M0.501953 1.49805C0.431641 1.49805 0.365234 1.48633 0.302734 1.46289C0.244141 1.43555 0.191406 1.40039 0.144531 1.35742C0.101562 1.31055 0.0664062 1.25781 0.0390625 1.19922C0.0117188 1.13672 -0.00195312 1.07031 -0.00195312 1C-0.00195312 0.929688 0.0117188 0.865234 0.0390625 0.806641C0.0664062 0.744141 0.101562 0.691406 0.144531 0.648438C0.191406 0.601562 0.244141 0.566406 0.302734 0.542969C0.365234 0.515625 0.431641 0.501953 0.501953 0.501953H7.49805C7.56836 0.501953 7.63281 0.515625 7.69141 0.542969C7.75391 0.566406 7.80664 0.601562 7.84961 0.648438C7.89648 0.691406 7.93359 0.744141 7.96094 0.806641C7.98828 0.865234 8.00195 0.929688 8.00195 1C8.00195 1.07031 7.98828 1.13672 7.96094 1.19922C7.93359 1.25781 7.89648 1.31055 7.84961 1.35742C7.80664 1.40039 7.75391 1.43555 7.69141 1.46289C7.63281 1.48633 7.56836 1.49805 7.49805 1.49805H0.501953Z" Fill="{DynamicResource Element.Glyph}" Margin="1" Opacity="0" Stretch="None"/>
-                                <!--<Rectangle x:Name="indeterminateMark" Fill="{DynamicResource Element.Glyph}" Margin="2" Opacity="0"/>-->
+                                <Path x:Name="CheckPath" Data="m0 3.5q0-0.2 0.1-0.4 0.2-0.1 0.4-0.1 0.2 0 0.4 0.1l2.6 2.7 5.6-5.7q0.2-0.1 0.4-0.1 0.1 0 0.2 0 0.1 0.1 0.2 0.1 0 0.1 0.1 0.2 0 0.1 0 0.2 0 0.2-0.1 0.4l-6 6q-0.2 0.1-0.4 0.1-0.2 0-0.4-0.1l-3-3q-0.1-0.2-0.1-0.4z"
+                                      Fill="{DynamicResource Brush.CheckBox.Glyph.Checked}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2" Opacity="0" Stretch="None"/>
                             </Grid>
                         </Border>
 
-                        <TextBlock Grid.Column="1" x:Name="MainTextBlock" Focusable="False" TextWrapping="{TemplateBinding TextWrapping}" Margin="{TemplateBinding Padding}"
+                        <TextBlock Grid.Column="1" x:Name="MainTextBlock" Focusable="False" TextWrapping="{TemplateBinding TextWrapping}" Margin="8,0,0,0"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Padding="0,-1,0,0">
-                            <Run Text="{TemplateBinding Text}"/>
+                            <Run Text="{TemplateBinding Text}" Foreground="{TemplateBinding Foreground}"/>
                             <Run x:Name="MarginRun" Text=" "/>
-                            <Run Text="{TemplateBinding Info}" Foreground="{DynamicResource Element.Foreground.Gray150}"/>
+                            <Run Text="{TemplateBinding Info}" Foreground="{DynamicResource Brush.Foreground.Disabled}"/>
                         </TextBlock>
                     </Grid>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="HasContent" Value="True">
+                        <Trigger Property="Text" Value="{x:Null}">
                             <Setter Property="FocusVisualStyle">
                                 <Setter.Value>
                                     <Style>
                                         <Setter Property="Control.Template">
                                             <Setter.Value>
                                                 <ControlTemplate>
-                                                    <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="True" Stroke="{DynamicResource Element.Foreground}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                    <Rectangle Margin="-3" Width="28" Height="28" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                               SnapsToDevicePixels="True" Stroke="{DynamicResource Brush.FocusVisual}" StrokeThickness="3" RadiusX="4" RadiusY="4"/>
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>
@@ -61,29 +61,124 @@
                         <Trigger Property="Text" Value="{x:Null}">
                             <Setter TargetName="MarginRun" Property="Text" Value=""/>
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="checkBoxBorder" Value="{DynamicResource Element.Background.Hover}"/>
-                            <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{DynamicResource Element.Border.Hover}"/>
-                            <Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource Element.Glyph.Hover}"/>
-                            <Setter Property="Fill" TargetName="indeterminateMark" Value="{DynamicResource Element.Glyph.Hover}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="checkBoxBorder" Value="{DynamicResource Element.Background.Pressed}"/>
-                            <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{DynamicResource Element.Border.Pressed}"/>
-                            <Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource Element.Glyph.Pressed}"/>
-                            <Setter Property="Fill" TargetName="indeterminateMark" Value="{DynamicResource Element.Glyph.Pressed}"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
-                            <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
-                        </Trigger>
+
                         <Trigger Property="IsChecked" Value="{x:Null}">
-                            <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
-                            <Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+                            <Setter TargetName="CheckPath" Property="Data" Value="m0.5 1.5q-0.1 0-0.2 0-0.1-0.1-0.2-0.1 0-0.1-0.1-0.2 0-0.1 0-0.2 0-0.1 0-0.2 0.1-0.1 0.1-0.2 0.1 0 0.2-0.1 0.1 0 0.2 0h7q0.1 0 0.2 0 0.1 0.1 0.1 0.1 0.1 0.1 0.2 0.2 0 0.1 0 0.2 0 0.1 0 0.2-0.1 0.1-0.2 0.2 0 0-0.1 0.1-0.1 0-0.2 0z"/>
+                            <Setter TargetName="CheckPath" Property="Opacity" Value="1"/>
+
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Checked}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Checked}"/>
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.7"/>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckPath" Property="Opacity" Value="1"/>
+
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Checked}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Checked}"/>
                         </Trigger>
+
+                        <!--Hover-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Hover}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Hover}"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Hover}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Checked.Hover}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Checked.Hover}"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Hover}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Checked.Hover}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Checked.Hover}"/>
+                        </MultiTrigger>
+
+                        <!--Pressed-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Pressed}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Pressed}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Pressed}"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Pressed}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Checked.Pressed}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Checked.Pressed}"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsPressed" Value="True"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Pressed}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Checked.Pressed}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Checked.Pressed}"/>
+                        </MultiTrigger>
+
+                        <!--Disabled-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsEnabled" Value="False"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Disabled}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Disabled}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground.Disabled}"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsEnabled" Value="False"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Disabled}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Disabled}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Disabled}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground.Disabled}"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsEnabled" Value="False"/>
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="CheckPath" Property="Fill" Value="{DynamicResource Brush.CheckBox.Glyph.Disabled}"/>
+                            <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.Background.Disabled}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.Border.Disabled}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Foreground.Disabled}"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

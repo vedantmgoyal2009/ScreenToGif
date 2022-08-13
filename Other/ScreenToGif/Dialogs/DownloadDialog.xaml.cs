@@ -5,6 +5,10 @@ namespace ScreenToGif.Dialogs;
 
 public partial class DownloadDialog : ExWindow
 {
+    public bool WasPromptedManually { get; set; }
+
+    public bool RunAfterwards { get; set; }
+
     public DownloadDialog()
     {
         InitializeComponent();

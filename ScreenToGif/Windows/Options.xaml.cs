@@ -761,7 +761,7 @@ public partial class Options : Window, INotification
         if (App.NotifyIcon == null || App.NotifyIcon.ContextMenu == null)
             return;
 
-        var items = App.NotifyIcon.ContextMenu.Items.OfType<ExtendedMenuItem>();
+        var items = App.NotifyIcon.ContextMenu.Items.OfType<ExMenuItem>();
 
         foreach (var item in items)
             item.Header = LocalizationHelper.Get((string) item.Tag);

@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ScreenToGif;
@@ -16,7 +17,7 @@ public partial class App
 {
     internal static bool CanOpenRecorder(object sender)
     {
-        return Current?.Windows.OfType<Window>().All(a => a is not BaseRecorder) ?? false;
+        return Current?.Windows.OfType<Window>().All(a => a is not BaseRecorder) ?? true;
     }
 
     internal static void TryOpeningScreenRecorder(bool forGlobal = false)
@@ -29,7 +30,8 @@ public partial class App
 
     internal static void OpenScreenRecorder(object parameter)
     {
-
+        ErrorDialog.ShowStatic("AAAA" , "BBBB");
+        //Open Recorder, wait for callback.
     }
 
     internal static void TryOpeningWebcamRecorder(bool forGlobal = false)
@@ -42,7 +44,7 @@ public partial class App
 
     internal static void OpenWebcamRecorder(object parameter)
     {
-
+        //Open Recorder, wait for callback.
     }
 
     internal static void TryOpeningBoardRecorder(bool forGlobal = false)
@@ -55,7 +57,7 @@ public partial class App
 
     internal static void OpenBoardRecorder(object parameter)
     {
-
+        //Open Recorder, wait for callback.
     }
 
     internal static void Launch(object paramater)
@@ -203,6 +205,61 @@ public partial class App
         Application.Current.Shutdown(69);
     }
 
+    internal static async void ClearCache(object parameter)
+    {
+        await Task.Factory.StartNew(() =>
+        {
+            //Run if: Not already running (Check outside of here, if configured to run)
+            //Use StorageHelper methods.
+            //Update viewModel.
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(UserSettings.All.TemporaryFolderResolved))
+                    return;
+
+                ViewModel.IsClearingCache = true;
+
+                StorageHelper.PurgeCache(UserSettings.All.AutomaticCleanUpDays);
+                
+                //Clear updates cache.
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Log(ex, "Cache clean-up task");
+            }
+            finally
+            {
+                ViewModel.IsClearingCache = false;
+
+                //Check disk space.
+            }
+
+            //App.ViewModel.IsClearingCache = true;
+
+            //try
+            //{
+            //    if (!UserSettings.All.AutomaticCleanUp || Global.IsCurrentlyDeletingFiles || string.IsNullOrWhiteSpace(UserSettings.All.TemporaryFolderResolved))
+            //        return;
+
+            //    Global.IsCurrentlyDeletingFiles = true;
+
+            //    ClearRecordingCache();
+            //    ClearUpdateCache();
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogWriter.Log(ex, "Automatic clean up");
+            //}
+            //finally
+            //{
+            //    Global.IsCurrentlyDeletingFiles = false;
+            //    CheckDiskSpace();
+            //}
+
+        }, TaskCreationOptions.LongRunning);
+    }
+
     //TODO: Move to other file.
     private static void CloseOrNot()
     {
@@ -250,13 +307,13 @@ public partial class App
             if (UserSettings.All.PromptToInstall || !UserSettings.All.InstallUpdates || string.IsNullOrWhiteSpace(ViewModel.UpdaterViewModel.ActivePath) || ViewModel.UpdaterViewModel.MustDownloadManually)
             {
                 //TODO: Download dialog.
-                //var download = new DownloadDialog { WasPromptedManually = wasPromptedManually };
-                //var result = download.ShowDialog();
+                var download = new DownloadDialog { WasPromptedManually = wasPromptedManually };
+                var result = download.ShowDialog();
 
-                //if (!result.HasValue || !result.Value)
-                //    return false;
+                if (!result.HasValue || !result.Value)
+                    return false;
 
-                //runAfterwards = download.RunAfterwards;
+                runAfterwards = download.RunAfterwards;
             }
 
             //Only try to install if the update was downloaded.

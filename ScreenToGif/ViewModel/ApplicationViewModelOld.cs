@@ -662,7 +662,7 @@ internal class ApplicationViewModelOld : ApplicationBaseViewModel
             //If there's less than 2GB left.
             if (drive.AvailableFreeSpace < 2_000_000_000)
                 Application.Current.Dispatcher?.Invoke(() => NotificationManager.AddNotification(LocalizationHelper.GetWithFormat("S.Editor.Warning.LowSpace", Math.Round(Global.AvailableDiskSpacePercentage, 2)),
-                    StatusType.Warning, "disk", () => App.MainViewModelOld.OpenOptions.Execute(Options.TempFilesIndex)));
+                    StatusTypes.Warning, "disk", () => App.MainViewModelOld.OpenOptions.Execute(Options.TempFilesIndex)));
             else
                 Application.Current.Dispatcher?.Invoke(() => NotificationManager.RemoveNotification(r => r.Tag == "disk"));
         }
@@ -813,7 +813,7 @@ internal class ApplicationViewModelOld : ApplicationBaseViewModel
             ParseDownloadUrls(release, version);
 
             Application.Current.Dispatcher?.Invoke(() => NotificationManager.AddNotification(string.Format(LocalizationHelper.Get("S.Updater.NewRelease.Info"),
-                Global.UpdateAvailable.Version), StatusType.Update, "update", PromptUpdate));
+                Global.UpdateAvailable.Version), StatusTypes.Update, "update", PromptUpdate));
 
             //Download update to be installed when the app closes.
             if (UserSettings.All.InstallUpdates && Global.UpdateAvailable.HasDownloadLink)
@@ -999,7 +999,7 @@ internal class ApplicationViewModelOld : ApplicationBaseViewModel
 
             //With Fosshub, the download must be manual.
             Application.Current.Dispatcher?.Invoke(() => NotificationManager.AddNotification(string.Format(LocalizationHelper.Get("S.Updater.NewRelease.Info"), Global.UpdateAvailable.Version),
-                StatusType.Update, "update", PromptUpdate));
+                StatusTypes.Update, "update", PromptUpdate));
         }
         catch (Exception ex)
         {

@@ -15,9 +15,13 @@
     <s:String x:Key="S.Dialog.Error.Dismiss">Dismiss</s:String>
     <s:String x:Key="S.Dialog.Error.SendFeedback">Send Feedback</s:String>
 
+    <!--TODO-->
     <s:String x:Key="S.Dialog.Exception.Header">Exception details</s:String>
     <s:String x:Key="S.Dialog.Exception.Copy">Copy Details</s:String>
-    
+
+
+
+
     <!--General-->
     <s:String x:Key="S.Ok">Ok</s:String>
     <s:String x:Key="S.Back">Back</s:String>

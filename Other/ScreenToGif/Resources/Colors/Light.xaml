@@ -3,6 +3,7 @@
 
     <SolidColorBrush x:Key="Brush.Accent" Color="#005FB8"/>
     <SolidColorBrush x:Key="Brush.Foreground" Color="#e4000000"/>
+    <SolidColorBrush x:Key="Brush.Foreground.Disabled" Color="#5c000000"/>
     <SolidColorBrush x:Key="Brush.FocusVisual" Color="#e4000000"/>
 
     <SolidColorBrush x:Key="Brush.Window.Background" Color="#F3F3F3"/>
@@ -64,15 +65,16 @@
     <SolidColorBrush x:Key="Brush.CheckBox.Border.Pressed" Color="#37000000"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked" Color="#005FB8"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked" Color="#005FB8"/>
-    <SolidColorBrush x:Key="Brush.CheckBox.Glyph" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Checked" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked.Hover" Color="#e6005fb8"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked.Hover" Color="#e6005fb8"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Hover" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked.Pressed" Color="#cc005fb8"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked.Pressed" Color="#cc005fb8"/>
     <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Pressed" Color="#b3ffffff"/>
-
-    <!--Missing Disabled, Dark theme-->
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Disabled" Color="#37000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Disabled" Color="#37000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Disabled" Color="#FFFFFF"/>
 
     <!--ContextMenu-->
     <SolidColorBrush x:Key="Brush.ContextMenu.Background" Color="#F9F9F9"/>
@@ -92,4 +94,9 @@
     <SolidColorBrush x:Key="Brush.Hyperlink.Background.Pressed" Color="#06000000"/>
     <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Pressed" Color="#005FB8"/>
     <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Disabled" Color="#5c000000"/>
+
+    <!--ScrollBar-->
+    <SolidColorBrush x:Key="Brush.ScrollBar.Foreground" Color="#72000000"/>
+    <SolidColorBrush x:Key="Brush.ScrollBar.Background" Color="#d9fcfcfc"/>
+
 </ResourceDictionary>

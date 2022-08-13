@@ -23,7 +23,7 @@ public class StatusBand : Control
 
     public static readonly DependencyProperty IdProperty = DependencyProperty.Register(nameof(Id), typeof(int), typeof(StatusBand), new FrameworkPropertyMetadata(0));
 
-    public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(nameof(Type), typeof(StatusType), typeof(StatusBand), new FrameworkPropertyMetadata(StatusType.None));
+    public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(nameof(Type), typeof(StatusTypes), typeof(StatusBand), new FrameworkPropertyMetadata(StatusTypes.None));
 
     public static readonly DependencyProperty ReasonProperty = DependencyProperty.Register(nameof(Reason), typeof(StatusReasons), typeof(StatusBand), new FrameworkPropertyMetadata(StatusReasons.None));
 
@@ -47,9 +47,9 @@ public class StatusBand : Control
     }
 
     [Bindable(true), Category("Common")]
-    public StatusType Type
+    public StatusTypes Type
     {
-        get => (StatusType)GetValue(TypeProperty);
+        get => (StatusTypes)GetValue(TypeProperty);
         set => SetValue(TypeProperty, value);
     }
 
@@ -119,7 +119,7 @@ public class StatusBand : Control
 
     #region Methods
 
-    public void Show(StatusType type, string text, Action action = null)
+    public void Show(StatusTypes type, string text, Action action = null)
     {
         Action = action;
 
@@ -139,22 +139,22 @@ public class StatusBand : Control
 
     public void Update(string text, Action action = null)
     {
-        Show(StatusType.Update, text, action);
+        Show(StatusTypes.Update, text, action);
     }
 
     public void Info(string text, Action action = null)
     {
-        Show(StatusType.Info, text, action);
+        Show(StatusTypes.Info, text, action);
     }
 
     public void Warning(string text, Action action = null)
     {
-        Show(StatusType.Warning, text, action);
+        Show(StatusTypes.Warning, text, action);
     }
 
     public void Error(string text, Action action = null)
     {
-        Show(StatusType.Error, text, action);
+        Show(StatusTypes.Error, text, action);
     }
 
     public void Hide()
@@ -179,9 +179,9 @@ public class StatusBand : Control
         RaiseEvent(newEventArgs);
     }
 
-    public static string KindToString(StatusType kind)
+    public static string KindToString(StatusTypes kind)
     {
-        return "Vector." + (kind == StatusType.None ? "Tag" : kind == StatusType.Info ? "Info" : kind == StatusType.Update ? "Synchronize" : kind == StatusType.Warning ? "Warning" : "Cancel.Round");
+        return "Vector." + (kind == StatusTypes.None ? "Tag" : kind == StatusTypes.Info ? "Info" : kind == StatusTypes.Update ? "Synchronize" : kind == StatusTypes.Warning ? "Warning" : "Cancel.Round");
     }
 
     #endregion

@@ -876,7 +876,7 @@ namespace ScreenToGif.Windows
 
         private async void SaveAsButton_Click(object sender, RoutedEventArgs e)
         {
-            StatusList.Remove(StatusType.Warning);
+            StatusList.Remove(StatusTypes.Warning);
 
             try
             {
@@ -4526,7 +4526,7 @@ namespace ScreenToGif.Windows
                     };
                     grid.ValidationRemoved += (sender, args) =>
                     {
-                        StatusList.Remove(StatusType.Warning, args.Reason);
+                        StatusList.Remove(StatusTypes.Warning, args.Reason);
                     };
 
                     var frameCountBinding = new Binding();
@@ -4791,7 +4791,7 @@ namespace ScreenToGif.Windows
 
         private void ClosePanel(bool isCancel = false, bool removeEvent = false)
         {
-            StatusList.Remove(StatusType.Warning);
+            StatusList.Remove(StatusTypes.Warning);
 
             if (ActionGrid.ActualWidth > 0)
                 ZoomBoxControl.RestoreSavedZoom();

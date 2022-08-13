@@ -3,6 +3,7 @@
 
     <SolidColorBrush x:Key="Brush.Accent" Color="#60CDFF"/>
     <SolidColorBrush x:Key="Brush.Foreground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Foreground.Disabled" Color="#5dffffff"/>
     <SolidColorBrush x:Key="Brush.FocusVisual" Color="#FFFFFF"/>
 
     <SolidColorBrush x:Key="Brush.Window.Background" Color="#202020"/>
@@ -50,10 +51,30 @@
     <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Hover" Color="#000000"/>
     <SolidColorBrush x:Key="Brush.Button.Border.Accent.Pressed" Color="#60B1D6"/>
     <SolidColorBrush x:Key="Brush.Button.Background.Accent.Pressed" Color="#cc60cdff"/>
-    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Pressed" Color="#00000080"/>
+    <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Pressed" Color="#80000000"/>
     <SolidColorBrush x:Key="Brush.Button.Border.Accent.Disabled" Color="#28ffffff"/>
     <SolidColorBrush x:Key="Brush.Button.Background.Accent.Disabled" Color="#28ffffff"/>
     <SolidColorBrush x:Key="Brush.Button.Foreground.Accent.Disabled" Color="#87ffffff"/>
+
+    <!--CheckBox-->
+    <SolidColorBrush x:Key="Brush.CheckBox.Background" Color="#1a000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border" Color="#8bffffff"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Hover" Color="#0bffffff"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Hover" Color="#8BFFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Pressed" Color="#12FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Pressed" Color="#28FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked" Color="#60CDFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked" Color="#60CDFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Checked" Color="#000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked.Hover" Color="#E560CDFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked.Hover" Color="#E560CDFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Hover" Color="#000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Checked.Pressed" Color="#CC60CDFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Checked.Pressed" Color="#CC60CDFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Pressed" Color="#80000000"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Background.Disabled" Color="#28FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Border.Disabled" Color="#28FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.CheckBox.Glyph.Disabled" Color="#87FFFFFF"/>
 
     <!--ContextMenu-->
     <SolidColorBrush x:Key="Brush.ContextMenu.Background" Color="#2E2E2E"/>
@@ -73,4 +94,8 @@
     <SolidColorBrush x:Key="Brush.Hyperlink.Background.Press" Color="#0bffffff"/>
     <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Press" Color="#60CDFF"/>
     <SolidColorBrush x:Key="Brush.Hyperlink.Foreground.Disabled" Color="#5dffffff"/>
+
+    <!--ScrollBar-->
+    <SolidColorBrush x:Key="Brush.ScrollBar.Foreground" Color="#8bffffff"/>
+    <SolidColorBrush x:Key="Brush.ScrollBar.Background" Color="#f52c2c2c"/>
 </ResourceDictionary>

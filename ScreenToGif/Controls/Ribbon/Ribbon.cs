@@ -412,14 +412,14 @@ public class Ribbon : TabControl
         var most = NotificationManager.Notifications.Select(s => s.Kind).OrderByDescending(a => (int)a).FirstOrDefault();
 
         _notificationButton.Icon = FindResource(StatusBand.KindToString(most)) as Brush;
-        _notificationButton.IsImportant = most != StatusType.None;
+        _notificationButton.IsImportant = most != StatusTypes.None;
         _notificationButton.SetResourceReference(ExtendedToggleButton.TextProperty, "S.Notifications");
 
         if (story != null)
         {
             story.Stop();
 
-            if (most != StatusType.None)
+            if (most != StatusTypes.None)
                 story.Begin();
         }
     }

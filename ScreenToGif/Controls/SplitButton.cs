@@ -15,7 +15,7 @@ public class SplitButton : ItemsControl
     private ExtendedButton _internalButton;
     private Popup _mainPopup;
 
-    private ExtendedMenuItem _current;
+    private ExMenuItem _current;
 
     #endregion
 
@@ -136,15 +136,15 @@ public class SplitButton : ItemsControl
         _internalButton.Click += (sender, args) => _current?.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
 
         //Close on click.
-        foreach (var item in Items.OfType<ExtendedMenuItem>().ToList())
+        foreach (var item in Items.OfType<ExMenuItem>().ToList())
             item.Click += (sender, args) =>
             {
                 _mainPopup.IsOpen = false;
 
-                if (!(sender is ExtendedMenuItem menu))
+                if (!(sender is ExMenuItem menu))
                     return;
 
-                var index = Items.OfType<ExtendedMenuItem>().Where(w => (w.Tag as string) != "I").ToList().IndexOf(menu);
+                var index = Items.OfType<ExMenuItem>().Where(w => (w.Tag as string) != "I").ToList().IndexOf(menu);
 
                 if (index != -1)
                     SelectedIndex = index;
@@ -166,7 +166,7 @@ public class SplitButton : ItemsControl
             return;
 
         //Ignore children with the Tag == "I".
-        var list = split.Items.OfType<ExtendedMenuItem>().Where(w => (w.Tag as string) != "I").ToList();
+        var list = split.Items.OfType<ExMenuItem>().Where(w => (w.Tag as string) != "I").ToList();
 
         if (split.SelectedIndex > list.Count - 1)
         {

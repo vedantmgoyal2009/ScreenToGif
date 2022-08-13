@@ -4,7 +4,8 @@
             xmlns:c="clr-namespace:ScreenToGif.Controls;assembly=ScreenToGif.Controls"
             Title="ScreenToGif • Error" MinHeight="280" MinWidth="600" Width="600"
             SizeToContent="Height" MaxHeight="500" MaxWidth="700" WindowStyle="None" Topmost="True"
-            WindowStartupLocation="CenterScreen" ShowMaximizeButton="False" ShowMinimizeButton="False">
+            WindowStartupLocation="CenterScreen" ShowMaximizeButton="False" ShowMinimizeButton="False"
+            ExtendIntoTitleBar="True" ShowCustomCaptionButtons="True">
 
     <Grid Background="{DynamicResource Brush.Dialog.Background.Alt}">
         <Grid.RowDefinitions>

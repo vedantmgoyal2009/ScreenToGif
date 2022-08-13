@@ -567,11 +567,11 @@ public class EncoderListViewItem : ListViewItem
         var fileButton = Template.FindName("FileButton", this) as ExtendedButton;
         var folderButton = Template.FindName("FolderButton", this) as ExtendedButton;
         var detailsButton = Template.FindName("DetailsButton", this) as ExtendedButton;
-        var copyMenu = Template.FindName("CopyMenuItem", this) as ExtendedMenuItem;
-        var copyImageMenu = Template.FindName("CopyImageMenuItem", this) as ExtendedMenuItem;
-        var copyFilenameMenu = Template.FindName("CopyFilenameMenuItem", this) as ExtendedMenuItem;
-        var copyFolderMenu = Template.FindName("CopyFolderMenuItem", this) as ExtendedMenuItem;
-        var copyLinkMenu = Template.FindName("CopyLinkMenuItem", this) as ExtendedMenuItem;
+        var copyMenu = Template.FindName("CopyMenuItem", this) as ExMenuItem;
+        var copyImageMenu = Template.FindName("CopyImageMenuItem", this) as ExMenuItem;
+        var copyFilenameMenu = Template.FindName("CopyFilenameMenuItem", this) as ExMenuItem;
+        var copyFolderMenu = Template.FindName("CopyFolderMenuItem", this) as ExMenuItem;
+        var copyLinkMenu = Template.FindName("CopyLinkMenuItem", this) as ExMenuItem;
 
         if (cancelButton != null)
             cancelButton.Click += (s, a) => RaiseCancelClickedEvent();

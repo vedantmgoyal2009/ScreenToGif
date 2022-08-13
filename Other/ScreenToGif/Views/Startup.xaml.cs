@@ -1,33 +1,34 @@
-using System;
-using System.Linq;
-using System.Windows;
 using Microsoft.Win32;
+using ScreenToGif.Controls;
 using ScreenToGif.Util;
 using ScreenToGif.Util.Native;
 using ScreenToGif.Util.Settings;
 using ScreenToGif.ViewModel;
+using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ScreenToGif.Views;
 
-public partial class Startup : Window
+public partial class Startup : ExWindow
 {
-    private readonly StartupViewModel _viewModel;
-
     public Startup()
     {
         InitializeComponent();
 
-        DataContext = _viewModel = new StartupViewModel();
+        StartupViewModel viewModel;
+        DataContext = viewModel = new StartupViewModel();
 
         CommandBindings.Clear();
         CommandBindings.AddRange(new[]
         {
-            new CommandBinding(App.ViewModel.ScreenRecorderCommand, (sender, _) => App.OpenScreenRecorder(sender), (sender, _) => App.CanOpenRecorder(sender)),
-            new CommandBinding(App.ViewModel.OpenWebcamRecorderCommand, (sender, _) => App.OpenWebcamRecorder(sender), (sender, _) => App.CanOpenRecorder(sender)),
-            new CommandBinding(App.ViewModel.OpenBoardRecorderCommand, (sender, _) => App.OpenBoardRecorder(sender), (sender, _) => App.CanOpenRecorder(sender)),
-            new CommandBinding(App.ViewModel.UpdateCommand, (sender, _) => App.OpenUpdater(sender), (sender, _) => App.CanOpenUpdater(sender)),
-            new CommandBinding(App.ViewModel.OptionsCommand, (sender, _) => App.OpenOptions(sender)),
+            new CommandBinding(viewModel.ScreenRecorderCommand, (sender, _) => App.OpenScreenRecorder(sender), (sender, args) => args.CanExecute = App.CanOpenRecorder(sender)),
+            new CommandBinding(viewModel.WebcamRecorderCommand, (sender, _) => App.OpenWebcamRecorder(sender), (sender, args) => args.CanExecute = App.CanOpenRecorder(sender)),
+            new CommandBinding(viewModel.BoardRecorderCommand, (sender, _) => App.OpenBoardRecorder(sender), (sender, args) => args.CanExecute = App.CanOpenRecorder(sender)),
+            new CommandBinding(viewModel.EditorCommand, (sender, _) => App.OpenEditor(sender)),
+            new CommandBinding(viewModel.UpdateCommand, (sender, _) => App.OpenUpdater(sender), (sender, args) => args.CanExecute = App.CanOpenUpdater(sender)),
+            new CommandBinding(viewModel.OptionsCommand, (sender, _) => App.OpenOptions(sender)),
         });
 
         SystemEvents.DisplaySettingsChanged += System_DisplaySettingsChanged;

@@ -92,8 +92,6 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
                             <Image Grid.Column="0" x:Name="IconImage" Width="22" Height="22" Source="{Binding Icon}" Margin="4"/>
@@ -101,24 +99,32 @@
                             <TextBlock Grid.Column="1" x:Name="TitleTextBlock" Margin="4,0,0,0" FontSize="14" Foreground="{DynamicResource Brush.Window.Foreground}"
                                        VerticalAlignment="Center" Text="{TemplateBinding Title}"/>
 
-                            <Button Grid.Column="2" x:Name="MinimizeButton" Style="{StaticResource Style.Button.TitleBar}"
-                                    Width="46" Height="32" Margin="0,1,0,0" Command="SystemCommands.MinimizeWindowCommand">
-                                <Path Width="46" Height="32" Data="M 18,15 H 28" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1"/>
-                            </Button>
+                            <Grid Grid.Column="2" x:Name="CaptionButtonsGrid" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="3" x:Name="MaximizeButton" Style="{StaticResource Style.Button.TitleBar}"
-                                    Width="46" Height="32" Margin="0,1,0,0" Command="SystemCommands.MaximizeWindowCommand">
-                                <Path Width="46" Height="32" Data="M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1"/>
-                            </Button>
+                                <Button Grid.Column="0" x:Name="MinimizeButton" Style="{StaticResource Style.Button.TitleBar}"
+                                        Width="46" Height="32" Margin="0,1,0,0" Command="SystemCommands.MinimizeWindowCommand">
+                                    <Path Width="46" Height="32" Data="M 18,15 H 28" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1"/>
+                                </Button>
 
-                            <Button Grid.Column="3" x:Name="RestoreButton" Style="{StaticResource Style.Button.TitleBar}" Visibility="Collapsed"
-                                    Width="46" Height="32" Margin="0,1,0,0" Command="SystemCommands.RestoreWindowCommand">
-                                <Path Width="46" Height="32" Data="M 18.5,12.5 H 25.5 V 19.5 H 18.5 Z M 20.5,12.5 V 10.5 H 27.5 V 17.5 H 25.5"
-                                      Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1"/>
-                            </Button>
+                                <Button Grid.Column="1" x:Name="MaximizeButton" Style="{StaticResource Style.Button.TitleBar}"
+                                        Width="46" Height="32" Margin="0,1,0,0" Command="SystemCommands.MaximizeWindowCommand">
+                                    <Path Width="46" Height="32" Data="M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1"/>
+                                </Button>
 
-                            <Button Grid.Column="4" x:Name="CloseButton" Style="{StaticResource Style.Button.TitleBar.Close}"
-                                    Width="46" Height="32" Margin="0,1,1,0" Command="SystemCommands.CloseWindowCommand"/>
+                                <Button Grid.Column="1" x:Name="RestoreButton" Style="{StaticResource Style.Button.TitleBar}" Visibility="Collapsed"
+                                        Width="46" Height="32" Margin="0,1,0,0" Command="SystemCommands.RestoreWindowCommand">
+                                    <Path Width="46" Height="32" Data="M 18.5,12.5 H 25.5 V 19.5 H 18.5 Z M 20.5,12.5 V 10.5 H 27.5 V 17.5 H 25.5"
+                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1"/>
+                                </Button>
+
+                                <Button Grid.Column="2" x:Name="CloseButton" Style="{StaticResource Style.Button.TitleBar.Close}"
+                                        Width="46" Height="32" Margin="0,1,1,0" Command="SystemCommands.CloseWindowCommand"/>
+                            </Grid>
                         </Grid>
 
                         <Border Grid.Row="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
@@ -140,6 +146,10 @@
 
                         <Trigger Property="ExtendIntoTitleBar" Value="False">
                             <Setter TargetName="NonClientAreaElement" Property="Grid.Row" Value="0"/>
+                        </Trigger>
+
+                        <Trigger Property="WillRenderCustomCaptionButtons" Value="True">
+                            <Setter TargetName="CaptionButtonsGrid" Property="Visibility" Value="Visible"/>
                         </Trigger>
 
                         <Trigger Property="ShowMinimizeButton" Value="False">
@@ -170,11 +180,6 @@
                             <Setter TargetName="MaximizeButton" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed"/>
                         </MultiTrigger>
-
-                        <!--<Trigger Property="Title" Value="{x:Null}">
-                            <Setter TargetName="MarginRun" Property="Text" Value=""/>
-                        </Trigger>-->
-                        
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

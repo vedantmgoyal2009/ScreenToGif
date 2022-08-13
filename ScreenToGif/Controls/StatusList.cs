@@ -27,7 +27,7 @@ public class StatusList : StackPanel
 
     #endregion
 
-    private void Add(StatusType type, string text, StatusReasons reason, Action action = null)
+    private void Add(StatusTypes type, string text, StatusReasons reason, Action action = null)
     {
         var current = Children.OfType<StatusBand>().FirstOrDefault(x => x.Type == type && x.Text == text);
 
@@ -44,13 +44,13 @@ public class StatusList : StackPanel
 
         switch (type)
         {
-            case StatusType.Info:
+            case StatusTypes.Info:
                 band.Info(text, action);
                 break;
-            case StatusType.Warning:
+            case StatusTypes.Warning:
                 band.Warning(text, action);
                 break;
-            case StatusType.Error:
+            case StatusTypes.Error:
                 band.Error(text, action);
                 break;
         }
@@ -58,20 +58,20 @@ public class StatusList : StackPanel
 
     public void Info(string text, StatusReasons reason = StatusReasons.None, Action action = null)
     {
-        Add(StatusType.Info, text, reason, action);
+        Add(StatusTypes.Info, text, reason, action);
     }
 
     public void Warning(string text, StatusReasons reason = StatusReasons.InvalidState, Action action = null)
     {
-        Add(StatusType.Warning, text, reason, action);
+        Add(StatusTypes.Warning, text, reason, action);
     }
 
     public void Error(string text, StatusReasons reason, Action action = null)
     {
-        Add(StatusType.Error, text, reason, action);
+        Add(StatusTypes.Error, text, reason, action);
     }
 
-    public void Remove(StatusType type, StatusReasons? reason = null)
+    public void Remove(StatusTypes type, StatusReasons? reason = null)
     {
         var list = Children.OfType<StatusBand>().Where(x => x.Type == type && (!reason.HasValue || x.Reason == reason)).ToList();
 

@@ -20,7 +20,7 @@ public class HideableTabControl : TabControl
     #region Variables
 
     private Button _hideButton;
-    private ExtendedMenuItem _extrasMenuItem;
+    private ExMenuItem _extrasMenuItem;
     private TabPanel _tabPanel;
     private Border _border;
     private ExtendedToggleButton _notificationButton;
@@ -82,7 +82,7 @@ public class HideableTabControl : TabControl
 
         _notificationButton = Template.FindName("NotificationsButton", this) as ExtendedToggleButton;
         _notificationBox = Template.FindName("NotificationBox", this) as NotificationBox;
-        _extrasMenuItem = Template.FindName("ExtrasMenuItem", this) as ExtendedMenuItem;
+        _extrasMenuItem = Template.FindName("ExtrasMenuItem", this) as ExMenuItem;
 
         _hideButton = Template.FindName("HideGridButton", this) as Button;
 
@@ -347,14 +347,14 @@ public class HideableTabControl : TabControl
         var most = NotificationManager.Notifications.Select(s => s.Kind).OrderByDescending(a => (int)a).FirstOrDefault();
 
         _notificationButton.Icon = TryFindResource(StatusBand.KindToString(most)) as Brush;
-        _notificationButton.IsImportant = most != StatusType.None;
+        _notificationButton.IsImportant = most != StatusTypes.None;
         _notificationButton.SetResourceReference(ExtendedToggleButton.TextProperty, "S.Notifications");
 
         if(story != null)
         {
             story.Stop();
 
-            if (most != StatusType.None)
+            if (most != StatusTypes.None)
                 story.Begin();
         }
     }

@@ -6,6 +6,7 @@
         <ResourceDictionary Source="/ScreenToGif.Controls;component/Themes/CheckBox.xaml"/>
         <ResourceDictionary Source="/ScreenToGif.Controls;component/Themes/MenuItem.xaml"/>
         <ResourceDictionary Source="/ScreenToGif.Controls;component/Themes/Hyperlink.xaml"/>
+        <ResourceDictionary Source="/ScreenToGif.Controls;component/Themes/InfoBar.xaml"/>
         <ResourceDictionary Source="/ScreenToGif.Controls;component/Themes/Timeline.xaml"/>
         <ResourceDictionary Source="/ScreenToGif.Controls;component/Themes/Window.xaml"/>
         

@@ -7,6 +7,7 @@ public class AppViewModel : BaseViewModel
 {
     private DateTime _startupDateTime;
     private bool _ignoreHotKeys;
+    private bool _isClearingCache;
     private UpdaterViewModel _updaterViewModel;
 
     public DateTime StartupDateTime
@@ -19,6 +20,12 @@ public class AppViewModel : BaseViewModel
     {
         get => _ignoreHotKeys;
         set => SetProperty(ref _ignoreHotKeys, value);
+    }
+
+    public bool IsClearingCache
+    {
+        get => _isClearingCache;
+        set => SetProperty(ref _isClearingCache, value);
     }
 
     public UpdaterViewModel UpdaterViewModel
@@ -35,8 +42,8 @@ public class AppViewModel : BaseViewModel
     public IRelayCommand LaunchCommand { get; set; }
     public IRelayCommand StartupCommand { get; set; }
     public IRelayCommand ScreenRecorderCommand { get; set; }
-    public IRelayCommand OpenWebcamRecorderCommand { get; set; }
-    public IRelayCommand OpenBoardRecorderCommand { get; set; }
+    public IRelayCommand WebcamRecorderCommand { get; set; }
+    public IRelayCommand BoardRecorderCommand { get; set; }
     public IRelayCommand TrayLeftClickCommand { get; set; }
     public IRelayCommand TrayLeftDoubleClickCommand { get; set; }
     public IRelayCommand TrayMiddleClickCommand { get; set; }
@@ -47,6 +54,11 @@ public class AppViewModel : BaseViewModel
     public IRelayCommand TroubleshootCommand { get; set; }
     public IRelayCommand HelpCommand { get; set; }
     public IRelayCommand ExitCommand { get; set; }
+
+    public IRelayCommand ClearCacheCommand { get; set; }
+    public IRelayCommand CheckCacheSpaceCommand { get; set; }
+    public IRelayCommand CheckForUpdatesCommand { get; set; }
+    public IRelayCommand SendFeedbackCommand { get; set; }
 
     public AppViewModel()
     {

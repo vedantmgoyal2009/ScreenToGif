@@ -234,12 +234,12 @@
 
             <Border.ContextMenu>
                 <ContextMenu>
-                    <controls:ExtendedMenuItem x:Name="CopyMenuItem" Header="{DynamicResource S.Editor.Home.Copy}" Icon="{DynamicResource Vector.Copy}"/>
+                    <controls:ExMenuItem x:Name="CopyMenuItem" Header="{DynamicResource S.Editor.Home.Copy}" Icon="{DynamicResource Vector.Copy}"/>
                     <Separator/>
-                    <controls:ExtendedMenuItem x:Name="CopyImageMenuItem" Header="{DynamicResource S.Encoder.Copy.Image}" Visibility="Collapsed"/>
-                    <controls:ExtendedMenuItem x:Name="CopyFilenameMenuItem" Header="{DynamicResource S.Encoder.Copy.Filename}"/>
-                    <controls:ExtendedMenuItem x:Name="CopyFolderMenuItem" Header="{DynamicResource S.Encoder.Copy.Folder}"/>
-                    <controls:ExtendedMenuItem x:Name="CopyLinkMenuItem" Header="{DynamicResource S.Encoder.Copy.Link}" Visibility="Collapsed"/>
+                    <controls:ExMenuItem x:Name="CopyImageMenuItem" Header="{DynamicResource S.Encoder.Copy.Image}" Visibility="Collapsed"/>
+                    <controls:ExMenuItem x:Name="CopyFilenameMenuItem" Header="{DynamicResource S.Encoder.Copy.Filename}"/>
+                    <controls:ExMenuItem x:Name="CopyFolderMenuItem" Header="{DynamicResource S.Encoder.Copy.Folder}"/>
+                    <controls:ExMenuItem x:Name="CopyLinkMenuItem" Header="{DynamicResource S.Encoder.Copy.Link}" Visibility="Collapsed"/>
                 </ContextMenu>
             </Border.ContextMenu>
         </Border>

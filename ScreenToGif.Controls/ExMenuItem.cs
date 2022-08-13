@@ -8,20 +8,20 @@ namespace ScreenToGif.Controls;
 /// <summary>
 /// MenuItem with an image to the left.
 /// </summary>
-public class ExtendedMenuItem : MenuItem
+public class ExMenuItem : MenuItem
 {
     #region Variables
 
-    public static new readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(Brush), typeof(ExtendedMenuItem), new FrameworkPropertyMetadata(Icon_Changed));
+    public static new readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(Brush), typeof(ExMenuItem), new FrameworkPropertyMetadata(Icon_Changed));
 
-    public static readonly DependencyProperty ContentHeightProperty = DependencyProperty.Register(nameof(ContentHeight), typeof(double), typeof(ExtendedMenuItem), new FrameworkPropertyMetadata(16d));
+    public static readonly DependencyProperty ContentHeightProperty = DependencyProperty.Register(nameof(ContentHeight), typeof(double), typeof(ExMenuItem), new FrameworkPropertyMetadata(16d));
 
-    public static readonly DependencyProperty ContentWidthProperty = DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(ExtendedMenuItem), new FrameworkPropertyMetadata(16d));
+    public static readonly DependencyProperty ContentWidthProperty = DependencyProperty.Register(nameof(ContentWidth), typeof(double), typeof(ExMenuItem), new FrameworkPropertyMetadata(16d));
 
-    public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register(nameof(TextWrapping), typeof(TextWrapping), typeof(ExtendedMenuItem), new FrameworkPropertyMetadata(TextWrapping.NoWrap,
+    public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register(nameof(TextWrapping), typeof(TextWrapping), typeof(ExMenuItem), new FrameworkPropertyMetadata(TextWrapping.NoWrap,
         FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static readonly DependencyProperty HasIconProperty = DependencyProperty.Register(nameof(HasIcon), typeof(bool), typeof(ExtendedMenuItem), new FrameworkPropertyMetadata(false));
+    public static readonly DependencyProperty HasIconProperty = DependencyProperty.Register(nameof(HasIcon), typeof(bool), typeof(ExMenuItem), new FrameworkPropertyMetadata(false));
 
     #endregion
 
@@ -83,13 +83,13 @@ public class ExtendedMenuItem : MenuItem
 
     private static void Icon_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        ((ExtendedMenuItem)d).HasIcon = e.NewValue != null;
+        ((ExMenuItem)d).HasIcon = e.NewValue != null;
     }
 
     #endregion
 
-    static ExtendedMenuItem()
+    static ExMenuItem()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedMenuItem), new FrameworkPropertyMetadata(typeof(ExtendedMenuItem)));
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ExMenuItem), new FrameworkPropertyMetadata(typeof(ExMenuItem)));
     }
 }

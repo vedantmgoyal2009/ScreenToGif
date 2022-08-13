@@ -32,6 +32,9 @@ public class ExWindow : Window
     private Button _closeButton;
 
     public static readonly DependencyProperty ExtendIntoTitleBarProperty = DependencyProperty.Register(nameof(ExtendIntoTitleBar), typeof(bool), typeof(ExWindow), new PropertyMetadata(true));
+    public static readonly DependencyProperty ShowCustomCaptionButtonsProperty = DependencyProperty.Register(nameof(ShowCustomCaptionButtons), typeof(bool), typeof(ExWindow), new PropertyMetadata(false, ShowCustomCaptionButtons_PropertyChanged));
+    public static readonly DependencyPropertyKey SupportsBackdropProperty = DependencyProperty.RegisterReadOnly(nameof(SupportsBackdrop), typeof(bool), typeof(ExWindow), new PropertyMetadata(false));
+    public static readonly DependencyPropertyKey WillRenderCustomCaptionButtonsProperty = DependencyProperty.RegisterReadOnly(nameof(WillRenderCustomCaptionButtons), typeof(bool), typeof(ExWindow), new PropertyMetadata(false));
     public static readonly DependencyProperty ShowMinimizeButtonProperty = DependencyProperty.Register(nameof(ShowMinimizeButton), typeof(bool), typeof(ExWindow), new PropertyMetadata(true, ShowMinimizeButton_PropertyChanged));
     public static readonly DependencyProperty ShowMaximizeButtonProperty = DependencyProperty.Register(nameof(ShowMaximizeButton), typeof(bool), typeof(ExWindow), new PropertyMetadata(true, ShowMaximizeButton_PropertyChanged));
     public static readonly DependencyProperty WindowSystemBackdropProperty = DependencyProperty.Register(nameof(WindowSystemBackdrop), typeof(SystemBackdropTypes), typeof(ExWindow), new PropertyMetadata(SystemBackdropTypes.Main, WindowBackdrop_PropertyChanged));
@@ -40,6 +43,24 @@ public class ExWindow : Window
     {
         get => (bool)GetValue(ExtendIntoTitleBarProperty);
         set => SetValue(ExtendIntoTitleBarProperty, value);
+    }
+
+    public bool ShowCustomCaptionButtons
+    {
+        get => (bool)GetValue(ShowCustomCaptionButtonsProperty);
+        set => SetValue(ShowCustomCaptionButtonsProperty, value);
+    }
+
+    public bool SupportsBackdrop
+    {
+        get => (bool)GetValue(SupportsBackdropProperty.DependencyProperty);
+        private set => SetValue(SupportsBackdropProperty, value);
+    }
+
+    public bool WillRenderCustomCaptionButtons
+    {
+        get => (bool)GetValue(WillRenderCustomCaptionButtonsProperty.DependencyProperty);
+        private set => SetValue(WillRenderCustomCaptionButtonsProperty, value);
     }
 
     public bool ShowMinimizeButton
@@ -67,12 +88,16 @@ public class ExWindow : Window
 
     public ExWindow()
     {
+        SupportsBackdrop = OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000);
+        WillRenderCustomCaptionButtons = !SupportsBackdrop || ShowCustomCaptionButtons;
+        
         var chrome = new WindowChrome
         {
             CaptionHeight = 32,
             ResizeBorderThickness = SystemParameters.WindowResizeBorderThickness,
-            UseAeroCaptionButtons = false,
-            GlassFrameThickness = new Thickness(-1)
+            UseAeroCaptionButtons = !WillRenderCustomCaptionButtons,
+            GlassFrameThickness = SupportsBackdrop ? new Thickness(-1) : new Thickness(0),
+            NonClientFrameEdges = !WillRenderCustomCaptionButtons ? NonClientFrameEdges.Right | NonClientFrameEdges.Left : NonClientFrameEdges.None
         };
 
         WindowChrome.SetWindowChrome(this, chrome);
@@ -110,7 +135,7 @@ public class ExWindow : Window
         {
             case WindowsMessages.NonClientHitTest:
             {
-                if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) || !ShowMaximizeButton || ResizeMode is ResizeMode.NoResize or ResizeMode.CanMinimize)
+                if (!ShowCustomCaptionButtons || !ExtendIntoTitleBar || !OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) || !ShowMaximizeButton || ResizeMode is ResizeMode.NoResize or ResizeMode.CanMinimize)
                     return IntPtr.Zero;
                 
                 var x = lparam.ToInt32() & 0xffff;
@@ -133,7 +158,7 @@ public class ExWindow : Window
 
             case WindowsMessages.NonClientLeftButtonDown:
             {
-                if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) || !ShowMaximizeButton || ResizeMode is ResizeMode.NoResize or ResizeMode.CanMinimize)
+                if (!ShowCustomCaptionButtons || !ExtendIntoTitleBar || !OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) || !ShowMaximizeButton || ResizeMode is ResizeMode.NoResize or ResizeMode.CanMinimize)
                     return IntPtr.Zero;
 
                 //This is necessary in order to change the background color for the maximize/restore button, since the HitTest is handled above.
@@ -142,6 +167,30 @@ public class ExWindow : Window
 
                 var button = WindowState == WindowState.Maximized ? _restoreButton : _maximizeButton;
                 
+                if (button.HitTestElement(x, y))
+                {
+                    button.SetCurrentValue(BackgroundProperty, FindResource("Brush.TitleBar.Button.Background.Pressed"));
+
+                    //Without this, the button click near the bottom border would not work and it would display a ghost button nearby.
+                    handled = true;
+                }
+                else
+                    button.ClearValue(BackgroundProperty);
+
+                break;
+            }
+
+            case WindowsMessages.NonClientLeftButtonUp:
+            {
+                if (!ShowCustomCaptionButtons || !ExtendIntoTitleBar || !OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) || !ShowMaximizeButton || ResizeMode is ResizeMode.NoResize or ResizeMode.CanMinimize)
+                    return IntPtr.Zero;
+
+                //This is necessary in order to change the background color for the maximize/restore button, since the HitTest is handled above.
+                var x = lparam.ToInt32() & 0xffff;
+                var y = lparam.ToInt32() >> 16;
+
+                var button = WindowState == WindowState.Maximized ? _restoreButton : _maximizeButton;
+
                 if (button.HitTestElement(x, y))
                 {
                     button.SetCurrentValue(BackgroundProperty, FindResource("Brush.TitleBar.Button.Background.Pressed"));
@@ -169,10 +218,11 @@ public class ExWindow : Window
                     var rcWorkArea = monitorInfo.Work;
                     var rcMonitorArea = monitorInfo.Monitor;
 
-                    info.MaxPosition.X = Math.Abs(rcWorkArea.Left - rcMonitorArea.Left);
-                    info.MaxPosition.Y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top);
-                    info.MaxSize.X = Math.Abs(rcWorkArea.Right - rcWorkArea.Left);
-                    info.MaxSize.Y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top);
+                    //TODO: Possible issue with multi monitor setups?
+                    info.MaxPosition.X = Math.Abs(rcWorkArea.Left - rcMonitorArea.Left) - 1;
+                    info.MaxPosition.Y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top) - 1;
+                    info.MaxSize.X = Math.Abs(rcWorkArea.Right - rcWorkArea.Left + 2);
+                    info.MaxSize.Y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top + 2);
                 }
 
                 Marshal.StructureToPtr(info, lparam, true);
@@ -180,14 +230,25 @@ public class ExWindow : Window
                 break;
             }
 
-            case WindowsMessages.WindowPositionChanged:
-            {
-                BorderThickness = WindowState == WindowState.Maximized ? new Thickness(0) : new Thickness(1);
-                break;
-            }
+            //case WindowsMessages.WindowPositionChanged:
+            //{
+            //    BorderThickness = WindowState == WindowState.Maximized ? new Thickness(0) : new Thickness(1);
+            //    break;
+            //}
         }
 
         return IntPtr.Zero;
+    }
+    
+    private static void ShowCustomCaptionButtons_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not ExWindow window)
+            return;
+
+        window.WillRenderCustomCaptionButtons = !window.SupportsBackdrop || window.ShowCustomCaptionButtons;
+
+        WindowChrome.GetWindowChrome(window).UseAeroCaptionButtons = !window.WillRenderCustomCaptionButtons;
+        WindowChrome.GetWindowChrome(window).NonClientFrameEdges = !window.WillRenderCustomCaptionButtons ? NonClientFrameEdges.Right | NonClientFrameEdges.Left : NonClientFrameEdges.None;
     }
 
     private static void ShowMinimizeButton_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

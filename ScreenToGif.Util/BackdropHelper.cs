@@ -18,14 +18,14 @@ public static class BackdropHelper
         var handle = window.GetHandle();
 
         //Apply fallback color for titlebar.
-        if (ThemeHelper.GetActiveTheme() > AppThemes.Dark)
+        if (ThemeHelper.GetActiveTheme() >= AppThemes.Dark)
             ApplyDarkTheme(handle);
         else
             RemoveDarkTheme(handle);
 
         if (type != SystemBackdropTypes.None)
         {
-            window.SetCurrentValue(Control.BackgroundProperty, Brushes.Transparent);
+            window.SetValue(Control.BackgroundProperty, Brushes.Transparent);
 
             ApplySystemBackdrop(handle, type);
         }

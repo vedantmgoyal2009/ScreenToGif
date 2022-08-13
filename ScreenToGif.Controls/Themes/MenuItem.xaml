@@ -4,7 +4,7 @@
 
     <!--Update the design for this-->
 
-    <Style TargetType="{x:Type c:ExtendedMenuItem}">
+    <Style TargetType="{x:Type c:ExMenuItem}">
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}, FallbackValue={x:Static HorizontalAlignment.Left}}"/>
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}, FallbackValue={x:Static VerticalAlignment.Center}}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.Menu.Foreground}"/>
@@ -22,7 +22,7 @@
         <!--SubmenuItem-->
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type c:ExtendedMenuItem}">
+                <ControlTemplate TargetType="{x:Type c:ExMenuItem}">
                     <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
                             Background="{TemplateBinding Background}" CornerRadius="4" SnapsToDevicePixels="True" Uid="Border_38">
                         <Grid x:Name="Grid" Uid="Grid_49">
@@ -80,7 +80,7 @@
 
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type c:ExtendedMenuItem}">
+                        <ControlTemplate TargetType="{x:Type c:ExMenuItem}">
                             <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
                                     Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_39">
                                 <Grid x:Name="Grid" Uid="Grid_49" IsSharedSizeScope="False">
@@ -134,7 +134,7 @@
             <Trigger Property="Role" Value="TopLevelItem">
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type c:ExtendedMenuItem}">
+                        <ControlTemplate TargetType="{x:Type c:ExMenuItem}">
                             <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
                                     Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_39">
                                 <Grid x:Name="Grid" Uid="Grid_49" IsSharedSizeScope="False">
@@ -184,7 +184,7 @@
             <Trigger Property="Role" Value="SubmenuHeader">
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type c:ExtendedMenuItem}">
+                        <ControlTemplate TargetType="{x:Type c:ExMenuItem}">
                             <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
                                     Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_42">
                                 <Grid x:Name="Grid" Uid="Grid_50">

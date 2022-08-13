@@ -180,7 +180,7 @@ public partial class App : IDisposable
         #region Startup
 
         if (Arguments.Open)
-            MainViewModelOld.Open.Execute(Arguments.WindownToOpen, true);
+            MainViewModelOld.Open.Execute(Arguments.WindowToOpen, true);
         else
             MainViewModelOld.Open.Execute(UserSettings.All.StartUp);
 
@@ -197,7 +197,7 @@ public partial class App : IDisposable
                 Arguments.Prepare(args);
 
             if (Arguments.Open)
-                MainViewModelOld.Open.Execute(Arguments.WindownToOpen, true);
+                MainViewModelOld.Open.Execute(Arguments.WindowToOpen, true);
             else
                 MainViewModelOld.Open.Execute(UserSettings.All.StartUp);
         }

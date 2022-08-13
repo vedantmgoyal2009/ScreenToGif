@@ -893,19 +893,19 @@
                         </Popup>
 
                         <Menu Grid.Row="0" Grid.Column="2" Effect="{x:Null}" Background="Transparent" VerticalAlignment="Center">
-                            <controls:ExtendedMenuItem x:Name="ExtrasMenuItem" Header="{DynamicResource S.Editor.Extras}" Icon="{DynamicResource Vector.Editor}" ContentHeight="16" ContentWidth="16" BorderThickness="0">
-                                <controls:ExtendedMenuItem x:Name="OptionsMenuItem" Header="{DynamicResource S.StartUp.Options}" Icon="{DynamicResource Vector.Options}" 
+                            <controls:ExMenuItem x:Name="ExtrasMenuItem" Header="{DynamicResource S.Editor.Extras}" Icon="{DynamicResource Vector.Editor}" ContentHeight="16" ContentWidth="16" BorderThickness="0">
+                                <controls:ExMenuItem x:Name="OptionsMenuItem" Header="{DynamicResource S.StartUp.Options}" Icon="{DynamicResource Vector.Options}" 
                                                            ContentHeight="16" ContentWidth="16" Command="{TemplateBinding OptionsCommand}"/>
-                                <controls:ExtendedMenuItem x:Name="FeedbackMenuItem" Header="{DynamicResource S.Feedback.Feedback}" Icon="{DynamicResource Vector.Application}" 
+                                <controls:ExMenuItem x:Name="FeedbackMenuItem" Header="{DynamicResource S.Feedback.Feedback}" Icon="{DynamicResource Vector.Application}" 
                                                            ContentHeight="16" ContentWidth="16" Command="{TemplateBinding FeedbackCommand}"/>
-                                <controls:ExtendedMenuItem x:Name="TroubleshootMenuItem" Header="{DynamicResource S.Troubleshoot.Title}" Icon="{DynamicResource Vector.Warning}" 
+                                <controls:ExMenuItem x:Name="TroubleshootMenuItem" Header="{DynamicResource S.Troubleshoot.Title}" Icon="{DynamicResource Vector.Warning}" 
                                                            ContentHeight="16" ContentWidth="16" Command="{TemplateBinding TroubleshootCommand}"/>
                                 
                                 <Separator Height="1"/>
 
-                                <controls:ExtendedMenuItem x:Name="HelpMenuItem" Header="{DynamicResource S.Editor.Help}" Icon="{DynamicResource Vector.Question}" 
+                                <controls:ExMenuItem x:Name="HelpMenuItem" Header="{DynamicResource S.Editor.Help}" Icon="{DynamicResource Vector.Question}" 
                                                            ContentHeight="16" ContentWidth="16" Command="{TemplateBinding HelpCommand}"/>
-                            </controls:ExtendedMenuItem>
+                            </controls:ExMenuItem>
                         </Menu>
 
                         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="ContentBorder" BorderBrush="{DynamicResource Element.Border.Light}" BorderThickness="0,1" Background="{DynamicResource Panel.Background.Level2}">

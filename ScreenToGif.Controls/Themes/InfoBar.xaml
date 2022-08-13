@@ -1,0 +1,98 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:n="clr-namespace:ScreenToGif.Controls">
+
+    <Style TargetType="{x:Type n:InfoBar}">
+        <Setter Property="Visibility" Value="Collapsed"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type n:InfoBar}">
+                    <Grid x:Name="WarningGrid" Height="Auto" MinHeight="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.Resources>
+                            <Storyboard x:Key="HideWarningStoryboard">
+                                <DoubleAnimation Storyboard.TargetProperty="(Grid.Opacity)" From="{Binding ElementName=WarningGrid,Path=Opacity}" To="0" Duration="0:0:0.5">
+                                    <DoubleAnimation.EasingFunction>
+                                        <PowerEase Power="8"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Visibility)" Duration="0:0:0.5">
+                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:0.2"/>
+                                </ObjectAnimationUsingKeyFrames>
+
+                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.IsHitTestVisible)" Duration="0:0:0.0">
+                                    <DiscreteBooleanKeyFrame Value="False" KeyTime="0:0:0.0"/>
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+
+                            <Storyboard x:Key="ShowWarningStoryboard">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Visibility)" Duration="0:0:0" >
+                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:0"/>
+                                </ObjectAnimationUsingKeyFrames>
+
+                                <DoubleAnimation Storyboard.TargetProperty="(Grid.Opacity)" From="0" To="1" Duration="0:0:0.5">
+                                    <DoubleAnimation.EasingFunction>
+                                        <PowerEase Power="8"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+
+                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.IsHitTestVisible)" Duration="0:0:0.0">
+                                    <DiscreteBooleanKeyFrame Value="True" KeyTime="0:0:0.0"/>
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </Grid.Resources>
+
+                        <Border Grid.Column="0" x:Name="WarningBorder" Background="{DynamicResource Vector.Info}" Margin="3" Opacity="{DynamicResource Element.Opacity}"/>
+
+                        <TextBlock Grid.Column="1" x:Name="WarningTextBlock" Text="{TemplateBinding Title}" FontSize="12" 
+                                   Foreground="{DynamicResource Element.Foreground}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Margin="5,0,5,0"/>
+
+                        <!--Action Button Here-->
+
+                        <n:ExButton Grid.Column="2" x:Name="SuppressButton" Icon="{DynamicResource Vector.Close}" IconWidth="16" IconHeight="16"
+                                    HorizontalContentAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource Style.Button.NoText}" MinWidth="30"
+                                    ToolTip="{DynamicResource S.Suppress}" ToolTipService.Placement="Top" ToolTipService.HorizontalOffset="-5">
+                            <!--<n:ExtendedButton.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard Storyboard="{StaticResource HideWarningStoryboard}" Storyboard.TargetName="WarningGrid" HandoffBehavior="SnapshotAndReplace"/>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </n:ExtendedButton.Triggers>-->
+                        </n:ExButton>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Type" Value="Update">
+                            <Setter TargetName="WarningGrid" Property="Background" Value="{DynamicResource Brush.StatusBand.Info}"/>
+                            <Setter TargetName="WarningBorder" Property="Background" Value="{DynamicResource Vector.Synchronize}"/>
+                        </Trigger>
+                        <Trigger Property="Type" Value="Info">
+                            <Setter TargetName="WarningGrid" Property="Background" Value="{DynamicResource Brush.StatusBand.Info}"/>
+                            <Setter TargetName="WarningBorder" Property="Background" Value="{DynamicResource Vector.Info}"/>
+                        </Trigger>
+                        <Trigger Property="Type" Value="Warning">
+                            <Setter TargetName="WarningGrid" Property="Background" Value="{DynamicResource Brush.StatusBand.Warning}"/>
+                            <Setter TargetName="WarningBorder" Property="Background" Value="{DynamicResource Vector.Warning}"/>
+                        </Trigger>
+                        <Trigger Property="Type" Value="Error">
+                            <Setter TargetName="WarningGrid" Property="Background" Value="{DynamicResource Brush.StatusBand.Error}"/>
+                            <Setter TargetName="WarningBorder" Property="Background" Value="{DynamicResource Vector.Cancel.Round}"/>
+                        </Trigger>
+                        <Trigger Property="IsLink" Value="True">
+                            <Setter TargetName="LinkTextBlock" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="WarningTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

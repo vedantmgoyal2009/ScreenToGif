@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -147,22 +148,24 @@ public partial class App : Application
         RegisterViewModelCommands();
         RegisterShortcuts();
 
-        new DownloadDialog().ShowDialog(); return;
+        //throw new Exception("Idk");
+        //new DownloadDialog().ShowDialog(); return;
         //ErrorDialog.Show("S.Dialog.Error.Header", "S.Dialog.Error.Info", new ApplicationException("Nothing else to do", new AccessViolationException("You can't access that memory"))); return;
         //ErrorDialog.ShowStatic("Something bad happened", "We were not expecting it.", new Exception()); return;
-        
-        //TODO: Tasks.
-#pragma warning disable CS4014
-        //Task.Factory.StartNew(ViewModel.ClearTemporaryFiles, TaskCreationOptions.LongRunning);
-        //Task.Factory.StartNew(ViewModel.CheckForUpdates, TaskCreationOptions.LongRunning);
-        //Task.Factory.StartNew(ViewModel.SendFeedback, TaskCreationOptions.LongRunning);
-#pragma warning restore CS4014
+
+        if (UserSettings.All.AutomaticCleanUp)
+            ViewModel.ClearCacheCommand.Execute(null);
+        else
+            ViewModel.CheckCacheSpaceCommand.Execute(null);
+
+        ViewModel.CheckForUpdatesCommand.Execute(null);
+        ViewModel.SendFeedbackCommand.Execute(null);
 
         #region Startup
 
         if (Arguments.Open)
         {
-            ViewModel.LaunchCommand.Execute(Arguments.WindownToOpen);
+            ViewModel.LaunchCommand.Execute(Arguments.WindowToOpen);
             return;
         }
 
@@ -202,6 +205,11 @@ public partial class App : Application
 
         ThemeHelper.SelectTheme(UserSettings.All.MainTheme);
         ThemeHelper.SelectGridTheme();
+
+        NotifyIcon?.RefreshVisual();
+
+        foreach (var window in Current.Windows.OfType<ExWindow>())
+            window.SetBackdrop(window.WindowSystemBackdrop);
     }
 
     internal static void InstanceSwitch_Received(object _, InstanceSwitcherMessage message)
@@ -213,10 +221,22 @@ public partial class App : Application
             if (args?.Length > 0)
                 Arguments.Prepare(args);
 
-            //if (Arguments.Open)
-            //    OpenExecute(Arguments.WindownToOpen, true);
-            //else
-            //    OpenExecute(UserSettings.All.StartUp);
+            if (Arguments.Open)
+            {
+                ViewModel.LaunchCommand.Execute(Arguments.WindowToOpen);
+                return;
+            }
+
+            var startup = UserSettings.All.StartUp;
+
+            if (UserSettings.All.StartMinimized)
+                startup = -1;
+
+            //If files are being sent via parameter, force the editor to open.
+            if (Arguments.FileNames.Any())
+                startup = 4;
+
+            ViewModel.LaunchCommand.Execute(startup);
         }
         catch (Exception e)
         {
@@ -273,11 +293,26 @@ public partial class App : Application
         //https://stackoverflow.com/a/30686620/1735672
         //CommandManager.RegisterClassCommandBinding(typeof(Window), new CommandBinding(ViewModel.NewScreenRecordingCommand, OpenScreenRecorder, CanOpenRecorder));
 
+        //new CommandBinding(App.ViewModel.ScreenRecorderCommand, (sender, _) => App.OpenScreenRecorder(sender), (sender, _) => App.CanOpenRecorder(sender)),
+        //new CommandBinding(App.ViewModel.OpenWebcamRecorderCommand, (sender, _) => App.OpenWebcamRecorder(sender), (sender, _) => App.CanOpenRecorder(sender)),
+        //new CommandBinding(App.ViewModel.OpenBoardRecorderCommand, (sender, _) => App.OpenBoardRecorder(sender), (sender, _) => App.CanOpenRecorder(sender)),
+        //new CommandBinding(App.ViewModel.UpdateCommand, (sender, _) => App.OpenUpdater(sender), (sender, _) => App.CanOpenUpdater(sender)),
+        //new CommandBinding(App.ViewModel.OptionsCommand, (sender, _) => App.OpenOptions(sender)),
+
         ViewModel.LaunchCommand = new RelayCommand(Launch);
+        ViewModel.ScreenRecorderCommand = new RelayCommand(CanOpenRecorder, OpenScreenRecorder);
+        ViewModel.WebcamRecorderCommand = new RelayCommand(CanOpenRecorder, OpenWebcamRecorder);
+        ViewModel.BoardRecorderCommand = new RelayCommand(CanOpenRecorder, OpenBoardRecorder);
+        ViewModel.UpdateCommand = new RelayCommand(CanOpenUpdater, OpenUpdater);
 
         ViewModel.StartupCommand = new RelayCommand(OpenStartup);
         ViewModel.EditorCommand = new RelayCommand(OpenEditor);
         ViewModel.OptionsCommand = new RelayCommand(OpenOptions);
+
+        ViewModel.ClearCacheCommand = new RelayCommand(ClearCache);
+        ViewModel.CheckCacheSpaceCommand = new RelayCommand(ClearCache);
+        ViewModel.CheckForUpdatesCommand = new RelayCommand(ClearCache);
+        ViewModel.SendFeedbackCommand = new RelayCommand(ClearCache);
     }
 
     internal void RegisterShortcuts()

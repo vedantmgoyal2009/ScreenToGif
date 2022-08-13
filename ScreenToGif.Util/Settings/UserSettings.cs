@@ -40,7 +40,7 @@ public partial class UserSettings : INotifyPropertyChanged
 
     public Version Version => _version ??= Assembly.GetEntryAssembly()?.GetName().Version;
 
-    public string VersionText => Version?.ToStringShort() ?? "0.0";
+    public string VersionText => Version?.ToStringShort() ?? "0";
 
     protected static ResourceDictionary _local;
     protected static ResourceDictionary _appData;
@@ -55,8 +55,7 @@ public partial class UserSettings : INotifyPropertyChanged
         //Tries to load both settings files (from the local or AppData folder).
         LoadSettings();
     }
-
-
+    
     private static void LoadSettings()
     {
         //Paths.
@@ -790,10 +789,11 @@ public partial class UserSettings : INotifyPropertyChanged
         set => SetValue(value);
     }
 
+    private const bool KeepOpenOriginal = false;
     public bool KeepOpen
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(KeepOpenOriginal);
+        set => SetValue(value, KeepOpenOriginal);
     }
 
     /// <summary>
@@ -1469,10 +1469,11 @@ public partial class UserSettings : INotifyPropertyChanged
         }
     }
 
+    private const bool DeleteCacheWhenClosingOriginal = false;
     public bool DeleteCacheWhenClosing
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(DeleteCacheWhenClosingOriginal);
+        set => SetValue(value, DeleteCacheWhenClosingOriginal);
     }
 
     public bool AskDeleteCacheWhenClosing
@@ -1481,10 +1482,11 @@ public partial class UserSettings : INotifyPropertyChanged
         set => SetValue(value);
     }
 
+    private const bool AutomaticCleanUpOriginal = true;
     public bool AutomaticCleanUp
     {
-        get => (bool)GetValue();
-        set => SetValue(value);
+        get => (bool)GetValue(AutomaticCleanUpOriginal);
+        set => SetValue(value, AutomaticCleanUpOriginal);
     }
 
     public int AutomaticCleanUpDays
